@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenok-prog/mern-courses.git"
+  },
+  "author": "Artem Frizen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/greenok-prog/mern-courses/issues"
+  },
+  "homepage": "https://github.com/greenok-prog/mern-courses#readme"
+}
