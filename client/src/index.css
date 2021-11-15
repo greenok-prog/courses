@@ -1,0 +1,213 @@
+* {
+  font-family: Oswald;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+body {
+  width: 100%;
+  background-color: #161616;
+  /* background-image: url("./img/Rectangle.svg"); */
+  min-width: 100%;
+  min-height: 100vh;
+}
+h2 {
+  margin-bottom: 16px;
+}
+p {
+  opacity: 0.6;
+}
+img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.navbar-brand {
+  color: white;
+  opacity: 0.9;
+  margin-right: 40px;
+}
+.navbar-nav {
+  margin-top: 5px;
+}
+
+.nav-link {
+  color: white;
+  opacity: 0.8;
+  font-size: 16px;
+}
+.nav-link:hover {
+  opacity: 1;
+}
+
+.ad {
+  margin-top: 96px;
+}
+.subtitle {
+  margin-bottom: 32px;
+}
+.bord {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+
+  border-image-source: linear-gradient(
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0)
+  );
+}
+.btn {
+  padding: 8px 16px;
+  color: white;
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.05);
+}
+.outline {
+  border: 1px solid white;
+  border-radius: 500px;
+}
+.btn:hover {
+  color: white;
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fast_courses {
+  margin-top: 72px;
+  background-color: #1f1f1f;
+  /* background-image: url("./img/Rectangle.svg"); */
+}
+.fast_courses_inner {
+  padding: 40px 0px;
+}
+/* .fast_courses_title {
+  margin-top: 40px;
+}
+.fast_courses_subtitle {
+  margin-top: 8px;
+} */
+.card {
+  max-width: 350px;
+  margin: 0 15px;
+  margin-top: 40px;
+  padding: 0;
+  padding-bottom: 16px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  opacity: 0.9;
+}
+.card-text {
+  opacity: 0.8;
+}
+.more {
+  margin-top: 24px;
+}
+
+.favorite {
+  width: 25px;
+  height: auto;
+  opacity: 0.8;
+}
+.favorite:hover {
+  opacity: 1;
+}
+.more-text {
+  text-decoration: none;
+  font-size: 16px;
+  color: white;
+  opacity: 0.8;
+}
+.arrow {
+  margin-left: 8px;
+  width: 15px;
+  height: auto;
+}
+.more-text:hover {
+  color: white;
+  opacity: 1;
+}
+
+.search {
+  margin-top: 54px;
+  padding-bottom: 150px;
+}
+.directions {
+  margin-top: 40px;
+}
+.search-form div {
+  position: relative;
+}
+.search-form div img {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+
+  max-width: 21px;
+  height: auto;
+}
+.search-input {
+  border-radius: 5px;
+  padding-left: 40px;
+  height: 40px;
+  width: 275px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  outline: none;
+}
+.footer {
+  padding: 32px 0;
+  background-color: #1f1f1f;
+  /* background-image: url("./img/Rectangle.svg"); */
+  margin-top: 40px;
+}
+
+.footer h5 {
+  opacity: 0.7;
+}
+.social img {
+  margin-left: 24px;
+  max-width: 32px;
+  height: auto;
+}
+.forms {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.forms p {
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+.input {
+  height: 40px;
+  padding-left: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  outline: none;
+}
+.forms button {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+}
+.text-center {
+  opacity: 1;
+}
+.under_inputs {
+  font-weight: 300;
+}
+.under_inputs {
+  opacity: 0.8;
+}
+.under_inputs_link {
+  text-decoration: none;
+  color: white;
+}
+.under_inputs_link:hover {
+  color: white;
+  opacity: 1;
+}
