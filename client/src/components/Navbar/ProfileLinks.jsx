@@ -11,7 +11,7 @@ function ProfileLinks() {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavDropdown title="Профиль" id="basic-nav-dropdown">
+          <NavDropdown title="Профиль" className="nav-dropdown">
             <NavDropdown.Item href="#action/3.1">Мой профиль</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">Мое обучение</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Сообщения</NavDropdown.Item>

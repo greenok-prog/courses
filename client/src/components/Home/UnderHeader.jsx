@@ -2,19 +2,19 @@ import React from "react";
 
 function UnderHeader() {
   return (
-    <div class="row ad align-items-center">
-      <div class="col-sm-6 mb-3">
+    <div className="row ad align-items-center">
+      <div className="col-sm-6 mb-3">
         <h2>Учитесь без ограничений</h2>
-        <p class="subtitle">
+        <p className="subtitle">
           Развивайте навыки с помощью онлайн-курсов, сертификаций и дипломных{" "}
           <br />
           программ от лучших университетов и компаний мира.
         </p>
-        <button class="btn bord">Консультация</button>
+        <button className="btn bord">Консультация</button>
       </div>
 
-      <div class="col-sm-6 justify-content-center">
-        <img class="img" src="./und.png" alt=""></img>
+      <div className="col-sm-6 justify-content-center">
+        <img className="img" src="./und.png" alt=""></img>
       </div>
     </div>
   );

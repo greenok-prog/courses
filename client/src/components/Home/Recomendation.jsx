@@ -1,5 +1,5 @@
 import React from "react";
-import CardItem from "../CardItem";
+import CardList from "../CardList";
 
 function Recomendation({ cards }) {
   return (
@@ -13,16 +13,7 @@ function Recomendation({ cards }) {
             Более 4000 курсов по таким темам, как бизнес-аналитика, графический
             дизайн, Python и прочим.
           </p>
-          <div className="row justify-content-center">
-            {cards.map((item, index) => (
-              <CardItem
-                key={index}
-                title={item.title}
-                text={item.text}
-                img={item.img}
-              />
-            ))}
-          </div>
+          <CardList cards={cards} />
         </div>
       </div>
     </div>
