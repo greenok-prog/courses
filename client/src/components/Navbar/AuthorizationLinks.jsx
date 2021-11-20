@@ -1,10 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-function AuthorizationLinks() {
+function AuthorizationLinks({ setIsAuth, isAuth }) {
   return (
     <ul className="navbar-nav">
       <li className="nav-item">
-        <NavLink className="nav-link active" to="/registration">
+        <NavLink
+          onClick={() => setIsAuth(false)}
+          className="nav-link active"
+          to="/registration"
+        >
           Регистрация
         </NavLink>
       </li>

@@ -1,22 +1,30 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
-function ProfileLinks() {
+function ProfileLinks({ authChange }) {
   return (
     <div>
       <ul className="navbar-nav">
         <li className="nav-item">
-          <NavLink className="nav-link active" to="/registration">
+          <NavLink className="nav-link active" to="/education/1">
             Мое обучение
           </NavLink>
         </li>
         <li className="nav-item">
           <NavDropdown title="Профиль" className="nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Мой профиль</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Мое обучение</NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/profile/1" className="dropdown_link">
+                Мой профиль
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/education/1">
+              Мое обучение
+            </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Сообщения</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">Выход</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => authChange(false)}>
+              Выход
+            </NavDropdown.Item>
           </NavDropdown>
         </li>
       </ul>

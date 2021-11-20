@@ -63,7 +63,7 @@ function Home() {
         <UnderHeader />
       </Container>
       <Recomendation cards={PopularCards} />
-      <Search setCards={setCards} trends={trends} cards={cards} />
+      <Search trends={trends} cards={cards} />
       <Footer />
     </div>
   );

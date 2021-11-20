@@ -5,7 +5,7 @@ function Footer() {
   return (
     <div className="footer">
       <div className="footer_inner container d-flex justify-content-between">
-        <h5>By Grenook</h5>
+        <p>By FAN</p>
         <div className="socials">
           <Link to="" className="social">
             <img src="./facebook.svg" alt=""></img>

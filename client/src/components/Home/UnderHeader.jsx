@@ -1,4 +1,5 @@
 import React from "react";
+import ModalWindow from "../Modal/ModalWindow";
 
 function UnderHeader() {
   return (
@@ -10,7 +11,8 @@ function UnderHeader() {
           <br />
           программ от лучших университетов и компаний мира.
         </p>
-        <button className="btn bord">Консультация</button>
+        {/* <button className="btn bord">Консультация</button> */}
+        <ModalWindow value="Консультация" />
       </div>
 
       <div className="col-sm-6 justify-content-center">

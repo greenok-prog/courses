@@ -3,7 +3,7 @@ import CardItem from "./CardItem";
 
 function CardList({ cards }) {
   return (
-    <div className="row justify-content-center">
+    <div className="row justify-content-between">
       {cards.map((item, index) => (
         <CardItem
           key={index}

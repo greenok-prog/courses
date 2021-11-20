@@ -3,8 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import AuthorizationLinks from "./Navbar/AuthorizationLinks";
 import ProfileLinks from "./Navbar/ProfileLinks";
+import ModalWindow from "./Modal/ModalWindow";
 
-function Header({ isAuth }) {
+function Header({ isAuth, authChange }) {
   return (
     <div>
       <Navbar className="navbar navbar-dark" expand="lg">
@@ -19,16 +20,15 @@ function Header({ isAuth }) {
             <Nav className="me-auto mb-lg-0">
               <li className="nav-item">
                 <NavLink className="nav-link active" to="/">
-                  Связаться с нами
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link active" to="/">
-                  Популярные курсы
+                  <ModalWindow value="Связаться с нами" isLink={true} />
                 </NavLink>
               </li>
             </Nav>
-            {!isAuth ? <AuthorizationLinks /> : <ProfileLinks />}
+            {!isAuth ? (
+              <AuthorizationLinks />
+            ) : (
+              <ProfileLinks authChange={authChange} />
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>
