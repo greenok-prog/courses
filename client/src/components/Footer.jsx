@@ -8,13 +8,13 @@ function Footer() {
         <p>By FAN</p>
         <div className="socials">
           <Link to="" className="social">
-            <img src="./facebook.svg" alt=""></img>
+            <img src="/images/facebook.svg" alt=""></img>
           </Link>
           <Link to="/" className="social">
-            <img src=".//vk.svg" alt=""></img>
+            <img src="/images/vk.svg" alt=""></img>
           </Link>
           <Link to="/" className="social">
-            <img src="./github.svg" alt=""></img>
+            <img src="/images/github.svg" alt=""></img>
           </Link>
         </div>
       </div>

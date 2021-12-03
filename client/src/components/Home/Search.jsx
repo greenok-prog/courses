@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import CardList from "../CardList";
-import SearchForm from "./SearchForm";
-import TrendList from "./TrendList";
+import { useSelector } from "react-redux";
 
-function Search({ cards, trends }) {
+import { Container } from "react-bootstrap";
+
+import { SearchForm, TrendList } from ".";
+import { CardList } from "..";
+
+function Search({ trends }) {
+  const { cards } = useSelector((state) => state);
+
   const [searchVal, setsearchVal] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
+
   const selectSort = (id) => {
     setSelectedSort(id);
   };
-
   const sortedCards = [...cards].filter((card) => card.type === selectedSort);
   const searchedAndSortedCards = sortedCards.filter((card) =>
     card.title.toLowerCase().includes(searchVal.toLowerCase())
@@ -18,7 +22,6 @@ function Search({ cards, trends }) {
   const searchedCards = [...cards].filter((card) =>
     card.title.toLowerCase().includes(searchVal.toLowerCase())
   );
-
   return (
     <Container className="search">
       <h4 className="">Поиск</h4>
@@ -32,20 +35,24 @@ function Search({ cards, trends }) {
         <SearchForm searchVal={searchVal} setsearchVal={setsearchVal} />
       </div>
       {/* Что это такое, мне кто-нибудь объяснит? */}
-      {selectedSort === "" ? (
-        searchedCards.length ? (
-          <CardList cards={searchedCards} />
+      {cards.length > 0 ? (
+        selectedSort === "" ? (
+          searchedCards.length ? (
+            <CardList cards={searchedCards} />
+          ) : (
+            <h3 style={{ textAlign: "center", margin: "32px 0" }}>
+              Курсы не найдены
+            </h3>
+          )
+        ) : searchedAndSortedCards.length ? (
+          <CardList cards={searchedAndSortedCards} />
         ) : (
           <h3 style={{ textAlign: "center", margin: "32px 0" }}>
             Курсы не найдены
           </h3>
         )
-      ) : searchedAndSortedCards.length ? (
-        <CardList cards={searchedAndSortedCards} />
       ) : (
-        <h3 style={{ textAlign: "center", margin: "32px 0" }}>
-          Курсы не найдены
-        </h3>
+        ""
       )}
     </Container>
   );

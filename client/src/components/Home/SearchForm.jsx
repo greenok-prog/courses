@@ -4,7 +4,7 @@ function SearchForm({ setsearchVal, searchVal }) {
   return (
     <div className="search-form col-lg-5 d-flex justify-content-lg-end ">
       <div className="mt-lg-0 mt-sm-2">
-        <img src="./search.svg" alt=""></img>
+        <img src="/images/search.svg" alt=""></img>
         <input
           value={searchVal}
           onChange={(e) => setsearchVal(e.target.value)}

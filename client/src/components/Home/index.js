@@ -1,0 +1,5 @@
+export { default as Search } from './Search'
+export { default as Recomendation } from './Recomendation'
+export { default as SearchForm } from './SearchForm'
+export { default as UnderHeader } from './UnderHeader'
+export { default as TrendList } from './TrendList'

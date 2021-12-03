@@ -11,12 +11,11 @@ function UnderHeader() {
           <br />
           программ от лучших университетов и компаний мира.
         </p>
-        {/* <button className="btn bord">Консультация</button> */}
         <ModalWindow value="Консультация" />
       </div>
 
       <div className="col-sm-6 justify-content-center">
-        <img className="img" src="./und.png" alt=""></img>
+        <img className="img" src="/images/und.png" alt=""></img>
       </div>
     </div>
   );

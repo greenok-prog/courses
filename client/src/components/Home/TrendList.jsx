@@ -5,8 +5,8 @@ function TrendList({ trends, selectSort, selectedSort, selectAll }) {
     <div className="types col-lg-7">
       <button
         onClick={() => selectAll("")}
-        className={`btn outline mb-2 ${
-          selectedSort === "" ? "btn-active" : ""
+        className={`btn  trend outline mb-2 ${
+          selectedSort === "" ? "trend-active" : ""
         }`}
       >
         Все направления
@@ -15,8 +15,8 @@ function TrendList({ trends, selectSort, selectedSort, selectAll }) {
         <button
           onClick={() => selectSort(trend.type)}
           key={trend.type}
-          className={`btn outline mb-2 ${
-            selectedSort === trend.type ? "btn-active" : ""
+          className={`btn trend outline mb-2 ${
+            selectedSort === trend.type ? "trend-active" : ""
           }`}
         >
           {trend.name}

@@ -35,9 +35,8 @@ function ChangeEmailModal({ value, isLink }) {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="text"
-              placeholder="email"
+              placeholder="Новый email"
               className="input"
-              style={{ width: "45%" }}
             />
             <input
               value={form.password}
@@ -45,7 +44,6 @@ function ChangeEmailModal({ value, isLink }) {
               type="text"
               placeholder="Пароль"
               className="input"
-              style={{ width: "45%" }}
             />
           </div>
         </Modal.Body>

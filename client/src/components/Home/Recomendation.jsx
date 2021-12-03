@@ -1,7 +1,7 @@
 import React from "react";
 import CardList from "../CardList";
 
-function Recomendation({ cards }) {
+function Recomendation({ cards, addToFavorite }) {
   return (
     <div>
       <div className="fast_courses">
@@ -13,7 +13,7 @@ function Recomendation({ cards }) {
             Более 4000 курсов по таким темам, как бизнес-аналитика, графический
             дизайн, Python и прочим.
           </p>
-          <CardList cards={cards} />
+          <CardList addToFavorite={addToFavorite} cards={cards} />
         </div>
       </div>
     </div>
