@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenok-prog/mern-courses.git"
+  },
+  "author": "Artem Frizen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/greenok-prog/mern-courses/issues"
+  },
+  "homepage": "https://github.com/greenok-prog/mern-courses#readme",
+  "description": ""
+}

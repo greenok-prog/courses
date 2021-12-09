@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 function ProfileLinks({ authChange }) {
   return (
@@ -12,19 +12,22 @@ function ProfileLinks({ authChange }) {
         </li>
         <li className="nav-item">
           <NavDropdown title="Профиль" className="nav-dropdown">
-            <NavDropdown.Item>
-              <Link to="/profile/1" className="dropdown_link">
-                Мой профиль
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item href="/education/1">
+            <NavLink className="navbarDropdown-item" to="/profile/1">
+              Мой профиль
+            </NavLink>
+
+            <NavLink className="navbarDropdown-item" to="/education/1">
               Мое обучение
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Сообщения</NavDropdown.Item>
+            </NavLink>
+
             <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => authChange(false)}>
+            <NavLink
+              className="navbarDropdown-item"
+              to="/"
+              onClick={() => authChange(false)}
+            >
               Выход
-            </NavDropdown.Item>
+            </NavLink>
           </NavDropdown>
         </li>
       </ul>

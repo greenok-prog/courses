@@ -4,7 +4,7 @@ import CardList from "../components/CardList";
 import { useSelector } from "react-redux";
 
 function Education() {
-  const { cards } = useSelector((state) => state);
+  const { cards } = useSelector((state) => state.course);
   const [favoriteCourses, setFavoriteCourses] = useState([]);
   const [activeItem, setActiveItem] = useState("learning");
   useEffect(() => {

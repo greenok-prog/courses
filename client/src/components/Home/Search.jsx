@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
 import { Container } from "react-bootstrap";
-
 import { SearchForm, TrendList } from ".";
 import { CardList } from "..";
 
 function Search({ trends }) {
-  const { cards } = useSelector((state) => state);
+  const { cards } = useSelector((state) => state.course);
 
   const [searchVal, setsearchVal] = useState("");
   const [selectedSort, setSelectedSort] = useState("");

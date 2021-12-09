@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 
 function Registration() {
   const [form, setForm] = useState({
@@ -8,8 +9,11 @@ function Registration() {
     password: "",
     passwordRepeat: "",
   });
-  const sendUserInfo = () => {
-    console.log(form);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const checkForms = () => {
+    dispatch({ type: "CHANGE_AUTH" });
+    navigate("/");
   };
 
   return (
@@ -50,7 +54,7 @@ function Registration() {
               placeholder="Введите пароль еще раз"
             />
             <div className="d-flex justify-content-lg-end">
-              <button onClick={sendUserInfo} className="bord col-lg-3 col-12">
+              <button onClick={checkForms} className="bord col-lg-3 col-12">
                 Регистрация
               </button>
             </div>

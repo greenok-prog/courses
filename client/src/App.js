@@ -6,6 +6,7 @@ import CourseInfo from './pages/CourseInfo';
 import Education from './pages/Education';
 
 import Home from './pages/Home';
+import Lesson from './pages/Lesson';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';
@@ -32,6 +33,7 @@ function App() {
         <Route path='/profile/:id' element={<Profile />} exact={true} />
         <Route path='/education/:id' element={<Education />} exact={true} />
         <Route path='/course/:id' element={<CourseInfo />} exact={true} />
+        <Route path='/lesson/:id' element={<Lesson />} exact={true} />
       </Routes>
     </Router>
   );

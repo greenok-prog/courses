@@ -14,7 +14,7 @@ const initialState = {
             text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
             img: "image 3.png",
             type: "programming",
-            favorite: true
+            favorite: false
         },
         {
             id: 3,

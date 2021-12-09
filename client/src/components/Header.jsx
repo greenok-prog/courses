@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import AuthorizationLinks from "./Navbar/AuthorizationLinks";
 import ProfileLinks from "./Navbar/ProfileLinks";
 
-function Header({ isAuth, authChange }) {
+function Header() {
+  const { isAuth } = useSelector((state) => state.user);
   return (
     <div>
       <Navbar className="navbar navbar-dark" expand="lg">
@@ -17,11 +19,7 @@ function Header({ isAuth, authChange }) {
           <Navbar.Toggle aria-controls="navbarSupportedContent" />
           <Navbar.Collapse id="navbarSupportedContent">
             <Nav className="me-auto mb-lg-0"></Nav>
-            {!isAuth ? (
-              <AuthorizationLinks />
-            ) : (
-              <ProfileLinks authChange={authChange} />
-            )}
+            {!isAuth ? <AuthorizationLinks /> : <ProfileLinks />}
           </Navbar.Collapse>
         </Container>
       </Navbar>
