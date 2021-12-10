@@ -1,7 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import CardList from "../CardList";
 
-function Recomendation({ cards, addToFavorite }) {
+function Recomendation() {
+  const { cards } = useSelector((state) => state.course);
+  const popularCards = cards.sort((a, b) => (a.popular < b.popular ? 1 : -1));
+  const slicedPopularCards = popularCards.slice(0, 3);
+
   return (
     <div>
       <div className="fast_courses">
@@ -13,7 +18,7 @@ function Recomendation({ cards, addToFavorite }) {
             Более 4000 курсов по таким темам, как бизнес-аналитика, графический
             дизайн, Python и прочим.
           </p>
-          <CardList addToFavorite={addToFavorite} cards={cards} />
+          <CardList cards={slicedPopularCards} />
         </div>
       </div>
     </div>

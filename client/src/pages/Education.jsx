@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import UsersCardList from "../components/Education/UsersCardList";
 import CardList from "../components/CardList";
 import { useSelector } from "react-redux";
 
 function Education() {
-  const { cards } = useSelector((state) => state.course);
-  const [favoriteCourses, setFavoriteCourses] = useState([]);
+  const { favorite } = useSelector((state) => state.user);
+
   const [activeItem, setActiveItem] = useState("learning");
-  useEffect(() => {
-    setFavoriteCourses(cards.filter((card) => card.favorite === true));
-  }, [cards]);
 
   const changeActiveItem = (item) => {
     setActiveItem(item);
@@ -77,7 +74,7 @@ function Education() {
         {activeItem === "learning" ? (
           <UsersCardList cards={usersCourses} />
         ) : (
-          <CardList cards={favoriteCourses} />
+          <CardList cards={favorite} />
         )}
       </div>
     </>

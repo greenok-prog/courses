@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
   const sendUserInfo = () => {
-    console.log(loginForm);
+    if (loginForm.email === "user" && loginForm.password === "user") {
+      dispatch({ type: "CHANGE_AUTH" });
+      navigate("/");
+    } else {
+      alert("Неверные данные");
+    }
   };
   return (
     <div className="container ">
