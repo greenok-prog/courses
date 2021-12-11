@@ -1,98 +1,174 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import ModalMessage from "../components/Modal/ModalMessage";
+import Loader from "../components/UI/Loader";
 
 function CourseInfo() {
-  return (
-    <div class="courseInfo__header">
-      <div class="container-lg courseInfo_title ">
-        <div class="row d-flex justify-content-center">
-          <div class="courseInfo_title-text col-8">
-            <div class="courseInfo_text">
-              <h3>Полное руководство по Python 3: от новичка до специалиста</h3>
-              <p>
-                Изучи Python 3 с нуля - один из самых популярных языков
-                программирования в мире + Введение в SQL и PostgreSQL
-              </p>
-            </div>
-            <div class="aboutCourse">
-              <p class="aboutCourse_title">Чему вы научитесь:</p>
-              <ul class="aboutCourse_list row">
-                <li class="aboutCourse_list-item col-6">
-                  <img src="/images/done.png" alt="" />
-                  Писать простые программы на Python 3
-                </li>
-                <li class="aboutCourse_list-item col-6">
-                  <img src="/images/done.png" alt="" />
-                  Как писать простые игры типа крестиков-ноликов
-                </li>
-                <li class="aboutCourse_list-item col-6">
-                  <img src="/images/done.png" alt="" />
-                  Использование Jupyter Notebook
-                </li>
-                <li class="aboutCourse_list-item col-6">
-                  <img src="/images/done.png" alt="" />
-                  Логика с условиями и циклами
-                </li>
-                <li class="aboutCourse_list-item col-6">
-                  <img src="/images/done.png" alt="" />
-                  Лучшие практики по написанию "чистого" кода на Python
-                </li>
-              </ul>
-            </div>
-            <div class="courseInfo_description">
-              <p class="courseInfo_description-title">Описание</p>
-              <p class="courseInfo_description-text">
-                Python стабильно входит в ТОП-10 наиболее популярных языков
-                программирования. Это именно тот язык с которого стоит начинать
-                изучать программирование. Благодаря своей простоте и
-                элегантности, Python позволяет новичкам не вникать во множество
-                сложных программных понятий и конструкций, присущих другим
-                языкам. Короче говоря, если вы только начинаете своё путешествие
-                в мир программирования, Python станет отличным выбором в
-                качестве вашего первого языка программирования.
-              </p>
-              <p class="courseInfo_description-text">
-                Популярность Python объясняется не только тем, что его легко
-                изучать, но и реальными преимуществами языка в смысле его
-                профессионального применения для решения сложных проблем
-                автоматизации. Python - кросс-платформенный язык и работает под
-                Windows, Linux, Mac OS. Множество архитектурных конструкций в
-                этом языке строятся без нагромождения абстракций, как часто
-                происходит в других ЯП (языках программирования). Огромное
-                количество уже готовых библиотек даёт возможность не изобретать
-                велосипеды на каждом шагу.
-              </p>
-            </div>
-          </div>
-          <div class="courseInfo_card col-3">
-            <img src="/images/image 2.png" alt="" />
+  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState(false);
+  const { currentPromo } = useSelector((state) => state.course);
+  const { favorite, isAuth } = useSelector((state) => state.user);
 
-            <div class="courseInfo_card__body">
-              <div class="courseInfo_card__price">9.99$</div>
-              <p class="courseInfo_card__text">Этот курс включает:</p>
-              <ul class="courseInfo_card__list">
-                <li class="courseInfo_card__list-item">
-                  <img src="/images/inf.png" alt="" />
-                  Полный пожизненный доступ
-                </li>
-                <li class="courseInfo_card__list-item">
-                  <img src="/images/video.png" alt="" />
-                  Видеоматериалы
-                </li>
-                <li class="courseInfo_card__list-item">
-                  <img src="/images/task.png" alt="" />
-                  Задания
-                </li>
-              </ul>
+  const [promo, setPromo] = useState();
+  useEffect(() => {
+    if (currentPromo !== null) {
+      setPromo(currentPromo.coursePromo);
+      localStorage.setItem(
+        "currentPromo",
+        JSON.stringify(currentPromo.coursePromo)
+      );
+    } else {
+      const localPromo = JSON.parse(localStorage.getItem("currentPromo"));
+      setPromo(localPromo);
+    }
+  }, []);
+  useEffect(() => {
+    return () => {
+      localStorage.setItem(
+        "currentPromo",
+        JSON.stringify(currentPromo.coursePromo)
+      );
+    };
+  }, [currentPromo.coursePromo]);
+  // console.log(promo);
+  // const { title, subtitle, description, willLearn, price, img } = promo;
+  const checkAuth = (action) => {
+    if (isAuth === false) {
+      setErrorMessage(true);
+    } else {
+      dispatch(action);
+    }
+  };
+  return (
+    <div className="courseInfo__header">
+      {promo ? (
+        <div className="container-lg courseInfo_title ">
+          <ModalMessage
+            title="Ошибка"
+            message="Сначала зайдите в аккаунт"
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
+          <div className="row d-flex justify-content-center">
+            <div className="courseInfo_title-text col-8">
+              <div className="courseInfo_text">
+                <h3>{promo.title}</h3>
+                <p>{promo.subtitle}</p>
+              </div>
+              <div className="aboutCourse">
+                <p className="aboutCourse_title">Чему вы научитесь:</p>
+                <ul className="aboutCourse_list row">
+                  {promo.willLearn.map((el, index) => (
+                    <li className="aboutCourse_list-item col-6" key={index}>
+                      <img src="/images/done.png" alt="" />
+                      {el}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="courseInfo_description">
+                <p className="courseInfo_description-title">Описание</p>
+                {promo.description.map((el, index) => (
+                  <p className="courseInfo_description-text" key={index}>
+                    {el}
+                  </p>
+                ))}
+              </div>
             </div>
-            <div class="courseInfo_card__footer d-flex justify-content-between">
-              <button class="courseInfo_card-buy">Купить сейчас</button>
-              <button class="courseInfo_card-like">
-                <img src="/images/fav.png" alt="" />
-              </button>
+            <div className="courseInfo_card col-3">
+              <img
+                className="courseInfo_card__image"
+                src={`/images/${promo.img}`}
+                alt=""
+              />
+
+              <div className="courseInfo_card__body">
+                <div className="courseInfo_card__price">{promo.price}$</div>
+                <p className="courseInfo_card__text">Этот курс включает:</p>
+                <ul className="courseInfo_card__list">
+                  <li className="courseInfo_card__list-item">
+                    <img src="/images/inf.png" alt="" />
+                    Полный пожизненный доступ
+                  </li>
+                  <li className="courseInfo_card__list-item">
+                    <img src="/images/video.png" alt="" />
+                    Видеоматериалы
+                  </li>
+                  <li className="courseInfo_card__list-item">
+                    <img src="/images/task.png" alt="" />
+                    Задания
+                  </li>
+                </ul>
+              </div>
+              <div className="courseInfo_card__footer d-flex justify-content-between">
+                <button
+                  className="courseInfo_card-buy"
+                  onClick={() =>
+                    checkAuth({
+                      type: "ADD_TO_PURCHASED",
+                      payload: promo,
+                    })
+                  }
+                >
+                  Купить сейчас
+                </button>
+                {favorite && !favorite.includes(currentPromo) ? (
+                  <button
+                    className="courseInfo_card-like"
+                    onClick={() =>
+                      checkAuth({
+                        type: "ADD_TO_FAVORITE",
+                        payload: currentPromo,
+                      })
+                    }
+                  >
+                    <svg
+                      className={`favorite`}
+                      fill="white"
+                      width="20"
+                      height="19"
+                      viewBox="0 0 20 19"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.88659 16.6603L8.88587 16.6596C6.30081 14.3155 4.19567 12.4057 2.73078 10.6147C1.27162 8.83074 0.5 7.22576 0.5 5.5C0.5 2.69614 2.69614 0.5 5.5 0.5C7.08861 0.5 8.62112 1.24197 9.61932 2.41417L10 2.8612L10.3807 2.41417C11.3789 1.24197 12.9114 0.5 14.5 0.5C17.3039 0.5 19.5 2.69614 19.5 5.5C19.5 7.22577 18.7284 8.83077 17.2691 10.6161C15.8065 12.4055 13.7058 14.3144 11.1265 16.6583L11.1148 16.669L11.1137 16.67L10.0013 17.675L8.88659 16.6603Z"
+                        stroke="white"
+                      />
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    className="courseInfo_card-like"
+                    onClick={() =>
+                      dispatch({
+                        type: "REMOVE_FROM_FAVORITE",
+                        payload: currentPromo.id,
+                      })
+                    }
+                  >
+                    <svg
+                      className={`favorite favorite-active`}
+                      fill="white"
+                      width="20"
+                      height="19"
+                      viewBox="0 0 20 19"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.88659 16.6603L8.88587 16.6596C6.30081 14.3155 4.19567 12.4057 2.73078 10.6147C1.27162 8.83074 0.5 7.22576 0.5 5.5C0.5 2.69614 2.69614 0.5 5.5 0.5C7.08861 0.5 8.62112 1.24197 9.61932 2.41417L10 2.8612L10.3807 2.41417C11.3789 1.24197 12.9114 0.5 14.5 0.5C17.3039 0.5 19.5 2.69614 19.5 5.5C19.5 7.22577 18.7284 8.83077 17.2691 10.6161C15.8065 12.4055 13.7058 14.3144 11.1265 16.6583L11.1148 16.669L11.1137 16.67L10.0013 17.675L8.88659 16.6603Z"
+                        stroke="white"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 }

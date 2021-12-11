@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ModalMessage from "./Modal/ModalMessage";
 
 function CardItem(props) {
-  const { favorite } = useSelector((state) => state.user);
-
+  const { favorite, isAuth } = useSelector((state) => state.user);
+  const [errorMessage, setErrorMessage] = useState(false);
   const dispatch = useDispatch();
+  const checkAuth = () => {
+    if (isAuth === false) {
+      setErrorMessage(true);
+    } else {
+      dispatch({ type: "ADD_TO_FAVORITE", payload: props.card });
+    }
+  };
 
   return (
     <div className="col-lg-4 col-sm-12 card">
@@ -19,11 +27,15 @@ function CardItem(props) {
         <small className="card-text">{props.card.text}</small>
       </div>
       <div className="more container d-flex justify-content-between">
+        <ModalMessage
+          title="Ошибка"
+          message="Сначала зайдите в аккаунт"
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
         {favorite && !favorite.includes(props.card) ? (
           <svg
-            onClick={() =>
-              dispatch({ type: "ADD_TO_FAVORITE", payload: props.card })
-            }
+            onClick={checkAuth}
             className={`favorite`}
             fill="white"
             width="20"
@@ -55,7 +67,13 @@ function CardItem(props) {
           </svg>
         )}
         <div className="more-link">
-          <Link to="/course/1" className="more-text">
+          <Link
+            to={`/course/${props.card.id}`}
+            className="more-text"
+            onClick={() =>
+              dispatch({ type: "SET_CURRENT_PROMO", payload: props.card })
+            }
+          >
             Подробнее
             <img className="arrow" src={"/images/arrow.png"} alt=""></img>
           </Link>

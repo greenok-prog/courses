@@ -7,7 +7,10 @@ const initialState = {
             img: "image 2.png",
             type: "design",
             popular: 10,
+
             coursePromo: {
+                price: '20',
+                img: "image 2.png",
                 title: '1Полное руководство по Python 3: от новичка до специалиста',
                 subtitle: 'Изучи Python 3 с нуля - один из самых популярных языков программирования в мире + Введение в SQL и PostgreSQL',
                 willLearn: ['Писать простые программы на Python 3', 'Как писать простые игры типа крестиков-ноликов', 'Использование Jupyter Notebook', 'что-то еще'],
@@ -23,7 +26,10 @@ const initialState = {
             type: "programming",
             favorite: false,
             popular: 5,
+
             coursePromo: {
+                price: '40',
+                img: "image 3.png",
                 title: '2Полное руководство по Python 3: от новичка до специалиста',
                 subtitle: 'Изучи Python 3 с нуля - один из самых популярных языков программирования в мире + Введение в SQL и PostgreSQL',
                 willLearn: ['Писать простые программы на Python 3', 'Как писать простые игры типа крестиков-ноликов', 'Использование Jupyter Notebook', 'что-то еще'],
@@ -38,7 +44,10 @@ const initialState = {
             type: "design",
             favorite: false,
             popular: 150,
+
             coursePromo: {
+                price: '15.29',
+                img: "image 3.png",
                 title: '3Полное руководство по Python 3: от новичка до специалиста',
                 subtitle: 'Изучи Python 3 с нуля - один из самых популярных языков программирования в мире + Введение в SQL и PostgreSQL',
                 willLearn: ['Писать простые программы на Python 3', 'Как писать простые игры типа крестиков-ноликов', 'Использование Jupyter Notebook', 'что-то еще'],
@@ -53,7 +62,10 @@ const initialState = {
             type: "design",
             favorite: false,
             popular: 100,
+
             coursePromo: {
+                price: '9.99',
+                img: "image 3.png",
                 title: '4Полное руководство по Python 3: от новичка до специалиста',
                 subtitle: 'Изучи Python 3 с нуля - один из самых популярных языков программирования в мире + Введение в SQL и PostgreSQL',
                 willLearn: ['Писать простые программы на Python 3', 'Как писать простые игры типа крестиков-ноликов', 'Использование Jupyter Notebook', 'что-то еще'],
@@ -61,22 +73,20 @@ const initialState = {
             }
         },
     ],
+    currentPromo: {}
 
 }
 
 // const ADD_TO_FAVORITE = "ADD_TO_FAVORITE"
 // const GET_POPULAR_CARDS = 'GET_POPULAR_CARDS'
+const SET_CURRENT_PROMO = 'SET_CURRENT_PROMO'
 
 export const courseReducer = (state = initialState, action) => {
     switch (action.type) {
-        // case ADD_TO_FAVORITE:
-        //     return {
-        //         ...state, cards: state.cards.map(card => card.id === action.payload ? { ...card, favorite: !card.favorite } : card)
-        //     }
-        // case GET_POPULAR_CARDS:
-        //     return {
-        //         ...state, cards: state.cards.sort((a, b) => (a.popular < b.popular ? 1 : -1))
-        //     }
+        case SET_CURRENT_PROMO:
+            return {
+                ...state, currentPromo: action.payload
+            }
 
         default:
             return state

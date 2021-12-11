@@ -4,7 +4,7 @@ import CardList from "../components/CardList";
 import { useSelector } from "react-redux";
 
 function Education() {
-  const { favorite } = useSelector((state) => state.user);
+  const { favorite, purchasedCourses } = useSelector((state) => state.user);
 
   const [activeItem, setActiveItem] = useState("learning");
 
@@ -16,36 +16,7 @@ function Education() {
     { item: "learning", name: "Все курсы" },
     { item: "wishlist", name: "Список желаний" },
   ];
-  const usersCourses = [
-    {
-      id: 1,
-      title: "Python",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 2.png",
-      type: "design",
-    },
-    {
-      id: 2,
-      title: "Python",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 3.png",
-      type: "design",
-    },
-    {
-      id: 3,
-      title: "Python",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 3.png",
-      type: "design",
-    },
-    {
-      id: 4,
-      title: "Python",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 3.png",
-      type: "design",
-    },
-  ];
+
   return (
     <>
       <div className="education">
@@ -72,7 +43,7 @@ function Education() {
       </div>
       <div className="container-lg">
         {activeItem === "learning" ? (
-          <UsersCardList cards={usersCourses} />
+          <UsersCardList cards={purchasedCourses} />
         ) : (
           <CardList cards={favorite} />
         )}

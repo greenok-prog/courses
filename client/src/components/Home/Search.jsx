@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import { SearchForm, TrendList } from ".";
 import { CardList } from "..";
+import Loader from "../UI/Loader";
 
 function Search({ trends }) {
   const { cards } = useSelector((state) => state.course);
@@ -50,7 +51,7 @@ function Search({ trends }) {
           </h3>
         )
       ) : (
-        ""
+        <Loader />
       )}
     </Container>
   );
