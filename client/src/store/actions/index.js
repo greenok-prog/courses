@@ -1,0 +1,8 @@
+// user
+export const CHANGE_AUTH = 'CHANGE_AUTH'
+export const ADD_TO_FAVORITE = 'ADD_TO_FAVORITE'
+export const REMOVE_FROM_FAVORITE = 'REMOVE_FROM_FAVORITE'
+export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
+export const SET_USER_AVATAR = 'SET_USER_AVATAR'
+
+// course

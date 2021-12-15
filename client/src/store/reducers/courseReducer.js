@@ -73,20 +73,13 @@ const initialState = {
             }
         },
     ],
-    currentPromo: {}
+
 
 }
 
-// const ADD_TO_FAVORITE = "ADD_TO_FAVORITE"
-// const GET_POPULAR_CARDS = 'GET_POPULAR_CARDS'
-const SET_CURRENT_PROMO = 'SET_CURRENT_PROMO'
-
 export const courseReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_CURRENT_PROMO:
-            return {
-                ...state, currentPromo: action.payload
-            }
+
 
         default:
             return state

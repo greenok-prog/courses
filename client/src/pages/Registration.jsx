@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { changeAuthAction } from "../store/actions/user";
 
 function Registration() {
   const [form, setForm] = useState({
@@ -12,7 +13,7 @@ function Registration() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const checkForms = () => {
-    dispatch({ type: "CHANGE_AUTH" });
+    dispatch(changeAuthAction());
     navigate("/");
   };
 

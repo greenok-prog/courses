@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  addToFavoriteAction,
+  removeFromFavoriteAction,
+} from "../store/actions/user";
 import ModalMessage from "./Modal/ModalMessage";
 
 function CardItem(props) {
@@ -11,7 +15,7 @@ function CardItem(props) {
     if (isAuth === false) {
       setErrorMessage(true);
     } else {
-      dispatch({ type: "ADD_TO_FAVORITE", payload: props.card });
+      dispatch(addToFavoriteAction(props.card));
     }
   };
 
@@ -50,9 +54,7 @@ function CardItem(props) {
           </svg>
         ) : (
           <svg
-            onClick={() =>
-              dispatch({ type: "REMOVE_FROM_FAVORITE", payload: props.card.id })
-            }
+            onClick={() => dispatch(removeFromFavoriteAction(props.card.id))}
             className={`favorite favorite-active`}
             fill="white"
             width="20"

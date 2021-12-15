@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { changeAuthAction } from "../store/actions/user";
 
 function Login() {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ function Login() {
   });
   const sendUserInfo = () => {
     if (loginForm.email === "user" && loginForm.password === "user") {
-      dispatch({ type: "CHANGE_AUTH" });
+      dispatch(changeAuthAction());
       navigate("/");
     } else {
       alert("Неверные данные");

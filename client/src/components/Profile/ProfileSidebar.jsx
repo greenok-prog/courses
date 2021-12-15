@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
 function ProfileSidebar({ setselectedLink, selectedLink }) {
   const sidebarLinks = [
@@ -6,10 +8,15 @@ function ProfileSidebar({ setselectedLink, selectedLink }) {
     { link: "account", name: "Учетная запись" },
     { link: "photo", name: "Фотография" },
   ];
+  const { userAvatar } = useSelector((state) => state.user);
   return (
     <div className="col-lg-4 profile_sidebar d-flex flex-column">
       <div className="profile_sidebar__info d-flex flex-column align-items-center justify-content-center">
-        <div className="avatar d-flex justify-content-center"></div>
+        {/* ---------Аватар--------- */}
+        <div className="avatar d-flex justify-content-center">
+          <img src={userAvatar} alt="" />
+        </div>
+        {/* ---------Аватар--------- */}
         <p className="profile_sidebar__username">Артем Фризен</p>
       </div>
       <ul className="profile_sidebar__links d-flex flex-column ">

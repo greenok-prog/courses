@@ -1,6 +1,7 @@
-import { useState } from 'react';
+
 import { Container } from 'react-bootstrap';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Routes, Route, Redirect, Navigate } from 'react-router-dom'
 import Header from './components/Header';
 import CourseInfo from './pages/CourseInfo';
 import Education from './pages/Education';
@@ -12,28 +13,25 @@ import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 
 function App() {
-  const [isAuth, setIsAuth] = useState(true)
-  const [favoriteCourses, setFavoriteCourses] = []
-  const authChange = (e) => {
-    setIsAuth(e)
-  }
-  const addToFavorite = (course) => {
-    setFavoriteCourses(...favoriteCourses, course)
-  }
+  const { isAuth } = useSelector(state => state.user)
+
   return (
 
     <Router>
       <Container>
-        <Header isAuth={isAuth} authChange={authChange} />
+        <Header />
       </Container>
       <Routes>
-        <Route path='/' element={<Home addToFavorite={addToFavorite} />} exact={true} />
+        <Route path='/' element={<Home />} exact={true} />
         <Route path='/registration' element={<Registration />} exact={true} />
         <Route path='/login' element={<Login />} exact={true} />
-        <Route path='/profile/:id' element={<Profile />} exact={true} />
-        <Route path='/education/:id' element={<Education />} exact={true} />
         <Route path='/course/:id' element={<CourseInfo />} exact={true} />
-        <Route path='/lesson/:id' element={<Lesson />} exact={true} />
+        {isAuth ? <>
+          <Route path='/profile/:id' element={<Profile />} exact={true} />
+          <Route path='/education/:id' element={<Education />} exact={true} />
+          <Route path='/lesson/:id' element={<Lesson />} exact={true} />
+        </> : <Route path='*' element={<Navigate to='/' />} exact={true} />}
+
       </Routes>
     </Router>
   );
