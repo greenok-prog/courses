@@ -1,8 +1,26 @@
 // user
-export const CHANGE_AUTH = 'CHANGE_AUTH'
+export const SET_MESSAGE = 'SET_MESSAGE'
+
+export const LOGOUT = 'LOGOUT'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
+export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
+
+
+// profile user
+export const CHANGE_PROFILE_INFO = 'CHANGE_PROFILE_INFO'
+export const CHANGE_EMAIL = 'CHANGE_EMAIL'
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
+export const CHANGE_AVATAR = 'CHANGE_AVATAR'
+
+
+
 export const ADD_TO_FAVORITE = 'ADD_TO_FAVORITE'
 export const REMOVE_FROM_FAVORITE = 'REMOVE_FROM_FAVORITE'
-export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
-export const SET_USER_AVATAR = 'SET_USER_AVATAR'
+
 
 // course
+export const GET_ALL_CARDS = 'GET_ALL_CARDS'
+export const LOAD_FAVORITE = 'LOAD_FAVORITE'
+export const GET_CARD_PROMO = 'GET_CARD_PROMO'
+export const ADD_CARD_PROMO = 'ADD_CARD_PROMO'
+export const ADD_POPULAR = 'ADD_POPULAR'

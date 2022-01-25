@@ -27,6 +27,9 @@ img {
   height: auto;
   object-fit: cover;
 }
+textarea {
+  min-height: 200px;
+}
 .navbar-brand {
   color: white;
   opacity: 0.9;
@@ -150,6 +153,9 @@ img {
 }
 .more {
   margin-top: 24px;
+}
+.card-img-top {
+  max-height: 152px;
 }
 
 .favorite {
@@ -468,6 +474,7 @@ img {
   padding-bottom: 24px;
 }
 .courseInfo_card__image {
+  max-height: 160px;
   width: 350px;
 }
 .courseInfo_card__body {

@@ -6,8 +6,9 @@ import { CardList } from "..";
 import Loader from "../UI/Loader";
 
 function Search({ trends }) {
-  const { cards } = useSelector((state) => state.course);
+  // const dispatch = useDispatch();
 
+  const { cards } = useSelector((state) => state.course);
   const [searchVal, setsearchVal] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
 
@@ -34,7 +35,7 @@ function Search({ trends }) {
         <SearchForm searchVal={searchVal} setsearchVal={setsearchVal} />
       </div>
       {/* Что это такое, мне кто-нибудь объяснит? */}
-      {cards.length > 0 ? (
+      {cards && cards.length > 0 ? (
         selectedSort === "" ? (
           searchedCards.length ? (
             <CardList cards={searchedCards} />

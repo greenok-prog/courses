@@ -1,35 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addToFavoriteAction,
-  addToPurchasedAction,
-  removeFromFavoriteAction,
-} from "../../store/actions/user";
+import { useDispatch, useSelector } from "react-redux";
 
-function PromoCard({ promo, setErrorMessage }) {
-  const { isAuth, favorite, purchasedCourses } = useSelector(
-    (state) => state.user
-  );
+import config from "../../config/default.json";
+import { addToPurchased } from "../../store/actions/user";
+function PromoCard({ promo, image }) {
+  const serverApi = config.API_SERVER;
   const dispatch = useDispatch();
+  const { isAuth, currentUser } = useSelector((state) => state.user);
 
-  const checkAuth = (action) => {
-    if (isAuth === false) {
-      setErrorMessage(true);
-    } else {
-      dispatch(action);
-    }
-  };
-  const addToPurchased = (card) => {
-    const checkAuth = isAuth === true;
-    checkAuth ? dispatch(addToPurchasedAction(card)) : setErrorMessage(true);
-  };
   return (
     <div className="courseInfo_card col-3">
-      <img
-        className="courseInfo_card__image"
-        src={`/images/${promo.img}`}
-        alt=""
-      />
+      <img className="courseInfo_card__image" src={serverApi + image} alt="" />
 
       <div className="courseInfo_card__body">
         <div className="courseInfo_card__price">{promo.price}$</div>
@@ -50,22 +31,24 @@ function PromoCard({ promo, setErrorMessage }) {
         </ul>
       </div>
       <div className="courseInfo_card__footer d-flex justify-content-between">
-        {!purchasedCourses.includes(promo) ? (
-          <button
-            className="courseInfo_card-buy"
-            onClick={() => addToPurchased(promo)}
-          >
-            Купить сейчас
-          </button>
-        ) : (
-          <div className="courseInfo_card-buy">Уже куплено</div>
-        )}
+        {isAuth &&
+          (!currentUser.user.purchasedCourses.includes(promo.card) ? (
+            <button
+              onClick={() =>
+                dispatch(addToPurchased(currentUser.user._id, promo.card))
+              }
+              className="courseInfo_card-buy"
+            >
+              Купить сейчас
+            </button>
+          ) : (
+            <button disabled className="courseInfo_card-buy">
+              Уже куплено
+            </button>
+          ))}
 
-        {favorite && !favorite.includes(promo) ? (
-          <button
-            className="courseInfo_card-like"
-            onClick={() => checkAuth(addToFavoriteAction(promo))}
-          >
+        {/* {favorite && !favorite.includes(promo) ? (
+          <button className="courseInfo_card-like">
             <svg
               className={`favorite`}
               fill="white"
@@ -81,10 +64,7 @@ function PromoCard({ promo, setErrorMessage }) {
             </svg>
           </button>
         ) : (
-          <button
-            className="courseInfo_card-like"
-            onClick={() => dispatch(removeFromFavoriteAction(promo.id))}
-          >
+          <button className="courseInfo_card-like">
             <svg
               className={`favorite favorite-active`}
               fill="white"
@@ -99,7 +79,7 @@ function PromoCard({ promo, setErrorMessage }) {
               />
             </svg>
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

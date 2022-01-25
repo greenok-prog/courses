@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { changeEmail } from "../../store/actions/user";
 
 function ChangeEmailModal({ value, isLink }) {
+  const dispatch = useDispatch();
+  const { currentUser, message } = useSelector((state) => state.user);
+
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -15,8 +20,10 @@ function ChangeEmailModal({ value, isLink }) {
     setShow(true);
     setForm({ ...form, email: "", password: "" });
   };
-  const showInformation = () => {
-    console.log(form);
+  const change = () => {
+    dispatch(changeEmail(currentUser.user._id, form.email, form.password));
+    setShow(false);
+    alert(message);
   };
 
   return (
@@ -51,7 +58,7 @@ function ChangeEmailModal({ value, isLink }) {
           <Button variant="secondary" onClick={handleClose}>
             Закрыть
           </Button>
-          <Button variant="primary" onClick={showInformation}>
+          <Button variant="primary" onClick={change}>
             Изменить
           </Button>
         </Modal.Footer>

@@ -1,14 +1,11 @@
 import React from "react";
 
-function PromoDescription({ list }) {
+function PromoDescription({ description }) {
   return (
     <div className="courseInfo_description">
       <p className="courseInfo_description-title">Описание</p>
-      {list.map((el, index) => (
-        <p className="courseInfo_description-text" key={index}>
-          {el}
-        </p>
-      ))}
+
+      <p className="courseInfo_description-text">{description}</p>
     </div>
   );
 }

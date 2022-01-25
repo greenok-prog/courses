@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalMessage from "../components/Modal/ModalMessage";
 import Loader from "../components/UI/Loader";
 import AboutCourseList from "../components/CourseInfo/AboutCourseList";
 import PromoDescription from "../components/CourseInfo/PromoDescription";
 import PromoCard from "../components/CourseInfo/PromoCard";
+import { getCardPromo } from "../store/actions/cards";
 
 function CourseInfo() {
-  const { cards } = useSelector((state) => state.course);
-
   const params = useParams();
+  const [first, setfirst] = useState("");
+  const dispatch = useDispatch();
+  const { cards } = useSelector((state) => state.course);
+  const { currentPromo } = useSelector((state) => state.course);
+  useEffect(() => {
+    dispatch(getCardPromo(params.id));
+
+    const card = cards.find((el) => el._id === params.id);
+    console.log(card);
+    setfirst(card?.image);
+  }, [dispatch, cards]);
 
   const [errorMessage, setErrorMessage] = useState(false);
-  const [promo, setPromo] = useState();
-
-  useEffect(() => {
-    setPromo(cards.find((el) => el.id === Number(params.id)));
-  }, [promo, params.id, cards]);
 
   return (
     <div className="courseInfo__header">
-      {promo ? (
+      {currentPromo ? (
         <div className="container-lg courseInfo_title ">
           <ModalMessage
             title="Ошибка"
@@ -32,16 +37,28 @@ function CourseInfo() {
           <div className="row d-flex justify-content-center">
             <div className="courseInfo_title-text col-8">
               <div className="courseInfo_text">
-                <h3>{promo.coursePromo.title}</h3>
-                <p>{promo.coursePromo.subtitle}</p>
+                <h3>{currentPromo.title}</h3>
+                <p>{currentPromo.subtitle}</p>
               </div>
               <div className="aboutCourse">
                 <p className="aboutCourse_title">Чему вы научитесь:</p>
-                <AboutCourseList list={promo.coursePromo.willLearn} />
+                {currentPromo.willLearn && (
+                  <AboutCourseList list={currentPromo.willLearn} />
+                )}
               </div>
-              <PromoDescription list={promo.coursePromo.description} />
+              {currentPromo.description && (
+                <PromoDescription description={currentPromo.description} />
+              )}
             </div>
-            <PromoCard promo={promo} setErrorMessage={setErrorMessage} />
+            {first !== "" ? (
+              <PromoCard
+                promo={currentPromo}
+                image={first}
+                setErrorMessage={setErrorMessage}
+              />
+            ) : (
+              <div>Loading</div>
+            )}
           </div>
         </div>
       ) : (

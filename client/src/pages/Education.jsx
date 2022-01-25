@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import UsersCardList from "../components/Education/UsersCardList";
-import CardList from "../components/CardList";
 
+import UsersCardList from "../components/Education/UsersCardList";
 import EducationLinks from "../components/Education/EducationLinks";
 
 function Education() {
-  const { favorite, purchasedCourses } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [activeItem, setActiveItem] = useState("learning");
 
   return (
@@ -24,9 +23,9 @@ function Education() {
       </div>
       <div className="container-lg">
         {activeItem === "learning" ? (
-          <UsersCardList cards={purchasedCourses} />
+          <UsersCardList purchasedCourses={currentUser.user.purchasedCourses} />
         ) : (
-          <CardList cards={favorite} />
+          <div>Fav</div>
         )}
       </div>
     </>

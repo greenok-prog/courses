@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { changeAuthAction } from "../store/actions/user";
+import { Link } from "react-router-dom";
+import { registration } from "../store/actions/user";
 
 function Registration() {
   const [form, setForm] = useState({
@@ -11,11 +11,14 @@ function Registration() {
     passwordRepeat: "",
   });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const checkForms = () => {
-    dispatch(changeAuthAction());
-    navigate("/");
-  };
+  // const navigate = useNavigate();
+  // const checkForms = () => {
+  //   if (form.password === form.passwordRepeat) {
+  //     registration(form.name, form.email, form.password);
+  //   }
+  //   // dispatch(changeAuthAction());
+  //   // navigate("/");
+  // };
 
   return (
     <div>
@@ -55,7 +58,12 @@ function Registration() {
               placeholder="Введите пароль еще раз"
             />
             <div className="d-flex justify-content-lg-end">
-              <button onClick={checkForms} className="bord col-lg-3 col-12">
+              <button
+                onClick={() =>
+                  dispatch(registration(form.name, form.email, form.password))
+                }
+                className="bord col-lg-3 col-12"
+              >
                 Регистрация
               </button>
             </div>

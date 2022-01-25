@@ -1,62 +1,68 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AvatarEditor from "react-avatar-editor";
 
 import Slider from "@mui/material/Slider";
 
-import { setUserAvatarAction } from "../../store/actions/user";
+import { changeAvatar, setUserAvatarAction } from "../../store/actions/user";
 
 function UserPhoto() {
   const dispatch = useDispatch();
-  var editor = "";
-  const [picture, setPicture] = useState({
-    cropperOpen: false,
-    img: null,
-    zoom: 2,
-    croppedImg: "",
-  });
+  const { currentUser } = useSelector((state) => state.user);
+  const [file, setFile] = useState("");
 
-  const handleSlider = (event, value) => {
-    setPicture({
-      ...picture,
-      zoom: value,
-    });
-  };
+  // var editor = "";
+  // const [picture, setPicture] = useState({
+  //   cropperOpen: false,
+  //   img: null,
+  //   zoom: 2,
+  //   croppedImg: "",
+  // });
 
-  const handleCancel = () => {
-    setPicture({
-      ...picture,
-      cropperOpen: false,
-    });
-  };
+  // const handleSlider = (event, value) => {
+  //   setPicture({
+  //     ...picture,
+  //     zoom: value,
+  //   });
+  // };
 
-  const setEditorRef = (ed) => {
-    editor = ed;
-  };
+  // const handleCancel = () => {
+  //   setPicture({
+  //     ...picture,
+  //     cropperOpen: false,
+  //   });
+  // };
 
-  const handleSave = (e) => {
-    if (setEditorRef) {
-      const canvasScaled = editor.getImageScaledToCanvas();
-      const croppedImg = canvasScaled.toDataURL();
-      dispatch(setUserAvatarAction(croppedImg));
-      setPicture({
-        ...picture,
-        img: null,
-        cropperOpen: false,
-        croppedImg: croppedImg,
-      });
-    }
+  // const setEditorRef = (ed) => {
+  //   editor = ed;
+  // };
+
+  const handleSave = () => {
+    // if (setEditorRef) {
+    //   const canvasScaled = editor.getImageScaledToCanvas();
+    //   const croppedImg = canvasScaled.toDataURL();
+
+    dispatch(changeAvatar(currentUser.user._id, file));
+
+    //   setPicture({
+    //     ...picture,
+    //     img: null,
+    //     cropperOpen: false,
+    //     croppedImg: croppedImg,
+    //   });
+    // }
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files.length) {
-      let url = URL.createObjectURL(e.target.files[0]);
-      setPicture({
-        ...picture,
-        img: url,
-        cropperOpen: true,
-      });
-    }
+    setFile(e.target.files[0]);
+    // if (e.target.files.length) {
+    //   let url = URL.createObjectURL(e.target.files[0]);
+    //   setPicture({
+    //     ...picture,
+    //     img: url,
+    //     cropperOpen: true,
+    //   });
+    // }
   };
   return (
     <div className="col-sm-6 profile_form">
@@ -65,7 +71,7 @@ function UserPhoto() {
         <p>Здесь вы можете изменить вашу фотографию</p>
       </div>
       <div className="profile_form__inputs align-items-center justify-content-center">
-        {picture.cropperOpen ? (
+        {/* {picture.cropperOpen ? (
           <>
             <AvatarEditor
               ref={setEditorRef}
@@ -90,32 +96,32 @@ function UserPhoto() {
           </>
         ) : (
           ""
-        )}
+        )} */}
         <div className="input-group mb-3">
           <input
-            onChange={handleFileChange}
+            onChange={(e) => handleFileChange(e)}
             type="file"
             className="input form-control input-file"
             id="inputGroupFile01"
           />
         </div>
-        {picture.cropperOpen && (
-          <>
-            <button
-              onClick={handleSave}
-              className="btn bord profile_form__input-button"
-            >
-              Сохранить
-            </button>
+        {/* {picture.cropperOpen && ( */}
+        <>
+          <button
+            onClick={handleSave}
+            className="btn bord profile_form__input-button"
+          >
+            Сохранить
+          </button>
 
-            <button
+          {/* <button
               onClick={handleCancel}
               className="btn bord profile_form__input-button"
             >
               Отмена
-            </button>
-          </>
-        )}
+            </button> */}
+        </>
+        {/* )} */}
       </div>
     </div>
   );

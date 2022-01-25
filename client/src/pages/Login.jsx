@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { changeAuthAction } from "../store/actions/user";
+import { login } from "../store/actions/user";
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
-  const sendUserInfo = () => {
-    if (loginForm.email === "user" && loginForm.password === "user") {
-      dispatch(changeAuthAction());
-      navigate("/");
-    } else {
-      alert("Неверные данные");
-    }
-  };
+
   return (
     <div className="container ">
       <div className="row align-items-center">
@@ -45,7 +38,12 @@ function Login() {
           />
 
           <div className="d-flex justify-content-lg-end">
-            <button onClick={sendUserInfo} className="bord col-lg-2 col-12">
+            <button
+              onClick={() =>
+                dispatch(login(loginForm.email, loginForm.password))
+              }
+              className="bord col-lg-2 col-12"
+            >
               Вход
             </button>
           </div>

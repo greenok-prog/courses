@@ -1,20 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import confing from "../../config/default.json";
 import { Link } from "react-router-dom";
 function ProfileSidebar({ setselectedLink, selectedLink }) {
+  const serverApi = confing.API_SERVER;
+
   const sidebarLinks = [
     { link: "userInfo", name: "Профиль" },
     { link: "account", name: "Учетная запись" },
     { link: "photo", name: "Фотография" },
   ];
-  const { userAvatar } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="col-lg-4 profile_sidebar d-flex flex-column">
       <div className="profile_sidebar__info d-flex flex-column align-items-center justify-content-center">
         {/* ---------Аватар--------- */}
         <div className="avatar d-flex justify-content-center">
-          <img src={userAvatar} alt="" />
+          <img src={serverApi + currentUser.user.avatar} alt="" />
         </div>
         {/* ---------Аватар--------- */}
         <p className="profile_sidebar__username">Артем Фризен</p>

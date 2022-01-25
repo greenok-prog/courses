@@ -2,11 +2,9 @@ import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { changeAuthAction } from "../../store/actions/user";
+import { logoutAction } from "../../store/actions/user";
 function ProfileLinks() {
   const dispatch = useDispatch();
-  const params = useParams();
-  console.log(params);
 
   return (
     <div>
@@ -18,7 +16,7 @@ function ProfileLinks() {
         </li>
         <li className="nav-item">
           <NavDropdown title="Профиль" className="nav-dropdown">
-            <NavLink className="navbarDropdown-item" to="/profile/1">
+            <NavLink className="navbarDropdown-item" to="/profile">
               Мой профиль
             </NavLink>
 
@@ -30,7 +28,7 @@ function ProfileLinks() {
             <NavLink
               className="navbarDropdown-item"
               to="/"
-              onClick={() => dispatch(changeAuthAction())}
+              onClick={() => dispatch(logoutAction())}
             >
               Выход
             </NavLink>

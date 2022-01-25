@@ -12,7 +12,7 @@ function Header() {
       <Navbar className="navbar navbar-dark" expand="lg">
         <Container>
           <Navbar.Brand>
-            <Link className="navbar-brand" to="/">
+            <Link className="navbar-brand" to="/home">
               FrizCourses
             </Link>
           </Navbar.Brand>

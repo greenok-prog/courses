@@ -1,35 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+
 import Footer from "../components/Footer";
 import Recomendation from "../components/Home/Recomendation";
 import Search from "../components/Home/Search";
 import UnderHeader from "../components/Home/UnderHeader";
+import { getAllCards } from "../store/actions/cards";
 
 function Home(addToFavorite) {
-  const PopularCards = [
-    {
-      id: 1,
-      title: "Python",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 2.png",
-      type: "design",
-    },
-    {
-      id: 2,
-      title: "Ржавый скрипт",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 3.png",
-      type: "programming",
-    },
-    {
-      id: 3,
-      title: "Дизайн",
-      text: "Изучи Python 3 с нуля - один из самых популярных языков программирования в мире",
-      img: "image 3.png",
-      type: "design",
-    },
-  ];
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllCards());
+  }, []);
+  const { cards } = useSelector((state) => state.course);
   const trends = [
     { type: "design", name: "Дизайн" },
     { type: "programming", name: "Программирование" },
@@ -40,7 +24,7 @@ function Home(addToFavorite) {
       <Container>
         <UnderHeader />
       </Container>
-      <Recomendation addToFavorite={addToFavorite} cards={PopularCards} />
+      <Recomendation cards={cards} />
       <Search addToFavorite={addToFavorite} trends={trends} />
       <Footer />
     </div>
