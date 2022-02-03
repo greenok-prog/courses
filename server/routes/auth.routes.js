@@ -6,10 +6,16 @@ import jwt from 'jsonwebtoken'
 
 import authMiddleware from '../middleware/auth.middleware.js'
 import User from '../models/User.js'
+import Role from '../models/Role.js'
 
 const { check, validationResult } = validator
 const router = express.Router()
-
+const generateAccessToken = (id, roles) => {
+    const payload = {
+        id, roles
+    }
+    return jwt.sign(payload, config.get("secretKey"), { expiresIn: "1h" })
+}
 router.post('/registration',
     [
         check('email', 'Неверный email').isEmail(),
@@ -29,18 +35,21 @@ router.post('/registration',
                 return res.status(400).json({ message: 'Пользователь уже существует' })
             }
             const hashPassword = await bcrypt.hash(password, 7)
-            const user = new User({ username, email, password: hashPassword })
+            const role = await Role.findOne({ value: 'USER' })
+            const user = new User({ username, email, password: hashPassword, roles: [role.value] })
             await user.save()
-            const token = jwt.sign({ id: user.id }, config.get("secretKey"), { expiresIn: "1h" })
+            const token = generateAccessToken(user._id, user.roles)
+
             return res.json({
                 token, user: {
-                    _id: user.id,
+                    _id: user._id,
                     email: user.email,
                     username: user.username,
                     firstName: user.firstName,
                     secondName: user.secondName,
                     userLink: user.userLink,
                     githubLink: user.githubLink,
+                    roles: user.roles,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,
                     purchasedCourses: user.purchasedCourses
@@ -63,7 +72,7 @@ router.post('/login',
             if (!isPassValid) {
                 return res.status(400).json({ message: 'Неверный пароль' })
             }
-            const token = jwt.sign({ id: user.id }, config.get("secretKey"), { expiresIn: "1h" })
+            const token = generateAccessToken(user._id, user.roles)
             return res.json({
                 token, user: {
                     _id: user.id,
@@ -72,6 +81,7 @@ router.post('/login',
                     firstName: user.firstName,
                     secondName: user.secondName,
                     userLink: user.userLink,
+                    roles: user.roles,
                     githubLink: user.githubLink,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,
@@ -87,6 +97,7 @@ router.get('/auth', authMiddleware,
     async (req, res) => {
         try {
             const user = await User.findOne({ id: req.user.id })
+            console.log(user.roles);
             const token = jwt.sign({ id: user.id }, config.get("secretKey"), { expiresIn: "1h" })
             return res.json({
                 token, user: {
@@ -96,6 +107,7 @@ router.get('/auth', authMiddleware,
                     firstName: user.firstName,
                     secondName: user.secondName,
                     userLink: user.userLink,
+                    roles: user.roles,
                     githubLink: user.githubLink,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,

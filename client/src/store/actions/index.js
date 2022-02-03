@@ -2,10 +2,14 @@
 export const SET_MESSAGE = 'SET_MESSAGE'
 
 export const LOGOUT = 'LOGOUT'
+
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
 
 
+//admin actions
+export const GET_USERS = 'GET_USERS'
+export const DELETE_USER = 'DELETE_USER'
 // profile user
 export const CHANGE_PROFILE_INFO = 'CHANGE_PROFILE_INFO'
 export const CHANGE_EMAIL = 'CHANGE_EMAIL'
@@ -20,7 +24,9 @@ export const REMOVE_FROM_FAVORITE = 'REMOVE_FROM_FAVORITE'
 
 // course
 export const GET_ALL_CARDS = 'GET_ALL_CARDS'
-export const LOAD_FAVORITE = 'LOAD_FAVORITE'
+
+export const ADD_CARD = 'ADD_CARD'
 export const GET_CARD_PROMO = 'GET_CARD_PROMO'
 export const ADD_CARD_PROMO = 'ADD_CARD_PROMO'
+export const REMOVE_CARD = 'REMOVE_CARD'
 export const ADD_POPULAR = 'ADD_POPULAR'

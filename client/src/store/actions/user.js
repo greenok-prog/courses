@@ -1,4 +1,4 @@
-import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, LOGOUT, SET_CURRENT_USER, SET_MESSAGE, SET_USER_AVATAR } from ".";
+import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, DELETE_USER, GET_USERS, LOGOUT, SET_CURRENT_USER, SET_MESSAGE } from ".";
 import axios from 'axios'
 import config from '../../config/default.json'
 
@@ -40,12 +40,47 @@ export const changeAvatarAction = (payload) => ({
 })
 
 
+//admin actions
+export const getAllUsersAction = (payload) => ({
+    type: GET_USERS,
+    payload
+})
+export const deleteUserAction = (payload) => ({
+    type: DELETE_USER,
+    payload
+})
+
+
 
 // messages
 export const setMessageAction = (payload) => ({
     type: SET_MESSAGE,
     payload
 })
+//admin
+//getting all users to admin panel
+export const getUsers = () => {
+    return async dispatch => {
+        try {
+            const res = await axios.get(`${serverApi}api/user`)
+            dispatch(getAllUsersAction(res.data.users))
+        } catch (e) {
+            console.log(e.response.data.message);
+        }
+    }
+}
+//delete user
+export const deleteUser = (userId) => {
+    return async dispatch => {
+        try {
+            const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId } })
+            dispatch(deleteUserAction(userId))
+            dispatch(setMessageAction(res.data.message))
+        } catch (e) {
+            console.log(e.response.data.message);
+        }
+    }
+}
 
 
 
@@ -56,6 +91,7 @@ export const registration = (username, email, password) => {
         try {
             const res = await axios.post(`${serverApi}api/auth/registration`, { username, email, password })
             dispatch(setCurrentUserAction(res.data))
+            dispatch(setMessageAction(res.data.message))
             localStorage.setItem('token', res.data.token)
         } catch (e) {
             console.log(e.response.data.message);
@@ -80,7 +116,9 @@ export const login = (email, password) => {
 export const auth = () => {
     return async dispatch => {
         try {
-            const res = await axios.get(`${serverApi}api/auth/auth`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+            const token = localStorage.getItem('token')
+            console.log(token);
+            const res = await axios.get(`${serverApi}api/auth/auth`, { headers: { 'Authorization': `Bearer ${token}` } })
             dispatch(setCurrentUserAction(res.data))
             localStorage.setItem('token', res.data.token)
 
@@ -90,10 +128,10 @@ export const auth = () => {
     }
 }
 //change user data
-export const changeProfileInfo = (userId, firstName, secondName, userLink, githubLink) => {
+export const changeProfileInfo = (userId, username, firstName, secondName, userLink, githubLink) => {
     return async dispatch => {
         try {
-            const res = await axios.put(`${serverApi}api/user/profileInfo`, { userId, firstName, secondName, userLink, githubLink })
+            const res = await axios.put(`${serverApi}api/user/profileInfo`, { userId, username, firstName, secondName, userLink, githubLink })
             dispatch(changeProfileInfoAction(res.data.currentUser))
         } catch (e) {
 
@@ -108,7 +146,7 @@ export const changeEmail = (userId, email, password) => {
             dispatch(changeEmailAction(res.data.email))
 
         } catch (e) {
-            dispatch(setMessageAction(e.response))
+            dispatch(setMessageAction(e.response.data.message))
         }
     }
 }
@@ -116,9 +154,9 @@ export const changePassword = (userId, oldPas, newPas) => {
     return async dispatch => {
         try {
             const res = await axios.put(`${serverApi}api/user/password`, { userId, oldPas, newPas })
-
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-
+            alert(e)
         }
     }
 }

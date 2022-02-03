@@ -18,9 +18,8 @@ function CourseInfo() {
     dispatch(getCardPromo(params.id));
 
     const card = cards.find((el) => el._id === params.id);
-    console.log(card);
     setfirst(card?.image);
-  }, [dispatch, cards]);
+  }, [cards, dispatch, params.id]);
 
   const [errorMessage, setErrorMessage] = useState(false);
 

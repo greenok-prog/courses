@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AvatarEditor from "react-avatar-editor";
 
-import Slider from "@mui/material/Slider";
-
-import { changeAvatar, setUserAvatarAction } from "../../store/actions/user";
+import { changeAvatar } from "../../store/actions/user";
 
 function UserPhoto() {
   const dispatch = useDispatch();

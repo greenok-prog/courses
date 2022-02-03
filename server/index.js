@@ -15,11 +15,11 @@ import cardRouter from './routes/card.routes.js'
 const app = express()
 const PORT = config.get("serverPort")
 
-app.use(bodyParser.json({ extended: true }))
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json({ extended: true }))
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cors())
-app.use(corsMiddlware)
+// app.use(corsMiddlware)
 app.use(express.json())
 app.use(express.static('static'))
 

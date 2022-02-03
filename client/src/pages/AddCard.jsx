@@ -1,9 +1,22 @@
-import axios from "axios";
 import React from "react";
 
 import { useState } from "react";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addCard } from "../store/actions/cards";
 
 function AddCard() {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const trends = [
+    { type: "design", name: "Дизайн" },
+    { type: "programming", name: "Программирование" },
+    { type: "marketing", name: "Маркетинг" },
+  ];
+  const [selectedType, setSelectedType] = useState(trends[0]);
   const [selectedFile, setSelectedFile] = useState();
   const [form, setForm] = useState({
     title: "",
@@ -13,21 +26,11 @@ function AddCard() {
     setSelectedFile(event.target.files[0]);
   };
   const upload = async () => {
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("text", form.text);
-    formData.append("file", selectedFile);
-    const res = await axios.post(
-      "http://localhost:5000/api/cards/add",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log(res);
+    dispatch(
+      addCard(form.title, form.text, selectedType.type, selectedFile)
+    ).then((res) => navigate(`/card/${res.card._id}/addCardPromo`));
   };
+
   return (
     <div className="forms col-8 d-flex flex-column justify-content-center">
       <input
@@ -44,6 +47,13 @@ function AddCard() {
         type="text"
         placeholder="text"
       />
+      <DropdownButton title={selectedType.name}>
+        {trends.map((el) => (
+          <Dropdown.Item onClick={() => setSelectedType(el)}>
+            {el.name}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
       <label form="card_file">Фото для карточки</label>
       <input
         className="input form-control input-file mt-2"

@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
 import CardList from "../CardList";
 
 function Recomendation({ favoriteCards, cards }) {

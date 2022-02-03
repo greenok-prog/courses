@@ -5,7 +5,7 @@ import { changeEmail } from "../../store/actions/user";
 
 function ChangeEmailModal({ value, isLink }) {
   const dispatch = useDispatch();
-  const { currentUser, message } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
@@ -23,7 +23,6 @@ function ChangeEmailModal({ value, isLink }) {
   const change = () => {
     dispatch(changeEmail(currentUser.user._id, form.email, form.password));
     setShow(false);
-    alert(message);
   };
 
   return (

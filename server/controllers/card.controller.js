@@ -1,11 +1,12 @@
-// import fs from 'fs'
-// import config from 'config'
+import fs from 'fs'
+import config from 'config'
 // import { v4 } from 'uuid';
 
 
 import Card from "../models/Card.js"
 import User from "../models/User.js"
 import CardPromo from "../models/CardPromo.js"
+
 
 
 export const addCard = async (req, res) => {
@@ -16,10 +17,23 @@ export const addCard = async (req, res) => {
         const card = await new Card({
             title: cardData.title,
             text: cardData.text, image: file.filename,
-            type: cardData.type, popular: cardData.popular
+            type: cardData.type, popular: 0
         })
         await card.save()
         return res.status(201).json({ card })
+    } catch (e) {
+        return res.json({ message: "Чего то ты не добавил" })
+    }
+}
+export const removeCard = async (req, res) => {
+    try {
+        const { id } = req.body
+        await CardPromo.findOneAndDelete({ card: id })
+        const card = await Card.findOneAndDelete({ _id: id })
+
+
+        fs.unlinkSync(config.get('staticPath') + '\\' + card.image)
+        return res.status(201).json({ message: 'Карточка была удалена' })
     } catch (e) {
         return res.json({ message: "Чего то ты не добавил" })
     }

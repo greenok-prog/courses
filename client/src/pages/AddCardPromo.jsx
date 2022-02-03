@@ -1,7 +1,7 @@
-import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addCardPromo } from "../store/actions/cards";
@@ -10,20 +10,20 @@ function AddCardPromo() {
   const params = useParams();
   const dispatch = useDispatch();
   const { cards } = useSelector((state) => state.course);
-
+  const card = cards?.find((card) => card._id === params.id);
   const [form, setForm] = useState({
     title: "",
     subtitle: "",
     price: "",
     willLearn: [],
-    image: "",
+    image: card.image,
     description: "",
     willLearnStr: "",
   });
   const [will, setWill] = useState([]);
-  console.log(will);
-  const card = cards.find((card) => card._id === params.id);
+
   const addToWillLearn = () => {
+    setWill([...will, form.willLearnStr]);
     setForm({ ...form, willLearnStr: "" });
   };
   return (
@@ -76,10 +76,7 @@ function AddCardPromo() {
           type="text"
           placeholder="WillLearn"
         />
-        <button
-          onClick={() => setWill([...will, form.willLearnStr])}
-          className="btn"
-        >
+        <button onClick={addToWillLearn} className="btn">
           Добавить
         </button>
       </div>
@@ -90,7 +87,7 @@ function AddCardPromo() {
           dispatch(
             addCardPromo(params.id, {
               ...form,
-              image: card.image,
+
               willLearn: will,
             })
           )

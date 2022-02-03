@@ -1,17 +1,6 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Container } from "react-bootstrap";
-import { SearchForm, TrendList } from ".";
-import { CardList } from "..";
-import Loader from "../UI/Loader";
+import React from "react";
 
-function Search() {
-  // const dispatch = useDispatch();
-  const trends = [
-    { type: "design", name: "Дизайн" },
-    { type: "programming", name: "Программирование" },
-    { type: "marketing", name: "Маркетинг" },
-  ];
+function Courses() {
   const { cards } = useSelector((state) => state.course);
   const [searchVal, setsearchVal] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
@@ -61,5 +50,4 @@ function Search() {
     </Container>
   );
 }
-
-export default Search;
+export default Courses;

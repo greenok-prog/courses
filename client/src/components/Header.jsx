@@ -7,6 +7,7 @@ import ProfileLinks from "./Navbar/ProfileLinks";
 
 function Header() {
   const { isAuth } = useSelector((state) => state.user);
+
   return (
     <div>
       <Navbar className="navbar navbar-dark" expand="lg">
@@ -19,6 +20,7 @@ function Header() {
           <Navbar.Toggle aria-controls="navbarSupportedContent" />
           <Navbar.Collapse id="navbarSupportedContent">
             <Nav className="me-auto mb-lg-0"></Nav>
+
             {!isAuth ? <AuthorizationLinks /> : <ProfileLinks />}
           </Navbar.Collapse>
         </Container>

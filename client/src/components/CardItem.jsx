@@ -1,37 +1,19 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+
 import { Link } from "react-router-dom";
-// import {
-//   addCardToFavorite,
-//   removeFromFavoriteAction,
-// } from "../store/actions/cards";
+
 import ModalMessage from "./Modal/ModalMessage";
 import config from "../config/default.json";
-// import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCard } from "../store/actions/cards";
 
 function CardItem(props) {
   const [errorMessage, setErrorMessage] = useState(false);
   const dispatch = useDispatch();
   const serverApi = config.API_SERVER;
 
-  // const { currentUser, isAuth } = useSelector((state) => state.user);
-  // const { favorite } = useSelector((state) => state.course);
-  // useEffect(() => {
-  //   const favoriteCards = currentUser.user.favoriteCourses.filter(
-  //     (el) => el.id === props.card.id
-  //   );
-  //   console.log(favoriteCards);
-  // }, []);
-
-  // const removeCardFromFav = async () => {
-  //   const res = await axios.post(serverApi + "api/cards/removeFromFavorite", {
-  //     userId: currentUser.user.id,
-  //     card: props.card,
-  //   });
-  //   dispatch(removeFromFavoriteAction(props.card));
-  //   console.log(res);
-  // };
-  // const fav = favorite.filter((el) => el._id === props.card._id);
+  const { currentUser } = useSelector((state) => state.user);
+  const isAdmin = currentUser?.user?.roles[0] === "ADMIN";
 
   return (
     <div className="col-lg-4 col-sm-12 card">
@@ -45,7 +27,7 @@ function CardItem(props) {
           <h5 className="card-title">{props.card.title}</h5>
           <small className="card-text">{props.card.text}</small>
         </div>
-        <div className="more container d-flex justify-content-between">
+        <div className="more container d-flex justify-content-between align-items-center ">
           <ModalMessage
             title="Ошибка"
             message="Сначала зайдите в аккаунт"
@@ -80,12 +62,21 @@ function CardItem(props) {
               )}
             </>
           )} */}
-          <div className="more-link">
-            <Link to={`/card/${props.card._id}`} className="more-text">
+
+          <div className="more-link d-flex ">
+            <Link to={`/card/${props.card._id}`} className="more-text mr-5">
               Подробнее
               <img className="arrow" src={"/images/arrow.png"} alt=""></img>
             </Link>
           </div>
+          {isAdmin && (
+            <button
+              onClick={() => dispatch(removeCard(props.card._id))}
+              className="btn more-text"
+            >
+              Удалить
+            </button>
+          )}
         </div>
       </>
     </div>

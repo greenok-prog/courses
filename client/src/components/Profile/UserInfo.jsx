@@ -6,6 +6,7 @@ import { changeProfileInfo } from "../../store/actions/user";
 function UserInfo() {
   const { currentUser } = useSelector((state) => state.user);
   const [userForm, setUserForm] = useState({
+    username: currentUser?.user?.username,
     firstName: currentUser?.user?.firstName,
     secondName: currentUser?.user?.secondName,
     userLink: currentUser?.user?.userLink,
@@ -22,6 +23,15 @@ function UserInfo() {
       <div className="profile_form__inputs">
         <div className="profile_form__input d-flex flex-column">
           <p className="profile_form-title">Основная информация</p>
+          <input
+            className="input"
+            onChange={(e) =>
+              setUserForm({ ...userForm, username: e.target.value })
+            }
+            value={userForm.username}
+            placeholder="Логин"
+            type="text"
+          />
           <input
             className="input"
             onChange={(e) =>
@@ -74,6 +84,7 @@ function UserInfo() {
               dispatch(
                 changeProfileInfo(
                   currentUser.user._id,
+                  userForm.username,
                   userForm.firstName,
                   userForm.secondName,
                   userForm.userLink,
