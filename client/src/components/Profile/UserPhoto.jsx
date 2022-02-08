@@ -1,65 +1,28 @@
 import React, { useState } from "react";
+import { Modal, Toast } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { changeAvatar } from "../../store/actions/user";
+import { changeAvatar, setMessageAction } from "../../store/actions/user";
+import MyToast from "../UI/MyToast";
 
 function UserPhoto() {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, message } = useSelector((state) => state.user);
   const [file, setFile] = useState("");
-
-  // var editor = "";
-  // const [picture, setPicture] = useState({
-  //   cropperOpen: false,
-  //   img: null,
-  //   zoom: 2,
-  //   croppedImg: "",
-  // });
-
-  // const handleSlider = (event, value) => {
-  //   setPicture({
-  //     ...picture,
-  //     zoom: value,
-  //   });
-  // };
-
-  // const handleCancel = () => {
-  //   setPicture({
-  //     ...picture,
-  //     cropperOpen: false,
-  //   });
-  // };
-
-  // const setEditorRef = (ed) => {
-  //   editor = ed;
-  // };
+  const [isError, setIsError] = useState(false);
 
   const handleSave = () => {
-    // if (setEditorRef) {
-    //   const canvasScaled = editor.getImageScaledToCanvas();
-    //   const croppedImg = canvasScaled.toDataURL();
-
-    dispatch(changeAvatar(currentUser.user._id, file));
-
-    //   setPicture({
-    //     ...picture,
-    //     img: null,
-    //     cropperOpen: false,
-    //     croppedImg: croppedImg,
-    //   });
-    // }
+    if (file !== "") {
+      dispatch(changeAvatar(currentUser.user._id, file));
+    } else {
+      dispatch(setMessageAction("Выберите фото"));
+      setIsError(true);
+      // dispatch(setMessageAction(""));
+    }
   };
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    // if (e.target.files.length) {
-    //   let url = URL.createObjectURL(e.target.files[0]);
-    //   setPicture({
-    //     ...picture,
-    //     img: url,
-    //     cropperOpen: true,
-    //   });
-    // }
   };
   return (
     <div className="col-sm-6 profile_form">
@@ -68,41 +31,17 @@ function UserPhoto() {
         <p>Здесь вы можете изменить вашу фотографию</p>
       </div>
       <div className="profile_form__inputs align-items-center justify-content-center">
-        {/* {picture.cropperOpen ? (
-          <>
-            <AvatarEditor
-              ref={setEditorRef}
-              image={picture.img}
-              value={picture.zoom}
-              height={200}
-              border={20}
-              width={200}
-              color={[255, 255, 255, 0.2]}
-              scale={picture.zoom}
-              rotate={0}
-              className="photo_preview"
-            />
-            <Slider
-              aria-label="raceSlider"
-              value={picture.zoom}
-              min={1}
-              max={10}
-              step={0.1}
-              onChange={handleSlider}
-            ></Slider>
-          </>
-        ) : (
-          ""
-        )} */}
+        {isError && <p className="text-danger">{message}</p>}
         <div className="input-group mb-3">
           <input
             onChange={(e) => handleFileChange(e)}
             type="file"
+            accept="image/png, image/gif, image/jpeg"
             className="input form-control input-file"
             id="inputGroupFile01"
           />
         </div>
-        {/* {picture.cropperOpen && ( */}
+
         <>
           <button
             onClick={handleSave}
@@ -110,15 +49,7 @@ function UserPhoto() {
           >
             Сохранить
           </button>
-
-          {/* <button
-              onClick={handleCancel}
-              className="btn bord profile_form__input-button"
-            >
-              Отмена
-            </button> */}
         </>
-        {/* )} */}
       </div>
     </div>
   );

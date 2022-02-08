@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 
-function MyToast() {
-  // const { isMessage } = useSelector((state) => state.user);
-  const [show, setShow] = useState(false);
+function MyToast({ message }) {
+  const [show, setShow] = useState(true);
 
   return (
     <ToastContainer position="top-end">
@@ -17,7 +16,7 @@ function MyToast() {
         <Toast.Header>
           <strong className="me-auto ">FizCourses</strong>
         </Toast.Header>
-        <Toast.Body>{"message"}</Toast.Body>
+        <Toast.Body>{message}</Toast.Body>
       </Toast>
     </ToastContainer>
   );

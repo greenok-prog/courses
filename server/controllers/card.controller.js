@@ -31,11 +31,14 @@ export const removeCard = async (req, res) => {
         await CardPromo.findOneAndDelete({ card: id })
         const card = await Card.findOneAndDelete({ _id: id })
 
+        if (card.image) {
+            fs.unlinkSync(config.get('staticPath') + '\\' + card.image)
+        }
 
-        fs.unlinkSync(config.get('staticPath') + '\\' + card.image)
         return res.status(201).json({ message: 'Карточка была удалена' })
     } catch (e) {
-        return res.json({ message: "Чего то ты не добавил" })
+        console.log(e);
+        return res.json({ e })
     }
 }
 export const getCards = async (req, res) => {

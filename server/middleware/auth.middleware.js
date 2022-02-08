@@ -9,12 +9,11 @@ export default (req, res, next) => {
     }
 
     try {
-        console.log(req.headers.authorization);
         const token = req.headers.authorization.split(' ')[1]
         if (!token) {
             return res.status(401).json({ message: 'Auth error' })
         }
-        const decoded = jwt.verify(token, confing.get('secretKey'))
+        const decoded = jwt.verify(token, confing.get('secretKey'), { clockTimestamp: new Date().getTime() })
         req.user = decoded
         next()
     } catch (e) {

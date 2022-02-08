@@ -25,12 +25,11 @@ function AddCard() {
   const selectFile = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const upload = async () => {
+  const upload = () => {
     dispatch(
       addCard(form.title, form.text, selectedType.type, selectedFile)
     ).then((res) => navigate(`/card/${res.card._id}/addCardPromo`));
   };
-
   return (
     <div className="forms col-8 d-flex flex-column justify-content-center">
       <input

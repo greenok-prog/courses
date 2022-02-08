@@ -29,7 +29,6 @@ function App() {
 
   }, [dispatch])
   const isAdmin = currentUser?.user?.roles?.includes('ADMIN')
-  console.log(isAdmin);
 
 
   return (

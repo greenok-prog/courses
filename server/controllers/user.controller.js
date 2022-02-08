@@ -46,10 +46,10 @@ export const changeEmail = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(data.userId, { email: data.email })
-        currentUser = await User.findOne({ id: data.userId })
+        currentUser = await User.findOne({ _id: data.userId })
         res.json({ message: "Данные обновлены", email: currentUser.email })
     } catch (e) {
-        res.json({ message: "Произошла ошибка", e: e })
+        res.status(400).json({ message: "Произошла ошибка" })
     }
 }
 export const changeProfileInfo = async (req, res) => {
@@ -60,7 +60,7 @@ export const changeProfileInfo = async (req, res) => {
         const currentUser = await User.findOne({ _id: data.userId })
         res.json({ currentUser })
     } catch (e) {
-        console.log(e);
+        res.status(400).json({ message: "Произошла ошибка" })
     }
 }
 export const changePassword = async (req, res) => {
@@ -85,7 +85,10 @@ export const changeAvatar = async (req, res) => {
         const file = req.file
         const data = req.body
         const user = await User.findById(data.userId)
-        fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+
+        if (user.avatar !== undefined) {
+            fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+        }
 
 
         await User.findByIdAndUpdate(data.userId, { avatar: file.filename })
@@ -94,7 +97,8 @@ export const changeAvatar = async (req, res) => {
 
 
     } catch (e) {
-        console.log(e);
+
+        res.status(401).json({ message: 'Не удалось изменить фото' })
     }
 }
 

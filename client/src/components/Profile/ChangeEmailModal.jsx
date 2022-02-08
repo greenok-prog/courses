@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { changeEmail } from "../../store/actions/user";
+import ErrorMessage from "../UI/ErrorMessage";
 
 function ChangeEmailModal({ value, isLink }) {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
-
+  const { currentUser, message } = useSelector((state) => state.user);
+  const [error, seterror] = useState(false);
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -21,8 +22,19 @@ function ChangeEmailModal({ value, isLink }) {
     setForm({ ...form, email: "", password: "" });
   };
   const change = () => {
-    dispatch(changeEmail(currentUser.user._id, form.email, form.password));
-    setShow(false);
+    dispatch(changeEmail(currentUser.user._id, form.email, form.password)).then(
+      (res) => {
+        if (res.status === 400) {
+          seterror(true);
+          setTimeout(() => {
+            seterror(false);
+          }, 3000);
+        } else {
+          alert("Данные обновлены");
+          setShow(false);
+        }
+      }
+    );
   };
 
   return (
@@ -33,10 +45,11 @@ function ChangeEmailModal({ value, isLink }) {
 
       <Modal size="lg" centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Поможем в выборе!</Modal.Title>
+          <Modal.Title>Изменение email</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column">
+            {error && <ErrorMessage message={message} />}
             <input
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}

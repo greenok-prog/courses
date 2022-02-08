@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import { SearchForm, TrendList } from ".";
 import { CardList } from "..";
 import Loader from "../UI/Loader";
+import CardPreloader from "../UI/CardPreloader";
 
 function Search() {
   // const dispatch = useDispatch();
@@ -56,7 +57,11 @@ function Search() {
           </h3>
         )
       ) : (
-        <Loader />
+        <div className="d-flex row">
+          {[...Array(3).keys()].map(() => (
+            <CardPreloader />
+          ))}
+        </div>
       )}
     </Container>
   );

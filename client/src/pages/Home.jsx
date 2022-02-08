@@ -21,7 +21,7 @@ function Home(addToFavorite) {
     { type: "marketing", name: "Маркетинг" },
   ];
   return (
-    <div>
+    <div className="home_page">
       <Container>
         <UnderHeader />
       </Container>

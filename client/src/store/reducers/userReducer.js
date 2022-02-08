@@ -5,7 +5,7 @@ const initialState = {
     currentUser: {},
     users: [],
     message: "",
-    isMessage: false,
+
 }
 
 

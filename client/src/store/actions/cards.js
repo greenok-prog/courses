@@ -45,6 +45,8 @@ export const getAllCards = () => {
 export const addCard = (title, text, type, image) => {
     return async dispatch => {
         try {
+            const token = localStorage.getItem('token')
+            // const authHeader = { 'Authorization': `Bearer ${token}` }
             const formData = new FormData();
             formData.append("title", title);
             formData.append("text", text);
@@ -56,10 +58,12 @@ export const addCard = (title, text, type, image) => {
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        'Authorization': `Bearer ${token}`
                     },
                 }
             );
             dispatch(addCardAction(res.data.card))
+            console.log(res.data);
             return res.data
         } catch (e) {
             console.log(e);
@@ -68,22 +72,22 @@ export const addCard = (title, text, type, image) => {
 }
 
 
-export const addCardToFavorite = (userId, card) => {
-    return async dispatch => {
-        try {
+// export const addCardToFavorite = (userId, card) => {
+//     return async dispatch => {
+//         try {
 
-            const res = await axios.post(serverApi + "api/cards/addToFavorite", {
-                userId: userId,
-                card: card
-            });
-            dispatch(addToFavoriteAction(card))
+//             const res = await axios.post(serverApi + "api/cards/addToFavorite", {
+//                 userId: userId,
+//                 card: card
+//             });
+//             dispatch(addToFavoriteAction(card))
 
-            console.log('Карточка была добавлена:', res);
-        } catch (e) {
-            console.log(e)
-        }
-    }
-}
+//             console.log('Карточка была добавлена:', res);
+//         } catch (e) {
+//             console.log(e)
+//         }
+//     }
+// }
 
 export const getCardPromo = (cardId) => {
     return async dispatch => {
@@ -99,7 +103,12 @@ export const getCardPromo = (cardId) => {
 export const addCardPromo = (cardId, promo) => {
     return async dispatch => {
         try {
-            const res = await axios.post(serverApi + "api/cards/" + cardId + "/addPromo", { id: cardId, promo: promo })
+            const token = localStorage.getItem('token')
+            const res = await axios.post(serverApi + "api/cards/" + cardId + "/addPromo", { id: cardId, promo: promo }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             dispatch(setMessageAction(res.data.message))
         } catch (e) {
             console.log(e);
@@ -109,7 +118,8 @@ export const addCardPromo = (cardId, promo) => {
 export const removeCard = (cardId) => {
     return async dispatch => {
         try {
-            const res = await axios.delete(serverApi + "api/cards/" + cardId, { data: { id: cardId } })
+            const token = localStorage.getItem('token')
+            const res = await axios.delete(serverApi + "api/cards/" + cardId, { headers: { Authorization: `Bearer ${token}` }, data: { id: cardId } })
             dispatch(removeCardAction(cardId))
             console.log(res.data.message);
         } catch (e) {

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../store/actions/user";
+import ErrorMessage from "../UI/ErrorMessage";
 import ChangeEmailModal from "./ChangeEmailModal";
 
 function Account() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, message } = useSelector((state) => state.user);
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const [passwordForm, setPasswordForm] = useState({
     oldPass: "",
@@ -19,7 +21,17 @@ function Account() {
           passwordForm.oldPass,
           passwordForm.newPass
         )
-      );
+      ).then((res) => {
+        if (res.status === 400) {
+          setIsError(true);
+          setTimeout(() => {
+            setIsError(false);
+          }, 3000);
+        } else {
+          setPasswordForm({ oldPass: "", newPass: "", passRepeat: "" });
+          alert("Данные обновлены");
+        }
+      });
     } else {
       alert("Пароли не совпадают");
     }
@@ -55,6 +67,7 @@ function Account() {
 
         <div className="profile_form__input d-flex flex-column">
           <p className="profile_form-title ">Пароль</p>
+          {isError && <ErrorMessage message={message} />}
           <input
             className="input"
             placeholder="Старый пароль"

@@ -14,7 +14,7 @@ const generateAccessToken = (id, roles) => {
     const payload = {
         id, roles
     }
-    return jwt.sign(payload, config.get("secretKey"), { expiresIn: "1h" })
+    return jwt.sign(payload, config.get("secretKey"), { expiresIn: "24h" })
 }
 router.post('/registration',
     [

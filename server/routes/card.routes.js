@@ -1,6 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import authMiddleware from '../middleware/auth.middleware.js'
+import rolesMiddleware from '../middleware/roles.middleware.js'
 import { addCard, addCardPromo, getCardPromo, getCards, removeCard } from '../controllers/card.controller.js'
 
 
@@ -16,9 +17,9 @@ const upload = multer({
         }
     })
 })
-router.post('/add', upload.single('file'), addCard)
+router.post('/add', rolesMiddleware(['ADMIN']), upload.single('file'), addCard)
 router.get('/', getCards)
-router.delete('/:id', removeCard)
+router.delete('/:id', rolesMiddleware(['ADMIN']), removeCard)
 router.post('/:id', getCardPromo)
 router.post('/:id/addPromo', addCardPromo)
 

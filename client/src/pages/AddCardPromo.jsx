@@ -3,14 +3,16 @@ import { useEffect } from "react";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addCardPromo } from "../store/actions/cards";
 
 function AddCardPromo() {
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { cards } = useSelector((state) => state.course);
   const card = cards?.find((card) => card._id === params.id);
+
   const [form, setForm] = useState({
     title: "",
     subtitle: "",
@@ -21,7 +23,15 @@ function AddCardPromo() {
     willLearnStr: "",
   });
   const [will, setWill] = useState([]);
+  const add = () => {
+    dispatch(
+      addCardPromo(params.id, {
+        ...form,
 
+        willLearn: will,
+      })
+    ).then((res) => navigate("/admin"));
+  };
   const addToWillLearn = () => {
     setWill([...will, form.willLearnStr]);
     setForm({ ...form, willLearnStr: "" });
@@ -81,18 +91,7 @@ function AddCardPromo() {
         </button>
       </div>
 
-      <button
-        className="mt-4"
-        onClick={() =>
-          dispatch(
-            addCardPromo(params.id, {
-              ...form,
-
-              willLearn: will,
-            })
-          )
-        }
-      >
+      <button className="mt-4" onClick={add}>
         Отправить
       </button>
     </div>
