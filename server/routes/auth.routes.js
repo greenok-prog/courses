@@ -19,11 +19,13 @@ const generateAccessToken = (id, roles) => {
 router.post('/registration',
     [
         check('email', 'Неверный email').isEmail(),
+        check('username', 'Отсутствует username').isLength({ min: 3 }),
         check('password', 'Неверный пароль').isLength({ min: 3, max: 12 })
     ],
     async (req, res) => {
 
         const errors = validationResult(req)
+        console.log(errors);
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: "Неверные данные", errors })
         }
@@ -66,7 +68,7 @@ router.post('/login',
             const { email, password } = req.body
             const user = await User.findOne({ email })
             if (!user) {
-                return res.status(404).json({ message: 'Пользователь не найден' })
+                return res.status(400).json({ message: 'Пользователь не найден' })
             }
             const isPassValid = bcrypt.compareSync(password, user.password)
             if (!isPassValid) {

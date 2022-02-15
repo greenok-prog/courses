@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changePassword } from "../../store/actions/user";
-import ErrorMessage from "../UI/ErrorMessage";
+import {
+  changePassword,
+  setErrorAction,
+  setMessageAction,
+} from "../../store/actions/user";
+import ErrorToast from "../UI/ErrorToast";
+
+import MyToast from "../UI/MyToast";
 import ChangeEmailModal from "./ChangeEmailModal";
 
 function Account() {
-  const { currentUser, message } = useSelector((state) => state.user);
-  const [isError, setIsError] = useState(false);
+  const { currentUser, isError, isMessage } = useSelector(
+    (state) => state.user
+  );
+
   const dispatch = useDispatch();
   const [passwordForm, setPasswordForm] = useState({
     oldPass: "",
@@ -21,24 +29,17 @@ function Account() {
           passwordForm.oldPass,
           passwordForm.newPass
         )
-      ).then((res) => {
-        if (res.status === 400) {
-          setIsError(true);
-          setTimeout(() => {
-            setIsError(false);
-          }, 3000);
-        } else {
-          setPasswordForm({ oldPass: "", newPass: "", passRepeat: "" });
-          alert("Данные обновлены");
-        }
-      });
+      );
+      setPasswordForm({ oldPass: "", newPass: "", passRepeat: "" });
     } else {
-      alert("Пароли не совпадают");
+      dispatch(setErrorAction("Пароли не совпадают"));
     }
   };
-
   return (
     <div className="col-sm-6 profile_form">
+      {isError && <ErrorToast />}
+      {isMessage && <MyToast />}
+
       <div className="profile_form__info text-lg-center text-center">
         <h3>Учетная запись</h3>
         <p>Здесь вы можете изменить настройки учетной записи и пароль</p>
@@ -67,7 +68,7 @@ function Account() {
 
         <div className="profile_form__input d-flex flex-column">
           <p className="profile_form-title ">Пароль</p>
-          {isError && <ErrorMessage message={message} />}
+
           <input
             className="input"
             placeholder="Старый пароль"

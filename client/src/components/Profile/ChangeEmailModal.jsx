@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEmail } from "../../store/actions/user";
+import { changeEmail, resetErrorAction } from "../../store/actions/user";
 import ErrorMessage from "../UI/ErrorMessage";
+import ErrorToast from "../UI/ErrorToast";
 
 function ChangeEmailModal({ value, isLink }) {
   const dispatch = useDispatch();
-  const { currentUser, message } = useSelector((state) => state.user);
-  const [error, seterror] = useState(false);
+  const { currentUser, error, isError } = useSelector((state) => state.user);
+
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -22,19 +23,7 @@ function ChangeEmailModal({ value, isLink }) {
     setForm({ ...form, email: "", password: "" });
   };
   const change = () => {
-    dispatch(changeEmail(currentUser.user._id, form.email, form.password)).then(
-      (res) => {
-        if (res.status === 400) {
-          seterror(true);
-          setTimeout(() => {
-            seterror(false);
-          }, 3000);
-        } else {
-          alert("Данные обновлены");
-          setShow(false);
-        }
-      }
-    );
+    dispatch(changeEmail(currentUser.user._id, form.email, form.password));
   };
 
   return (
@@ -49,7 +38,7 @@ function ChangeEmailModal({ value, isLink }) {
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column">
-            {error && <ErrorMessage message={message} />}
+            {isError && <p className="text-danger">{error}</p>}
             <input
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}

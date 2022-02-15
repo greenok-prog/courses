@@ -1,4 +1,4 @@
-import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, DELETE_USER, GET_USERS, LOGOUT, SET_CURRENT_USER, SET_MESSAGE } from ".";
+import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE } from ".";
 import axios from 'axios'
 import config from '../../config/default.json'
 
@@ -57,10 +57,23 @@ export const setMessageAction = (payload) => ({
     type: SET_MESSAGE,
     payload
 })
+export const setErrorAction = (payload) => ({
+    type: SET_ERROR,
+    payload
+})
+export const resetMessageAction = (payload) => ({
+    type: RESET_MESSAGE,
+    payload
+})
+export const resetErrorAction = (payload) => ({
+    type: RESET_ERROR,
+    payload
+})
 //admin
 //getting all users to admin panel
 let token = localStorage.getItem('token')
-let authHeader = { 'Authorization': `Bearer ${token}` }
+let authHeader = { Authorization: `Bearer ${token}` }
+
 export const getUsers = () => {
     return async dispatch => {
         try {
@@ -78,7 +91,6 @@ export const deleteUser = (userId) => {
         try {
             const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId } }, { headers: authHeader })
             dispatch(deleteUserAction(userId))
-            dispatch(setMessageAction(res.data.message))
         } catch (e) {
             console.log(e.response.data.message);
         }
@@ -94,10 +106,12 @@ export const registration = (username, email, password) => {
         try {
             const res = await axios.post(`${serverApi}api/auth/registration`, { username, email, password })
             dispatch(setCurrentUserAction(res.data))
-            dispatch(setMessageAction(res.data.message))
             localStorage.setItem('token', res.data.token)
+            return res.data
         } catch (e) {
-            console.log(e.response.data.message);
+            dispatch(setErrorAction(e.response.data.message))
+            return e.response.data
+
         }
     }
 }
@@ -110,7 +124,7 @@ export const login = (email, password) => {
             localStorage.setItem('token', res.data.token)
 
         } catch (e) {
-            console.log(e.response.data.message);
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
@@ -133,23 +147,29 @@ export const auth = () => {
 export const changeProfileInfo = (userId, username, firstName, secondName, userLink, githubLink) => {
     return async dispatch => {
         try {
-
-            const res = await axios.put(`${serverApi}api/user/profileInfo`, { userId, username, firstName, secondName, userLink, githubLink }, { headers: authHeader })
+            let token = localStorage.getItem('token')
+            const res = await axios.put(`${serverApi}api/user/profileInfo`, { userId, username, firstName, secondName, userLink, githubLink }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             dispatch(changeProfileInfoAction(res.data.currentUser))
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
 export const changeEmail = (userId, email, password) => {
     return async dispatch => {
         try {
+            let token = localStorage.getItem('token')
+            let authHeader = { 'Authorization': `Bearer ${token}` }
             const res = await axios.put(`${serverApi}api/user/email`, { userId, email, password }, { headers: authHeader })
-            dispatch(setMessageAction(res.data.message))
             dispatch(changeEmailAction(res.data.email))
-            return res.data
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-            dispatch(setMessageAction(e.response.data.message))
+            dispatch(setErrorAction(e.response.data.message))
             return e.response
         }
     }
@@ -157,13 +177,12 @@ export const changeEmail = (userId, email, password) => {
 export const changePassword = (userId, oldPas, newPas) => {
     return async dispatch => {
         try {
-            const res = await axios.put(`${serverApi}api/user/password`, { userId, oldPas, newPas }, { headers: authHeader })
-            dispatch(setMessageAction(res.data.message))
 
-            return res.data
+            const res = await axios.put(`${serverApi}api/user/password`, { userId, oldPas, newPas }, { headers: authHeader })
+
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-            dispatch(setMessageAction(e.response.data.message))
-            return e.response
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
@@ -177,14 +196,14 @@ export const changeAvatar = (userId, avatar) => {
 
             const res = await axios.put(`${serverApi}api/user/avatar`, data, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
                 },
             })
             dispatch(changeAvatarAction(res.data.avatar))
-
+            dispatch(setMessageAction(res.data.message))
         } catch (error) {
-            console.log(error.response);
+            dispatch(setErrorAction(error.response.data.message))
         }
     }
 }
@@ -196,7 +215,7 @@ export const addToPurchased = (userId, cardId) => {
             dispatch(addToPurchasedAction(res.data.currentUser))
             dispatch(setMessageAction(res.data.message))
         } catch (error) {
-            dispatch(setMessageAction(error.response))
+            dispatch(setErrorAction(error.response.data.message))
         }
     }
 }

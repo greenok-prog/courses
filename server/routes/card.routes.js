@@ -17,6 +17,7 @@ const upload = multer({
         }
     })
 })
+
 router.post('/add', rolesMiddleware(['ADMIN']), upload.single('file'), addCard)
 router.get('/', getCards)
 router.delete('/:id', rolesMiddleware(['ADMIN']), removeCard)

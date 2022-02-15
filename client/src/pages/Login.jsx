@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ErrorToast from "../components/UI/ErrorToast";
+
 import { login } from "../store/actions/user";
 
 function Login() {
   const dispatch = useDispatch();
+  const { isError } = useSelector((state) => state.user);
 
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -13,12 +16,14 @@ function Login() {
 
   return (
     <div className="container ">
+      {isError && <ErrorToast />}
       <div className="row align-items-center">
         <div className="col-2"></div>
         <div className="forms col-8 d-flex flex-column justify-content-center">
           <p className="text-center">Воидите в учетную запись FrizCourses</p>
 
           <input
+            required
             value={loginForm.email}
             onChange={(e) =>
               setLoginForm({ ...loginForm, email: e.target.value })

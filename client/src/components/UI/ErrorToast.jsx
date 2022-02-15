@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { resetMessageAction } from "../../store/actions/user";
+import { resetErrorAction } from "../../store/actions/user";
 
-function MyToast() {
+function ErrorToast() {
   const [show, setShow] = useState(true);
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.user);
   const close = () => {
-    dispatch(resetMessageAction());
+    dispatch(resetErrorAction());
     setShow(false);
   };
   return (
     <ToastContainer position="top-end">
-      <Toast onClose={close} autohide show={show} delay={3000} bg="success">
-        <Toast.Header className="bg-success">
+      <Toast onClose={close} autohide show={show} delay={3000} bg="danger">
+        <Toast.Header className="bg-danger">
           <strong className="me-auto"></strong>
         </Toast.Header>
-        <Toast.Body>{message}</Toast.Body>
+        <Toast.Body>{error}</Toast.Body>
       </Toast>
     </ToastContainer>
   );
 }
 
-export default MyToast;
+export default ErrorToast;

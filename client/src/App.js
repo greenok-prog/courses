@@ -9,6 +9,7 @@ import AddCard from './pages/AddCard';
 import AddCardPromo from './pages/AddCardPromo';
 import AdminPanel from './pages/AdminPanel';
 import CourseInfo from './pages/CourseInfo';
+import CreateCard from './pages/CreateCard';
 import Education from './pages/Education';
 
 import Home from './pages/Home';
@@ -36,14 +37,15 @@ function App() {
     <Router>
       <Container>
         <Header />
-        <MyToast message={message} />
       </Container>
       <Routes>
         {/* Только для админа */}
 
         {isAdmin ? <><Route path='/admin' element={<AdminPanel />} exact={true} />
-          <Route path='/addCard' element={<AddCard />} exact={true} />
-          <Route path='/card/:id/addCardPromo' element={<AddCardPromo />} exact={true} />
+
+          <Route path='/addCard' element={<CreateCard />} exact={true} />
+          {/* <Route path='/addCard' element={<AddCard />} exact={true} />
+          <Route path='/card/:id/addCardPromo' element={<AddCardPromo />} exact={true} /> */}
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
 
 

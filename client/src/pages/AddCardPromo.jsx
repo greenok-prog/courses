@@ -1,52 +1,18 @@
 import React from "react";
-import { useEffect } from "react";
 
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { addCardPromo } from "../store/actions/cards";
-
-function AddCardPromo() {
-  const params = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { cards } = useSelector((state) => state.course);
-  const card = cards?.find((card) => card._id === params.id);
-
-  const [form, setForm] = useState({
-    title: "",
-    subtitle: "",
-    price: "",
-    willLearn: [],
-    image: card.image,
-    description: "",
-    willLearnStr: "",
-  });
-  const [will, setWill] = useState([]);
-  const add = () => {
-    dispatch(
-      addCardPromo(params.id, {
-        ...form,
-
-        willLearn: will,
-      })
-    ).then((res) => navigate("/admin"));
-  };
-  const addToWillLearn = () => {
-    setWill([...will, form.willLearnStr]);
-    setForm({ ...form, willLearnStr: "" });
-  };
+function AddCardPromo({ form, setForm, addToWillLearn, will, setWill }) {
   return (
-    <div className="forms col-8 d-flex flex-column justify-content-center">
+    <>
+      <h3 className="text-center">Промо карточки</h3>
       <input
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        onChange={(e) => setForm({ ...form, promoTitle: e.target.value })}
         className="input"
         value={form.title}
         type="text"
         placeholder="Title"
       />
       <input
-        onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+        onChange={(e) => setForm({ ...form, promoSubtitle: e.target.value })}
         value={form.subtitle}
         className="input"
         type="text"
@@ -90,11 +56,7 @@ function AddCardPromo() {
           Добавить
         </button>
       </div>
-
-      <button className="mt-4" onClick={add}>
-        Отправить
-      </button>
-    </div>
+    </>
   );
 }
 

@@ -12,16 +12,23 @@ import CardPromo from "../models/CardPromo.js"
 export const addCard = async (req, res) => {
     try {
         const file = req.file
-        const cardData = req.body
+        const data = req.body
 
         const card = await new Card({
-            title: cardData.title,
-            text: cardData.text, image: file.filename,
-            type: cardData.type, popular: 0
+            title: data.title,
+            text: data.text, image: file.filename,
+            type: data.type, popular: 0
+        })
+
+        const newPromo = new CardPromo({
+            title: data.promoTitle, subtitle: data.promoSubtitle, card: card._id, image: card.image, description: data.description,
+            willLearn: data.willLearn, price: data.price
         })
         await card.save()
+        await newPromo.save()
         return res.status(201).json({ card })
     } catch (e) {
+        console.log(e);
         return res.json({ message: "Чего то ты не добавил" })
     }
 }

@@ -2,9 +2,13 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProfileInfo } from "../../store/actions/user";
+import ErrorToast from "../UI/ErrorToast";
+import MyToast from "../UI/MyToast";
 
 function UserInfo() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, isMessage, isError } = useSelector(
+    (state) => state.user
+  );
   const [userForm, setUserForm] = useState({
     username: currentUser?.user?.username,
     firstName: currentUser?.user?.firstName,
@@ -16,6 +20,8 @@ function UserInfo() {
 
   return (
     <div className="col-sm-6 profile_form">
+      {isMessage && <MyToast />}
+      {isError && <ErrorToast />}
       <div className="profile_form__info text-lg-center text-center">
         <h3>Мой профиль</h3>
         <p>Здесь вы можете изменить информацию о вас</p>

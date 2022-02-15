@@ -1,32 +1,33 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ErrorToast from "../components/UI/ErrorToast";
+import MyToast from "../components/UI/MyToast";
 import { registration } from "../store/actions/user";
 
 function Registration() {
+  const { isError } = useSelector((state) => state.user);
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     passwordRepeat: "",
   });
+
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const checkForms = () => {
-  //   if (form.password === form.passwordRepeat) {
-  //     registration(form.name, form.email, form.password);
-  //   }
-  //   // dispatch(changeAuthAction());
-  //   // navigate("/");
-  // };
+  const regist = () => {
+    dispatch(registration(form.name, form.email, form.password));
+  };
 
   return (
     <div>
+      {isError && <ErrorToast />}
       <div className="container ">
         <div className="row align-items-center">
           <div className="col-2"></div>
           <div className="forms col-8 d-flex flex-column justify-content-center">
             <p className="text-center">Зарегестрируйтесь и начните обучение</p>
+
             <input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -58,12 +59,7 @@ function Registration() {
               placeholder="Введите пароль еще раз"
             />
             <div className="d-flex justify-content-lg-end">
-              <button
-                onClick={() =>
-                  dispatch(registration(form.name, form.email, form.password))
-                }
-                className="bord col-lg-3 col-12"
-              >
+              <button onClick={regist} className="bord col-lg-3 col-12">
                 Регистрация
               </button>
             </div>

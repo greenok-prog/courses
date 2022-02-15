@@ -3,17 +3,16 @@ import { useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import { SearchForm, TrendList } from ".";
 import { CardList } from "..";
-import Loader from "../UI/Loader";
+
 import CardPreloader from "../UI/CardPreloader";
 
 function Search() {
-  // const dispatch = useDispatch();
   const trends = [
     { type: "design", name: "Дизайн" },
     { type: "programming", name: "Программирование" },
     { type: "marketing", name: "Маркетинг" },
   ];
-  const { cards } = useSelector((state) => state.course);
+  const { cards, isLoading } = useSelector((state) => state.course);
   const [searchVal, setsearchVal] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
 
@@ -56,12 +55,16 @@ function Search() {
             Курсы не найдены
           </h3>
         )
-      ) : (
+      ) : isLoading ? (
         <div className="d-flex row">
           {[...Array(3).keys()].map(() => (
             <CardPreloader />
           ))}
         </div>
+      ) : (
+        <h3 style={{ textAlign: "center", margin: "32px 0" }}>
+          Курсы не найдены
+        </h3>
       )}
     </Container>
   );

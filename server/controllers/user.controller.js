@@ -58,7 +58,7 @@ export const changeProfileInfo = async (req, res) => {
 
         await User.findByIdAndUpdate(data.userId, { username: data.username, firstName: data.firstName, secondName: data.secondName, userLink: data.userLink, githubLink: data.githubLink })
         const currentUser = await User.findOne({ _id: data.userId })
-        res.json({ currentUser })
+        res.status(200).json({ currentUser, message: 'Данные успешно изменены' })
     } catch (e) {
         res.status(400).json({ message: "Произошла ошибка" })
     }
@@ -75,7 +75,7 @@ export const changePassword = async (req, res) => {
         const hashPassword = await bcrypt.hash(data.newPas, 7)
         await User.findByIdAndUpdate(data.userId, { password: hashPassword })
 
-        res.json({ message: "Данные обновлены" })
+        res.status(200).json({ message: 'Пароль успешно изменен' })
     } catch (e) {
         return res.status(400).json({ message: "Произошла ошибка при изменении" })
     }
@@ -85,7 +85,6 @@ export const changeAvatar = async (req, res) => {
         const file = req.file
         const data = req.body
         const user = await User.findById(data.userId)
-
         if (user.avatar !== undefined) {
             fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
         }
@@ -93,7 +92,7 @@ export const changeAvatar = async (req, res) => {
 
         await User.findByIdAndUpdate(data.userId, { avatar: file.filename })
         const currentUser = await User.findOne({ _id: data.userId })
-        return res.json({ avatar: currentUser.avatar })
+        return res.status(200).json({ avatar: currentUser.avatar, message: 'Данные успешно изменены' })
 
 
     } catch (e) {
@@ -108,7 +107,7 @@ export const buyCourse = async (req, res) => {
         const { userId, cardId } = req.body
         const user = await User.findByIdAndUpdate(userId, { "$push": { purchasedCourses: cardId } }, { new: true })
         await Card.findByIdAndUpdate(cardId, { $inc: { popular: 1 } })
-        return res.json({ currentUser: user })
+        return res.status(200).json({ currentUser: user, message: 'Курс успешно куплен' })
     } catch (error) {
         console.log(error);
         return res.status(400).json({ message: "Произошла ошибка при покупке" })

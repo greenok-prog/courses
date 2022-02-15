@@ -42,21 +42,29 @@ export const getAllCards = () => {
         }
     }
 }
-export const addCard = (title, text, type, image) => {
+export const addCard = (title, text, type, image, promoTitle, promoSubtitle, price, willLearn, description) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
             // const authHeader = { 'Authorization': `Bearer ${token}` }
             const formData = new FormData();
+
             formData.append("title", title);
             formData.append("text", text);
             formData.append("type", type);
             formData.append("file", image);
+            formData.append("promoTitle", promoTitle);
+            formData.append("promoSubtitle", promoSubtitle);
+            formData.append("price", price);
+            formData.append("willLearn", willLearn);
+            formData.append("description", description);
+
             const res = await axios.post(
                 "http://localhost:5000/api/cards/add",
                 formData,
                 {
                     headers: {
+
                         "Content-Type": "multipart/form-data",
                         'Authorization': `Bearer ${token}`
                     },

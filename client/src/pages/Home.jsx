@@ -14,7 +14,6 @@ function Home(addToFavorite) {
   useEffect(() => {
     dispatch(getAllCards());
   }, [dispatch]);
-  const { cards } = useSelector((state) => state.course);
   const trends = [
     { type: "design", name: "Дизайн" },
     { type: "programming", name: "Программирование" },
@@ -25,7 +24,7 @@ function Home(addToFavorite) {
       <Container>
         <UnderHeader />
       </Container>
-      <Recomendation cards={cards} />
+      <Recomendation />
       <Search addToFavorite={addToFavorite} trends={trends} />
       <Footer />
     </div>

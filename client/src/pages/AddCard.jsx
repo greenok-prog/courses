@@ -2,45 +2,37 @@ import React from "react";
 
 import { useState } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { addCard } from "../store/actions/cards";
+import MyToast from "../components/UI/MyToast";
 
-function AddCard() {
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
+function AddCard({ form, setCard }) {
   const trends = [
     { type: "design", name: "Дизайн" },
     { type: "programming", name: "Программирование" },
     { type: "marketing", name: "Маркетинг" },
   ];
   const [selectedType, setSelectedType] = useState(trends[0]);
-  const [selectedFile, setSelectedFile] = useState();
-  const [form, setForm] = useState({
-    title: "",
-    text: "",
-  });
+
   const selectFile = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setCard({ ...form, image: event.target.files[0] });
   };
-  const upload = () => {
-    dispatch(
-      addCard(form.title, form.text, selectedType.type, selectedFile)
-    ).then((res) => navigate(`/card/${res.card._id}/addCardPromo`));
+  const selectType = (e) => {
+    setSelectedType(e);
+    setCard({ ...form, type: e.type });
   };
+
   return (
-    <div className="forms col-8 d-flex flex-column justify-content-center">
+    <>
+      <h3 className="text-center">Карточка</h3>
       <input
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        onChange={(e) => setCard({ ...form, title: e.target.value })}
         value={form.title}
         type="text"
         className="input"
         placeholder="title"
       />
+      <MyToast />
       <textarea
-        onChange={(e) => setForm({ ...form, text: e.target.value })}
+        onChange={(e) => setCard({ ...form, text: e.target.value })}
         value={form.text}
         className="input"
         type="text"
@@ -48,7 +40,7 @@ function AddCard() {
       />
       <DropdownButton title={selectedType.name}>
         {trends.map((el) => (
-          <Dropdown.Item onClick={() => setSelectedType(el)}>
+          <Dropdown.Item onClick={() => selectType(el)}>
             {el.name}
           </Dropdown.Item>
         ))}
@@ -62,8 +54,7 @@ function AddCard() {
         type="file"
         placeholder="file"
       />
-      <button onClick={upload}>Отправить</button>
-    </div>
+    </>
   );
 }
 

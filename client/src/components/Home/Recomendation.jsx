@@ -1,8 +1,10 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
 import CardList from "../CardList";
+import CardPreloader from "../UI/CardPreloader";
 
-function Recomendation({ favoriteCards, cards }) {
+function Recomendation({ favoriteCards }) {
+  const { cards, isLoading } = useSelector((state) => state.course);
   const popularCards = cards.sort((a, b) => (a.popular < b.popular ? 1 : -1));
   const slicedPopularCards = popularCards.slice(0, 3);
 
@@ -14,7 +16,22 @@ function Recomendation({ favoriteCards, cards }) {
           <p className="fast_courses_subtitle">
             Самые популярные курсы на нашем сайте
           </p>
-          <CardList cards={slicedPopularCards} favoriteCards={favoriteCards} />
+          {cards.length ? (
+            <CardList
+              cards={slicedPopularCards}
+              favoriteCards={favoriteCards}
+            />
+          ) : isLoading ? (
+            <div className="d-flex row">
+              {[...Array(3).keys()].map(() => (
+                <CardPreloader />
+              ))}
+            </div>
+          ) : (
+            <h3 style={{ textAlign: "center", margin: "32px 0" }}>
+              Курсы не найдены
+            </h3>
+          )}
         </div>
       </div>
     </div>
