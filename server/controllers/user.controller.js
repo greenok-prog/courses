@@ -16,10 +16,11 @@ export const getAllUsers = async (req, res) => {
 }
 export const deleteUser = async (req, res) => {
     try {
+
         await User.findByIdAndDelete(req.body.userId)
-        res.json({ message: "Пользователь удален" })
+        res.status(200).json({ message: "Пользователь удален" })
     } catch (e) {
-        res.json({ message: "Произошла ошибка при удалении" })
+        res.status(401).json({ message: "Произошла ошибка при удалении" })
     }
 }
 export const changeUserData = async (req, res) => {
@@ -40,11 +41,15 @@ export const changeEmail = async (req, res) => {
     try {
         const data = req.body
         let currentUser = await User.findOne({ _id: data.userId })
+        const candidate = await User.findOne({ email: data.email })
+
         const isPassValid = bcrypt.compareSync(data.password, currentUser.password)
         if (!isPassValid) {
             return res.status(400).json({ message: 'Неверный пароль' })
         }
-
+        if (candidate) {
+            return res.status(400).json({ message: 'Пользователь с данным email уже существует' })
+        }
         await User.findByIdAndUpdate(data.userId, { email: data.email })
         currentUser = await User.findOne({ _id: data.userId })
         res.json({ message: "Данные обновлены", email: currentUser.email })
@@ -85,10 +90,11 @@ export const changeAvatar = async (req, res) => {
         const file = req.file
         const data = req.body
         const user = await User.findById(data.userId)
-        if (user.avatar !== undefined) {
-            fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
-        }
+        const path = config.get('staticPath') + '\\'
 
+        if (fs.existsSync(path + user.avatar)) {
+            fs.unlinkSync(path + user.avatar)
+        }
 
         await User.findByIdAndUpdate(data.userId, { avatar: file.filename })
         const currentUser = await User.findOne({ _id: data.userId })
@@ -96,7 +102,7 @@ export const changeAvatar = async (req, res) => {
 
 
     } catch (e) {
-
+        console.log(e);
         res.status(401).json({ message: 'Не удалось изменить фото' })
     }
 }
@@ -109,7 +115,6 @@ export const buyCourse = async (req, res) => {
         await Card.findByIdAndUpdate(cardId, { $inc: { popular: 1 } })
         return res.status(200).json({ currentUser: user, message: 'Курс успешно куплен' })
     } catch (error) {
-        console.log(error);
         return res.status(400).json({ message: "Произошла ошибка при покупке" })
     }
 }

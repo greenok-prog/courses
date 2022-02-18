@@ -1,7 +1,7 @@
 import axios from "axios";
-import { ADD_CARD, ADD_CARD_PROMO, ADD_TO_FAVORITE, GET_ALL_CARDS, GET_CARD_PROMO, REMOVE_CARD, } from ".";
+import { ADD_CARD, ADD_CARD_PROMO, ADD_TO_FAVORITE, GET_ALL_CARDS, GET_CARD, GET_CARD_PROMO, REMOVE_CARD, } from ".";
 import config from '../../config/default.json'
-import { setMessageAction } from "./user";
+import { setErrorAction, setMessageAction } from "./user";
 
 const serverApi = config.API_SERVER
 export const getAllCardsAction = (payload) => ({
@@ -17,7 +17,10 @@ export const addCardAction = (payload) => ({
     payload
 })
 
-
+export const getCardAction = (payload) => ({
+    type: GET_CARD,
+    payload
+})
 export const getCardPromoAction = (payload) => ({
     type: GET_CARD_PROMO,
     payload
@@ -71,67 +74,73 @@ export const addCard = (title, text, type, image, promoTitle, promoSubtitle, pri
                 }
             );
             dispatch(addCardAction(res.data.card))
-            console.log(res.data);
-            return res.data
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-            console.log(e);
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
 
+export const getCard = (cardId) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.post(serverApi + "api/cards/" + cardId, { id: cardId }, { headers: { Authorization: `Bearer ${token}` } })
+            dispatch(getCardAction(res.data.card))
+        } catch (e) {
+            dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+export const changeCardInfo = (id, promo, card) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const formData = new FormData()
+            Object.keys(promo).forEach(key => formData.append(key, promo[key]))
+            Object.keys(card).forEach(key => formData.append(key, card[key]))
 
-// export const addCardToFavorite = (userId, card) => {
-//     return async dispatch => {
-//         try {
 
-//             const res = await axios.post(serverApi + "api/cards/addToFavorite", {
-//                 userId: userId,
-//                 card: card
-//             });
-//             dispatch(addToFavoriteAction(card))
 
-//             console.log('Карточка была добавлена:', res);
-//         } catch (e) {
-//             console.log(e)
-//         }
-//     }
-// }
+
+            const res = await axios.put(serverApi + "api/cards/" + id, formData, {
+                headers: {
+
+                    "Content-Type": "multipart/form-data",
+                    'Authorization': `Bearer ${token}`
+
+                },
+            })
+
+            dispatch(setMessageAction(res.data.message))
+        } catch (error) {
+            dispatch(setErrorAction(error.response.data.message))
+        }
+    }
+}
+
 
 export const getCardPromo = (cardId) => {
     return async dispatch => {
         try {
-            const res = await axios.post(serverApi + "api/cards/" + cardId, { id: cardId })
+            const res = await axios.post(serverApi + "api/cards/" + cardId + '/promo', { id: cardId })
             dispatch(getCardPromoAction(res.data.promo))
 
         } catch (e) {
-            console.log(e);
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
-export const addCardPromo = (cardId, promo) => {
-    return async dispatch => {
-        try {
-            const token = localStorage.getItem('token')
-            const res = await axios.post(serverApi + "api/cards/" + cardId + "/addPromo", { id: cardId, promo: promo }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            dispatch(setMessageAction(res.data.message))
-        } catch (e) {
-            console.log(e);
-        }
-    }
-}
+
 export const removeCard = (cardId) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
             const res = await axios.delete(serverApi + "api/cards/" + cardId, { headers: { Authorization: `Bearer ${token}` }, data: { id: cardId } })
             dispatch(removeCardAction(cardId))
-            console.log(res.data.message);
+            dispatch(setMessageAction(res.data.message))
         } catch (e) {
-            console.log(e);
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }

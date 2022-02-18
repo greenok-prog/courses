@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEmail, resetErrorAction } from "../../store/actions/user";
-import ErrorMessage from "../UI/ErrorMessage";
-import ErrorToast from "../UI/ErrorToast";
+import { changeEmail } from "../../store/actions/user";
 
 function ChangeEmailModal({ value, isLink }) {
   const dispatch = useDispatch();
@@ -24,6 +22,7 @@ function ChangeEmailModal({ value, isLink }) {
   };
   const change = () => {
     dispatch(changeEmail(currentUser.user._id, form.email, form.password));
+    setForm({ ...form, email: "", password: "" });
   };
 
   return (
@@ -37,9 +36,10 @@ function ChangeEmailModal({ value, isLink }) {
           <Modal.Title>Изменение email</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex flex-column">
+          <form className="d-flex flex-column">
             {isError && <p className="text-danger">{error}</p>}
             <input
+              autocomplete="off"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="text"
@@ -49,11 +49,11 @@ function ChangeEmailModal({ value, isLink }) {
             <input
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              type="text"
+              type="password"
               placeholder="Пароль"
               className="input"
             />
-          </div>
+          </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

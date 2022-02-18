@@ -21,11 +21,16 @@ function Registration() {
 
   return (
     <div>
-      {isError && <ErrorToast />}
       <div className="container ">
         <div className="row align-items-center">
           <div className="col-2"></div>
-          <div className="forms col-8 d-flex flex-column justify-content-center">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              regist();
+            }}
+            className="forms col-8 d-flex flex-column justify-content-center"
+          >
             <p className="text-center">Зарегестрируйтесь и начните обучение</p>
 
             <input
@@ -59,14 +64,14 @@ function Registration() {
               placeholder="Введите пароль еще раз"
             />
             <div className="d-flex justify-content-lg-end">
-              <button onClick={regist} className="bord col-lg-3 col-12">
+              <button type="submit" className="bord col-lg-3 col-12">
                 Регистрация
               </button>
             </div>
             <p className="text-center under_inputs">
               Уже зарегестрировались? <Link to="/login">Войти</Link>
             </p>
-          </div>
+          </form>
         </div>
         <div className="col-2"></div>
       </div>

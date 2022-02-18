@@ -89,10 +89,17 @@ export const getUsers = () => {
 export const deleteUser = (userId) => {
     return async dispatch => {
         try {
-            const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId } }, { headers: authHeader })
+            const token = localStorage.getItem('token')
+            const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId } }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            console.log(res.data);
             dispatch(deleteUserAction(userId))
+
         } catch (e) {
-            console.log(e.response.data.message);
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
@@ -177,8 +184,12 @@ export const changeEmail = (userId, email, password) => {
 export const changePassword = (userId, oldPas, newPas) => {
     return async dispatch => {
         try {
-
-            const res = await axios.put(`${serverApi}api/user/password`, { userId, oldPas, newPas }, { headers: authHeader })
+            const token = localStorage.getItem('token')
+            const res = await axios.put(`${serverApi}api/user/password`, { userId, oldPas, newPas }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
 
             dispatch(setMessageAction(res.data.message))
         } catch (e) {

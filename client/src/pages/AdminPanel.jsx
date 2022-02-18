@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Users from "../components/AdminPanel/Users";
 import Search from "../components/Home/Search";
+import MyToast from "../components/UI/MyToast";
+import { getAllCards } from "../store/actions/cards";
 
 import { getUsers } from "../store/actions/user";
 
@@ -15,16 +17,18 @@ function AdminPanel() {
   const [activeItem, setActiveItem] = useState(links[0].item);
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getAllCards());
   }, [dispatch]);
-  const { users } = useSelector((state) => state.user);
+  const { users, isMessage } = useSelector((state) => state.user);
   const changeActiveItem = (item) => {
     setActiveItem(item);
   };
+  const filteredCourses = users.filter((user) => !user.roles.includes("ADMIN"));
 
   return (
     <div className="container">
+      {isMessage && <MyToast />}
       <ul className="education_header__navbar mb-5">
-        <Link to={"/addCard"}>Создать карточку</Link>
         {links.map((el) => (
           <li
             key={el.item}
@@ -36,8 +40,13 @@ function AdminPanel() {
             {el.name}
           </li>
         ))}
+        <li>
+          <button className="btn mt-3">
+            <Link to={"/addCard"}>Создать карточку</Link>
+          </button>
+        </li>
       </ul>
-      {activeItem === "users" ? <Users users={users} /> : <Search />}
+      {activeItem === "users" ? <Users users={filteredCourses} /> : <Search />}
     </div>
   );
 }

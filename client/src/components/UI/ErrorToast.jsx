@@ -12,8 +12,15 @@ function ErrorToast() {
     setShow(false);
   };
   return (
-    <ToastContainer position="top-end">
-      <Toast onClose={close} autohide show={show} delay={3000} bg="danger">
+    <ToastContainer position="top-end" className="position-fixed">
+      <Toast
+        onClose={close}
+        className="sticky"
+        autohide
+        show={show}
+        delay={3000}
+        bg="danger"
+      >
         <Toast.Header className="bg-danger">
           <strong className="me-auto"></strong>
         </Toast.Header>

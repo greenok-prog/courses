@@ -16,10 +16,16 @@ function Login() {
 
   return (
     <div className="container ">
-      {isError && <ErrorToast />}
+      {/* {isError && <ErrorToast />} */}
       <div className="row align-items-center">
         <div className="col-2"></div>
-        <div className="forms col-8 d-flex flex-column justify-content-center">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            dispatch(login(loginForm.email, loginForm.password));
+          }}
+          className="forms col-8 d-flex flex-column justify-content-center"
+        >
           <p className="text-center">Воидите в учетную запись FrizCourses</p>
 
           <input
@@ -43,12 +49,7 @@ function Login() {
           />
 
           <div className="d-flex justify-content-lg-end">
-            <button
-              onClick={() =>
-                dispatch(login(loginForm.email, loginForm.password))
-              }
-              className="bord col-lg-2 col-12"
-            >
+            <button type="submit" className="bord col-lg-2 col-12">
               Вход
             </button>
           </div>
@@ -56,7 +57,7 @@ function Login() {
             Еше не зарегестрировались?{" "}
             <Link to="/registration">Зарегестрироваться</Link>
           </p>
-        </div>
+        </form>
       </div>
       <div className="col-2"></div>
     </div>

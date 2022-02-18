@@ -17,7 +17,7 @@ function Users({ users }) {
 
   const values = ["email", "username", "_id", "firstName", "secondName"];
   const searchedUsers = values.includes(searchBy)
-    ? users.filter((el) => el[searchBy].includes(searchValue))
+    ? users.filter((el) => el[searchBy]?.includes(searchValue))
     : users;
 
   return (

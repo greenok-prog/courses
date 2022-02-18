@@ -2,7 +2,6 @@ import React from "react";
 
 import { useState } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import MyToast from "../components/UI/MyToast";
 
 function AddCard({ form, setCard }) {
   const trends = [
@@ -24,14 +23,16 @@ function AddCard({ form, setCard }) {
     <>
       <h3 className="text-center">Карточка</h3>
       <input
+        required
         onChange={(e) => setCard({ ...form, title: e.target.value })}
         value={form.title}
         type="text"
         className="input"
         placeholder="title"
       />
-      <MyToast />
+
       <textarea
+        required
         onChange={(e) => setCard({ ...form, text: e.target.value })}
         value={form.text}
         className="input"
@@ -47,6 +48,7 @@ function AddCard({ form, setCard }) {
       </DropdownButton>
       <label form="card_file">Фото для карточки</label>
       <input
+        required
         className="input form-control input-file mt-2"
         onChange={(e) => selectFile(e)}
         id="card_file"

@@ -37,9 +37,6 @@ function Account() {
   };
   return (
     <div className="col-sm-6 profile_form">
-      {isError && <ErrorToast />}
-      {isMessage && <MyToast />}
-
       <div className="profile_form__info text-lg-center text-center">
         <h3>Учетная запись</h3>
         <p>Здесь вы можете изменить настройки учетной записи и пароль</p>

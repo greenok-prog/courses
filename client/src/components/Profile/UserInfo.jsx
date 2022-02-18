@@ -20,8 +20,6 @@ function UserInfo() {
 
   return (
     <div className="col-sm-6 profile_form">
-      {isMessage && <MyToast />}
-      {isError && <ErrorToast />}
       <div className="profile_form__info text-lg-center text-center">
         <h3>Мой профиль</h3>
         <p>Здесь вы можете изменить информацию о вас</p>

@@ -1,12 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import ErrorToast from "../components/UI/ErrorToast";
 import { addCard } from "../store/actions/cards";
 import AddCard from "./AddCard";
 import AddCardPromo from "./AddCardPromo";
+import { useNavigate } from "react-router-dom";
 
 function CreateCard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isMessage, isError } = useSelector((state) => state.user);
 
   const [card, setCard] = useState({
     title: "",
@@ -42,10 +47,11 @@ function CreateCard() {
         will,
         cardPromo.description
       )
-    );
+    ).then(() => navigate("/admin"));
   };
   return (
     <div className="addCard_form d-flex flex-column justify-content-center col-md-8 ">
+      {isError && <ErrorToast />}
       <AddCard setCard={setCard} form={card} />
       <AddCardPromo
         setWill={setWill}

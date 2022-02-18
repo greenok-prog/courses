@@ -1,10 +1,10 @@
 import fs from 'fs'
 import config from 'config'
-// import { v4 } from 'uuid';
+
 
 
 import Card from "../models/Card.js"
-import User from "../models/User.js"
+
 import CardPromo from "../models/CardPromo.js"
 
 
@@ -13,23 +13,24 @@ export const addCard = async (req, res) => {
     try {
         const file = req.file
         const data = req.body
-
+        if (!file.filename) {
+            return res.status(401).json({ message: "Не добавлено фото карточки" })
+        }
         const card = await new Card({
             title: data.title,
             text: data.text, image: file.filename,
             type: data.type, popular: 0
         })
 
-        const newPromo = new CardPromo({
+        const newPromo = await new CardPromo({
             title: data.promoTitle, subtitle: data.promoSubtitle, card: card._id, image: card.image, description: data.description,
             willLearn: data.willLearn, price: data.price
         })
         await card.save()
         await newPromo.save()
-        return res.status(201).json({ card })
+        return res.status(201).json({ card, message: 'Карточка успешно создана' })
     } catch (e) {
-        console.log(e);
-        return res.json({ message: "Чего то ты не добавил" })
+        return res.status(401).json({ message: "Заполните все поля" })
     }
 }
 export const removeCard = async (req, res) => {
@@ -44,8 +45,7 @@ export const removeCard = async (req, res) => {
 
         return res.status(201).json({ message: 'Карточка была удалена' })
     } catch (e) {
-        console.log(e);
-        return res.json({ e })
+        return res.status(401).json({ message: "Не удалось удалить карточку" })
     }
 }
 export const getCards = async (req, res) => {
@@ -53,16 +53,54 @@ export const getCards = async (req, res) => {
         const cards = await Card.find({})
         return res.json(cards)
     } catch (e) {
-        console.log(e);
+        return res.status(401).json({ message: "Не удалось загрузить курсы" })
     }
 }
+export const getCard = async (req, res) => {
+    try {
+        const { id } = req.body
+        const card = await Card.findOne({ _id: id })
+        const promo = await CardPromo.findOne({ card: id })
+
+        return res.status(200).json({ card: { card, promo } })
+    } catch (e) {
+        return res.status(401).json({ message: "Произошла ошибка при загрузке" })
+    }
+}
+
+export const changeCardInfo = async (req, res) => {
+    try {
+        const data = req.body
+        const currentCard = await Card.findByIdAndUpdate(data._id[1], {
+            title: data.title[1],
+            text: data.text,
+            type: data.type, popular: data.popular,
+
+        })
+        // if (req.file.filename !== undefined) {
+        //     await Card.findByIdAndUpdate(data._id[1], {
+        //         image: req.file.filename
+        //     })
+        // }
+        await CardPromo.findOneAndUpdate({ card: data._id[1] }, {
+            title: data.title[0], subtitle: data.subtitle, image: currentCard.image, description: data.description,
+            willLearn: data.willLearn.split(','), price: data.price
+        })
+
+        return res.status(200).json({ message: 'Карточка успешно изменена' })
+    } catch (e) {
+        console.log(e);
+        return res.status(401).json({ message: "Произошла ошибка при изменении" })
+    }
+}
+
 export const getCardPromo = async (req, res) => {
     try {
 
         const card = await Card.findOne({ id: req.body.id })
         const promo = await CardPromo.findOne({ card: req.body.id })
         if (!promo) {
-            return res.json({ message: "Промо не существует" })
+            return res.status(401).json({ message: "Промо не существует" })
         }
         return res.json({
             promo: {
@@ -72,44 +110,7 @@ export const getCardPromo = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error);
+        return res.status(401).json({ message: "Произошла ошибка при загрузке" })
     }
 }
-export const addCardPromo = async (req, res) => {
-    try {
-        const { title, description, willLearn, price, image, subtitle } = req.body.promo
-        const currentCard = await Card.findOne({ id: req.body.id })
 
-        const promo = await CardPromo.findOne({ card: req.body.id })
-        if (promo) {
-            console.log(promo.card);
-            return res.json({ message: "Промо этой карточки уже существует" })
-        }
-
-        const newPromo = new CardPromo({
-            title: title, subtitle: subtitle, card: req.body.id, image: image, description: description,
-            willLearn: willLearn, price: price
-        })
-        await newPromo.save()
-        return res.json({ data: newPromo })
-    } catch (e) {
-
-    }
-}
-// export const addCardToFavorite = async (req, res) => {
-//     try {
-//         await User.updateOne({ id: req.body.userId }, { "$push": { favoriteCourses: req.body.card } }, { new: True })
-//         return res.status(201).json({ card: req.body.card.card })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-// export const removeCardFromFavorite = async (req, res) => {
-//     try {
-//         await User.updateOne({ id: req.body.userId }, { "$pull": { favoriteCourses: req.body.card } }, { safe: true, multi: true })
-//         return res.status(201).json({ message: 'Успешно' })
-//     } catch (error) {
-//         console.log(error)
-//     }
-
-// }

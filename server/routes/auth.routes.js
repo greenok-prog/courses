@@ -25,7 +25,7 @@ router.post('/registration',
     async (req, res) => {
 
         const errors = validationResult(req)
-        console.log(errors);
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: "Неверные данные", errors })
         }
@@ -38,7 +38,7 @@ router.post('/registration',
             }
             const hashPassword = await bcrypt.hash(password, 7)
             const role = await Role.findOne({ value: 'USER' })
-            const user = new User({ username, email, password: hashPassword, roles: [role.value] })
+            const user = await new User({ username, email, password: hashPassword, roles: [role.value] })
             await user.save()
             const token = generateAccessToken(user._id, user.roles)
 
@@ -98,9 +98,9 @@ router.post('/login',
 router.get('/auth', authMiddleware,
     async (req, res) => {
         try {
-            const user = await User.findOne({ id: req.user.id })
-            console.log(user.roles);
-            const token = jwt.sign({ id: user.id }, config.get("secretKey"), { expiresIn: "1h" })
+            const user = await User.findOne({ _id: req.user.id })
+
+            const token = jwt.sign({ id: user._id }, config.get("secretKey"), { expiresIn: "24h" })
             return res.json({
                 token, user: {
                     _id: user.id,

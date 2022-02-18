@@ -6,25 +6,33 @@ import Loader from "../components/UI/Loader";
 import AboutCourseList from "../components/CourseInfo/AboutCourseList";
 import PromoDescription from "../components/CourseInfo/PromoDescription";
 import PromoCard from "../components/CourseInfo/PromoCard";
-import { getCardPromo } from "../store/actions/cards";
+import { getCardPromo, getCardPromoAction } from "../store/actions/cards";
+import MyToast from "../components/UI/MyToast";
+import ErrorToast from "../components/UI/ErrorToast";
 
 function CourseInfo() {
   const params = useParams();
   const [first, setfirst] = useState("");
   const dispatch = useDispatch();
-  const { cards } = useSelector((state) => state.course);
-  const { currentPromo } = useSelector((state) => state.course);
+  const { cards, currentPromo } = useSelector((state) => state.course);
+  const { isMessage, isError } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(getCardPromo(params.id));
 
     const card = cards.find((el) => el._id === params.id);
     setfirst(card?.image);
+    return () => {
+      dispatch(getCardPromoAction({}));
+    };
   }, [cards, dispatch, params.id]);
 
   const [errorMessage, setErrorMessage] = useState(false);
 
   return (
     <div className="courseInfo__header">
+      {isMessage && <MyToast />}
+      {isError && <ErrorToast />}
       {currentPromo ? (
         <div className="container-lg courseInfo_title ">
           <ModalMessage

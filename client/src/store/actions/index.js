@@ -11,6 +11,8 @@ export const LOGOUT = 'LOGOUT'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
 
+export const GET_CARD = 'GET_CARD'
+
 
 //admin actions
 export const GET_USERS = 'GET_USERS'

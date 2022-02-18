@@ -9,10 +9,12 @@ export default function (roles) {
         try {
 
             const token = req.headers.authorization.split(' ')[1]
+
             if (!token) {
                 return res.status(403).json({ message: "Пользователь не авторизован" })
             }
             const { roles: userRoles } = jwt.verify(token, confing.get('secretKey'))
+
             let hasRole = false
             userRoles.forEach(role => {
                 if (roles.includes(role)) {
@@ -24,8 +26,8 @@ export default function (roles) {
             }
             next();
         } catch (e) {
-            console.log(e)
-            return res.status(403).json({ message: "Пользователь не авторизован" })
+            console.log(e);
+            return res.status(403).json({ message: "У вас нет доступа" })
         }
     }
 }
