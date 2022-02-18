@@ -140,8 +140,12 @@ export const login = (email, password) => {
 export const auth = () => {
     return async dispatch => {
         try {
-
-            const res = await axios.get(`${serverApi}api/auth/auth`, { headers: authHeader })
+            const token = localStorage.getItem('token')
+            const res = await axios.get(`${serverApi}api/auth/auth`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             dispatch(setCurrentUserAction(res.data))
             localStorage.setItem('token', res.data.token)
 
