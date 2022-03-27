@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { changeCardInfo, getCard, getCardAction } from "../store/actions/cards";
 import Loader from "../components/UI/Loader";
@@ -9,7 +9,7 @@ function ChangeCardInfo() {
   const dispatch = useDispatch();
   const params = useParams();
   const navigate = useNavigate();
-
+  const [selectedFile, setSelectedFile] = useState({});
   const { currentCard, isFetching } = useSelector((state) => state.course);
   const [card, setCard] = useState({
     title: "",
@@ -32,7 +32,7 @@ function ChangeCardInfo() {
   const [selectedType, setSelectedType] = useState(trends[0]);
 
   const selectFile = (event) => {
-    setCard({ ...card, image: event.target.files[0] });
+    setSelectedFile(event.target.files[0]);
   };
   const selectType = (e) => {
     setSelectedType(e);
@@ -54,7 +54,12 @@ function ChangeCardInfo() {
   };
   const upload = () => {
     dispatch(
-      changeCardInfo(params.id, { ...cardPromo, willLearn: will }, card)
+      changeCardInfo(
+        params.id,
+        { ...cardPromo, willLearn: will },
+        card,
+        selectedFile
+      )
     ).then(() => navigate("/admin"));
   };
   const loadData = () => {
@@ -65,6 +70,9 @@ function ChangeCardInfo() {
 
   return (
     <div className="addCard_form  d-flex flex-column justify-content-center col-md-8 ">
+      <button className="btn">
+        <Link to={"/lesson/" + params.id}>Уроки</Link>
+      </button>
       {currentCard ? (
         <>
           <h3 className="text-center">Карточка</h3>

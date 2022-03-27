@@ -1,4 +1,4 @@
-import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE } from ".";
+import { GET_USER_DATA, ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE } from ".";
 import axios from 'axios'
 import config from '../../config/default.json'
 
@@ -45,6 +45,14 @@ export const getAllUsersAction = (payload) => ({
     type: GET_USERS,
     payload
 })
+export const getUserDataAction = (payload) => ({
+    type: GET_USER_DATA,
+    payload
+})
+export const createUserAction = (payload) => ({
+    type: CREATE_USER,
+    payload
+})
 export const deleteUserAction = (payload) => ({
     type: DELETE_USER,
     payload
@@ -85,17 +93,65 @@ export const getUsers = () => {
         }
     }
 }
+export const getUserData = (id) => {
+    return async dispatch => {
+        try {
+            token = localStorage.getItem('token')
+            const res = await axios.post(`${serverApi}api/user/:id`, { _id: id }, { headers: { 'Authorization': `Bearer ${token}` } })
+            dispatch(getUserDataAction(res.data.user))
+        } catch (e) {
+            console.log(e.response.data.message);
+        }
+    }
+}
+export const createUser = (email, password, roles, username, firstname, surname) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.post(`${serverApi}api/user`, { email, password, username, roles, firstName: firstname, secondName: surname }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            dispatch(createUserAction((res.data.user)))
+
+
+        } catch (e) {
+            if (e.response.data.errors) {
+                dispatch(setErrorAction(e.response.data.errors.errors[0].msg))
+            }
+            dispatch(setErrorAction(e.response.data.message))
+
+        }
+    }
+}
+export const changeUserData = (id, email, roles, username, firstname, secondName) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.put(`${serverApi}api/user/${id}/changeData`, { id, email, username, roles, firstName: firstname, secondName: secondName }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            dispatch(createUserAction((res.data.user)))
+
+
+        } catch (e) {
+            if (e.response.data.errors) {
+                dispatch(setErrorAction(e.response.data.errors.errors[0].msg))
+            }
+            dispatch(setErrorAction(e.response.data.message))
+
+        }
+    }
+}
 //delete user
 export const deleteUser = (userId) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
-            const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId } }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            console.log(res.data);
+            const res = axios.delete(`${serverApi}api/user/${userId}`, { data: { userId }, headers: { Authorization: `Bearer ${token}` } },)
             dispatch(deleteUserAction(userId))
 
         } catch (e) {
@@ -108,10 +164,10 @@ export const deleteUser = (userId) => {
 
 
 //registration
-export const registration = (username, email, password) => {
+export const registration = (username, email, password, role) => {
     return async dispatch => {
         try {
-            const res = await axios.post(`${serverApi}api/auth/registration`, { username, email, password })
+            const res = await axios.post(`${serverApi}api/auth/registration`, { username, email, password, role })
             dispatch(setCurrentUserAction(res.data))
             localStorage.setItem('token', res.data.token)
             return res.data
@@ -226,7 +282,8 @@ export const changeAvatar = (userId, avatar) => {
 export const addToPurchased = (userId, cardId) => {
     return async dispatch => {
         try {
-            const res = await axios.put(`${serverApi}api/user/buyCourse`, { userId, cardId }, { headers: authHeader })
+            const token = localStorage.getItem('token')
+            const res = await axios.put(`${serverApi}api/user/buyCourse`, { userId, cardId }, { headers: { 'Authorization': `Bearer ${token}` } })
             dispatch(addToPurchasedAction(res.data.currentUser))
             dispatch(setMessageAction(res.data.message))
         } catch (error) {

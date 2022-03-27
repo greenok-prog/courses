@@ -2,8 +2,8 @@ import React from "react";
 
 function CardPreloader() {
   return (
-    <div class="wrapper">
-      <div class="card-loader card-loader--tabs"></div>
+    <div className="wrapper">
+      <div className="card-loader card-loader--tabs"></div>
     </div>
   );
 }

@@ -57,8 +57,8 @@ function Search() {
         )
       ) : isLoading ? (
         <div className="d-flex row">
-          {[...Array(3).keys()].map(() => (
-            <CardPreloader />
+          {[...Array(3).keys()].map((key, index) => (
+            <CardPreloader key={index} />
           ))}
         </div>
       ) : (

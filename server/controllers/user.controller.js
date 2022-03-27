@@ -1,9 +1,10 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt"
 import fs from 'fs'
+import validator from 'express-validator'
 import config from 'config'
 import Card from "../models/Card.js";
-
+const { validationResult } = validator
 
 //admin panel
 export const getAllUsers = async (req, res) => {
@@ -12,6 +13,48 @@ export const getAllUsers = async (req, res) => {
         res.json({ users })
     } catch (e) {
         res.json({ message: "Пользователи не найдены" })
+    }
+}
+export const createUser = async (req, res) => {
+    try {
+        const { email, password, username, firstname, surname, roles } = req.body
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: "Неверные данные", errors })
+        }
+
+        const candidate = await User.findOne({ email: email })
+        if (candidate) {
+            return res.status(400).json({ message: 'Пользователь уже существует' })
+        }
+        const hashPassword = await bcrypt.hash(password, 7)
+
+        const user = await new User({ username, email, password: hashPassword, roles: roles, firstName: firstname, secondName: surname })
+        await user.save()
+        return res.status(201).json({ user })
+    } catch (e) {
+        res.json({ message: "Не удалось создать пользователя" })
+    }
+}
+export const changeUserData = async (req, res) => {
+    try {
+        const { id, email, username, firstName, secondName, roles } = req.body
+        console.log(req.body);
+
+
+        const candidate = await User.find({ email: email })
+
+        if (candidate.length > 1) {
+            return res.status(400).json({ message: 'Пользователь уже существует' })
+        }
+
+
+        await User.findOneAndUpdate({ _id: id }, { username: username, email: email, roles: roles, firstName: firstName, secondName: secondName }, { new: true })
+
+        return res.status(201).json({ message: "Данные обновлены" })
+    } catch (e) {
+        console.log(e);
+        res.json({ message: "Не удалось изменить пользователя" })
     }
 }
 export const deleteUser = async (req, res) => {
@@ -23,15 +66,17 @@ export const deleteUser = async (req, res) => {
         res.status(401).json({ message: "Произошла ошибка при удалении" })
     }
 }
-export const changeUserData = async (req, res) => {
+export const getUserData = async (req, res) => {
     try {
-        const { email, username, firstName, secondName, _id } = req.body
+        const { _id } = req.body
 
-        const user = await User.findById()
+        const user = await User.findById(_id)
+        res.status(200).json({ user: { _id: user._id, email: user.email, username: user.username, firstName: user.firstName, roles: user.roles, secondName: user.secondName } })
     } catch (e) {
-        res.json({ message: "Произошла ошибка при изменении" })
+        res.status(401).json({ message: "Произошла ошибка при удалении" })
     }
 }
+
 
 
 
@@ -63,7 +108,8 @@ export const changeProfileInfo = async (req, res) => {
 
         await User.findByIdAndUpdate(data.userId, { username: data.username, firstName: data.firstName, secondName: data.secondName, userLink: data.userLink, githubLink: data.githubLink })
         const currentUser = await User.findOne({ _id: data.userId })
-        res.status(200).json({ currentUser, message: 'Данные успешно изменены' })
+
+        res.status(200).json({ currentUser: currentUser, message: 'Данные успешно изменены' })
     } catch (e) {
         res.status(400).json({ message: "Произошла ошибка" })
     }

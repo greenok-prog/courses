@@ -13,6 +13,7 @@ function Recomendation({ favoriteCards }) {
       <div className="fast_courses">
         <div className="fast_courses_inner container-lg justify-content-center text-center">
           <h4 className="fast_courses_title">Популярное</h4>
+          <i className="bi-alarm"></i>
           <p className="fast_courses_subtitle">
             Самые популярные курсы на нашем сайте
           </p>
@@ -23,8 +24,8 @@ function Recomendation({ favoriteCards }) {
             />
           ) : isLoading ? (
             <div className="d-flex row">
-              {[...Array(3).keys()].map(() => (
-                <CardPreloader />
+              {[...Array(3).keys()].map((key, index) => (
+                <CardPreloader key={index} />
               ))}
             </div>
           ) : (

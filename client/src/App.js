@@ -9,8 +9,11 @@ import MyToast from './components/UI/MyToast';
 
 import AdminPanel from './pages/AdminPanel';
 import ChangeCardInfo from './pages/ChangeCardInfo';
+import ChangeUser from './pages/ChangeUser';
 import CourseInfo from './pages/CourseInfo';
 import CreateCard from './pages/CreateCard';
+import CreateLesson from './pages/CreateLesson';
+import CreateUser from './pages/CreateUser';
 import Education from './pages/Education';
 
 import Home from './pages/Home';
@@ -47,18 +50,20 @@ function App() {
         {/* Только для админа */}
 
         {isAdmin ? <><Route path='/admin' element={<AdminPanel />} exact={true} />
-
+          <Route path='/card/:card_id/:block_id/addLession' element={<CreateLesson />} exact={true} />
+          <Route path='/createUser' element={<CreateUser />} exact={true} />
           <Route path='/addCard' element={<CreateCard />} exact={true} />
+          <Route path='/user/:id' element={<ChangeUser />} exact={true} />
           <Route path='/card/:id/change' element={<ChangeCardInfo />} exact={true} />
-          {/* <Route path='/addCard' element={<AddCard />} exact={true} />
-          <Route path='/card/:id/addCardPromo' element={<AddCardPromo />} exact={true} /> */}
+
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
 
 
         <Route path='/home' element={<Home />} exact={true} />
         <Route path='/card/:id' element={<CourseInfo />} exact={true} />
         {!isAuth ? <>
-          <Route path='/registration' element={<Registration />} exact={true} />
+          <Route path='/registration/teacher' element={<Registration role='TEACHER' />} exact={true} />
+          <Route path='/registration' element={<Registration role='USER' />} exact={true} />
           <Route path='/login' element={<Login />} exact={true} />
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
         {isAuth ? <>

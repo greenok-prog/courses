@@ -16,10 +16,10 @@ function Login() {
 
   return (
     <div className="container ">
-      {/* {isError && <ErrorToast />} */}
       <div className="row align-items-center">
         <div className="col-2"></div>
         <form
+          autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
             dispatch(login(loginForm.email, loginForm.password));
@@ -39,6 +39,7 @@ function Login() {
             placeholder="Email"
           />
           <input
+            autoComplete="new-password"
             value={loginForm.password}
             onChange={(e) =>
               setLoginForm({ ...loginForm, password: e.target.value })

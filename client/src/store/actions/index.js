@@ -10,13 +10,16 @@ export const LOGOUT = 'LOGOUT'
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const ADD_TO_PURCHASED = 'ADD_TO_PURCHASED'
-
+export const GET_LESSONS = 'GET_LESSONS'
 export const GET_CARD = 'GET_CARD'
 
-
+export const ADD_LESSON = 'ADD_LESSON';
 //admin actions
+export const ADD_COMMENT = 'ADD_COMMENT'
 export const GET_USERS = 'GET_USERS'
 export const DELETE_USER = 'DELETE_USER'
+export const CREATE_USER = 'CREATE_USER'
+export const GET_USER_DATA = 'GET_USER_DATA'
 // profile user
 export const CHANGE_PROFILE_INFO = 'CHANGE_PROFILE_INFO'
 export const CHANGE_EMAIL = 'CHANGE_EMAIL'

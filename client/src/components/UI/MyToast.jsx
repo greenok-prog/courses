@@ -12,7 +12,7 @@ function MyToast() {
     setShow(false);
   };
   return (
-    <ToastContainer position="top-end" className="position-fixed">
+    <ToastContainer position="top-end" className="my_toast position-fixed">
       <Toast onClose={close} autohide show={show} delay={3000} bg="success">
         <Toast.Header className="bg-success">
           <strong className="me-auto"></strong>

@@ -23,7 +23,6 @@ function AdminPanel() {
   const changeActiveItem = (item) => {
     setActiveItem(item);
   };
-  const filteredCourses = users.filter((user) => !user.roles.includes("ADMIN"));
 
   return (
     <div className="container">
@@ -41,12 +40,15 @@ function AdminPanel() {
           </li>
         ))}
         <li>
-          <button className="btn mt-3">
+          <button className="btn mt-3 ">
             <Link to={"/addCard"}>Создать карточку</Link>
+          </button>
+          <button className="btn mt-3 mx-2">
+            <Link to={"/createUser"}>Создать пользователя</Link>
           </button>
         </li>
       </ul>
-      {activeItem === "users" ? <Users users={filteredCourses} /> : <Search />}
+      {activeItem === "users" ? <Users users={users} /> : <Search />}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_CARD, ADD_CARD_PROMO, ADD_TO_FAVORITE, GET_ALL_CARDS, GET_CARD, GET_CARD_PROMO, REMOVE_CARD, } from ".";
+import { ADD_CARD, ADD_CARD_PROMO, ADD_COMMENT, ADD_LESSON, ADD_TO_FAVORITE, GET_ALL_CARDS, GET_CARD, GET_CARD_PROMO, GET_LESSONS, REMOVE_CARD, } from ".";
 import config from '../../config/default.json'
 import { setErrorAction, setMessageAction } from "./user";
 
@@ -33,6 +33,18 @@ export const removeCardAction = (payload) => ({
     type: REMOVE_CARD,
     payload
 })
+export const addLessonAction = (payload) => ({
+    type: ADD_LESSON,
+    payload
+})
+export const getLessonsAction = (payload) => ({
+    type: GET_LESSONS,
+    payload
+})
+export const addCommentAction = (payload) => ({
+    type: ADD_COMMENT,
+    payload
+})
 
 export const getAllCards = () => {
     return async dispatch => {
@@ -41,7 +53,80 @@ export const getAllCards = () => {
             dispatch(getAllCardsAction(res.data))
 
         } catch (e) {
+            dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+export const addLesson = (id, title, text, links, video) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const formData = new FormData()
+            formData.append('id', id);
+            formData.append('title', title);
+            formData.append('text', text);
+            formData.append('links', links);
+            if (video) {
+                formData.append('video', video);
+            }
+            const res = await axios.post(serverApi + "api/cards/addLesson", formData, { headers: { Authorization: `Bearer ${token}` } });
+            console.log(res.data);
+        } catch (e) {
+            dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+export const addLessonBlock = (cardId, title) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.post(serverApi + `api/cards/${cardId}/addLessonBlock`, { cardId, title }, { headers: { Authorization: `Bearer ${token}` } });
+        } catch (e) {
+            dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+
+export const addComment = (blockId, lessonId, userId, text) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.post(serverApi + `api/cards/${lessonId}/addComment`, { blockId, lessonId, userId, text }, { headers: { Authorization: `Bearer ${token}` } });
+
+            dispatch(addCommentAction(res.data))
+
+
+        } catch (e) {
             console.log(e);
+            // dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+export const loadComments = () => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.get(serverApi + `api/cards/loadComments`, { headers: { Authorization: `Bearer ${token}` } });
+
+            dispatch(addCommentAction(res.data))
+
+
+        } catch (e) {
+            console.log(e);
+            // dispatch(setErrorAction(e.response.data.message))
+        }
+    }
+}
+export const getLessons = (cardId) => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.post(serverApi + "api/cards/getLessons", { cardId }, { headers: { Authorization: `Bearer ${token}` } });
+
+            dispatch(getLessonsAction(res.data.lessons))
+
+        } catch (e) {
+            dispatch(setErrorAction(e.response.data.message))
         }
     }
 }
@@ -92,11 +177,12 @@ export const getCard = (cardId) => {
         }
     }
 }
-export const changeCardInfo = (id, promo, card) => {
+export const changeCardInfo = (id, promo, card, image) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
             const formData = new FormData()
+            formData.append('image', image)
             Object.keys(promo).forEach(key => formData.append(key, promo[key]))
             Object.keys(card).forEach(key => formData.append(key, card[key]))
 

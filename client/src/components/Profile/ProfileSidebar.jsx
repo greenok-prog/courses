@@ -11,6 +11,7 @@ function ProfileSidebar({ setselectedLink, selectedLink }) {
     { link: "photo", name: "Фотография" },
   ];
   const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser.user.firstName && currentUser.user.secondName);
   return (
     <div className="col-lg-4 profile_sidebar d-flex flex-column">
       <div className="profile_sidebar__info d-flex flex-column align-items-center justify-content-center">
@@ -19,7 +20,11 @@ function ProfileSidebar({ setselectedLink, selectedLink }) {
           <img src={serverApi + currentUser.user.avatar} alt="" />
         </div>
         {/* ---------Аватар--------- */}
-        <p className="profile_sidebar__username">Артем Фризен</p>
+        <p className="profile_sidebar__username">
+          {currentUser.user.firstName && currentUser.user.secondName
+            ? currentUser.user.secondName + " " + currentUser.user.firstName
+            : currentUser.user.username}
+        </p>
       </div>
       <ul className="profile_sidebar__links d-flex flex-column ">
         {sidebarLinks.map((el, index) => (

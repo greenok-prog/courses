@@ -67,6 +67,7 @@ function Account() {
           <p className="profile_form-title ">Пароль</p>
 
           <input
+            autoComplete="new-password"
             className="input"
             placeholder="Старый пароль"
             type="password"

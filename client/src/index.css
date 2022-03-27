@@ -28,7 +28,7 @@ img {
   object-fit: cover;
 }
 textarea {
-  min-height: 200px;
+  min-height: 150px;
 }
 .navbar-brand {
   color: white;
@@ -119,6 +119,21 @@ textarea {
 }
 .trend-active {
   border: 3px solid white;
+}
+.editor {
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+.editor span,
+.editor ul li {
+  color: #161616;
+}
+.editorClassName {
+  background: white;
+}
+.editorClassName ol li {
+  color: #161616;
 }
 .btn:hover {
   color: white;
@@ -584,7 +599,10 @@ button a:hover {
   margin-top: 16px;
 }
 .courseTasks_comment__avatar img {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .courseTasks_comment__username {
   font-weight: bold;
@@ -708,4 +726,10 @@ button a:hover {
   100% {
     transform: translate3d(100%, 0, 0);
   }
+}
+.d-none {
+  display: none;
+}
+.my_toast {
+  z-index: 20;
 }

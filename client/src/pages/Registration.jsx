@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import ErrorToast from "../components/UI/ErrorToast";
-import MyToast from "../components/UI/MyToast";
+
 import { registration } from "../store/actions/user";
 
-function Registration() {
-  const { isError } = useSelector((state) => state.user);
+function Registration({ role }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -16,7 +14,7 @@ function Registration() {
 
   const dispatch = useDispatch();
   const regist = () => {
-    dispatch(registration(form.name, form.email, form.password));
+    dispatch(registration(form.name, form.email, form.password, role));
   };
 
   return (
@@ -25,13 +23,18 @@ function Registration() {
         <div className="row align-items-center">
           <div className="col-2"></div>
           <form
+            autoComplete="off"
             onSubmit={(e) => {
               e.preventDefault();
               regist();
             }}
             className="forms col-8 d-flex flex-column justify-content-center"
           >
-            <p className="text-center">Зарегестрируйтесь и начните обучение</p>
+            <p className="text-center">
+              {role === "USER"
+                ? "Зарегестрируйтесь и начните обучение"
+                : "Делитесь знаниями на крупнейшей образовательной платформе"}
+            </p>
 
             <input
               value={form.name}
@@ -48,6 +51,7 @@ function Registration() {
               placeholder="Email"
             />
             <input
+              autoComplete="new-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="input"
@@ -55,6 +59,7 @@ function Registration() {
               placeholder="Пароль"
             />
             <input
+              autoComplete="new-password"
               value={form.passwordRepeat}
               onChange={(e) =>
                 setForm({ ...form, passwordRepeat: e.target.value })

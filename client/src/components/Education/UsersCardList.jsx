@@ -9,6 +9,7 @@ function UsersCardList({ purchasedCourses }) {
       {cards.map((item, index) =>
         purchasedCourses.includes(item._id) ? (
           <UsersCardItem
+            id={item._id}
             key={index}
             title={item.title}
             text={item.text}

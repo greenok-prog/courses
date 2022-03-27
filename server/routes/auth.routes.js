@@ -30,15 +30,17 @@ router.post('/registration',
             return res.status(400).json({ message: "Неверные данные", errors })
         }
         try {
-            const { username, email, password } = req.body
+            const { username, email, password, role } = req.body
 
             const candidate = await User.findOne({ email })
             if (candidate) {
                 return res.status(400).json({ message: 'Пользователь уже существует' })
             }
             const hashPassword = await bcrypt.hash(password, 7)
-            const role = await Role.findOne({ value: 'USER' })
-            const user = await new User({ username, email, password: hashPassword, roles: [role.value] })
+
+
+            const userRole = await Role.findOne({ value: role })
+            const user = await new User({ username, email, password: hashPassword, roles: [userRole.value] })
             await user.save()
             const token = generateAccessToken(user._id, user.roles)
 
@@ -58,7 +60,7 @@ router.post('/registration',
                 }
             })
         } catch (error) {
-            console.log(error);
+
             res.send({ message: 'Server error' })
         }
     })
@@ -91,7 +93,7 @@ router.post('/login',
                 }
             })
         } catch (error) {
-            console.log(error);
+
             res.send({ message: 'Server error' })
         }
     })
@@ -101,7 +103,7 @@ router.get('/auth', authMiddleware,
 
             const user = await User.findOne({ _id: req.user.id })
 
-            const token = jwt.sign({ id: user._id, roles: user.roles }, config.get("secretKey"), { expiresIn: "24h" })
+            const token = generateAccessToken(user._id, user.roles)
             return res.json({
                 token, user: {
                     _id: user.id,
@@ -119,7 +121,7 @@ router.get('/auth', authMiddleware,
             })
 
         } catch (error) {
-            console.log(error);
+
             res.send({ message: 'Server error' })
         }
     })

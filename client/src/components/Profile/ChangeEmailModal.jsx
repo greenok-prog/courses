@@ -36,7 +36,7 @@ function ChangeEmailModal({ value, isLink }) {
           <Modal.Title>Изменение email</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form className="d-flex flex-column">
+          <form className="d-flex flex-column" autoComplete="off">
             {isError && <p className="text-danger">{error}</p>}
             <input
               autocomplete="off"
@@ -47,6 +47,7 @@ function ChangeEmailModal({ value, isLink }) {
               className="input"
             />
             <input
+              autoComplete="new-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               type="password"

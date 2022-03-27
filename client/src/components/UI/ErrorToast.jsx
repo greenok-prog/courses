@@ -12,7 +12,7 @@ function ErrorToast() {
     setShow(false);
   };
   return (
-    <ToastContainer position="top-end" className="position-fixed">
+    <ToastContainer position="top-end" className="my_toast position-fixed">
       <Toast
         onClose={close}
         className="sticky"

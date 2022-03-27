@@ -1,9 +1,11 @@
 import express from 'express'
-import { buyCourse, changeAvatar, changeEmail, changePassword, changeProfileInfo, deleteUser, getAllUsers } from '../controllers/user.controller.js'
+import { buyCourse, changeAvatar, changeEmail, changePassword, changeProfileInfo, changeUserData, createUser, deleteUser, getAllUsers, getUserData } from '../controllers/user.controller.js'
 import multer from 'multer'
 import authMiddleware from '../middleware/auth.middleware.js'
-import Role from '../models/Role.js'
+
 import rolesMiddleware from '../middleware/roles.middleware.js'
+import authvalidator from '../controllers/validators/auth.valudator.js'
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
@@ -25,11 +27,14 @@ const router = express.Router()
 // })
 // rolesMiddleware(['ADMIN'])
 router.get('/', rolesMiddleware(['ADMIN']), getAllUsers)
-router.delete('/:id', deleteUser)
-router.put('/profileInfo', authMiddleware, changeProfileInfo)
+router.post('/', rolesMiddleware(['ADMIN']), authvalidator.createUserValidator, createUser)
+router.post('/:id', rolesMiddleware(['ADMIN']), getUserData)
+router.put('/:id/changeData', rolesMiddleware(['ADMIN']), changeUserData)
+router.delete('/:id', rolesMiddleware(['ADMIN']), deleteUser)
+router.put('/profileInfo', rolesMiddleware(['USER', 'ADMIN']), changeProfileInfo)
 router.put('/email', authMiddleware, changeEmail)
 router.put('/password', authMiddleware, changePassword)
-router.put('/buyCourse', authMiddleware, buyCourse)
+router.put('/buyCourse', rolesMiddleware(['USER', 'ADMIN']), buyCourse)
 router.put('/avatar', upload.single('avatar'), authMiddleware, changeAvatar)
 
 export default router

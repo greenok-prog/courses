@@ -7,6 +7,7 @@ function ProfileLinks() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const isAdmin = currentUser?.user?.roles[0] === "ADMIN";
+  const isTeacher = currentUser?.user?.roles.includes("TEACHER");
   return (
     <div>
       <ul className="navbar-nav">
@@ -14,6 +15,12 @@ function ProfileLinks() {
           <li className="nav-item">
             <NavLink className="nav-link active" to="/admin">
               Админ панель
+            </NavLink>
+          </li>
+        ) : isTeacher ? (
+          <li className="nav-item">
+            <NavLink className="nav-link active" to="/education">
+              Мои курсы
             </NavLink>
           </li>
         ) : (

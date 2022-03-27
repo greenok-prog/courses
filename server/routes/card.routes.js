@@ -2,7 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import authMiddleware from '../middleware/auth.middleware.js'
 import rolesMiddleware from '../middleware/roles.middleware.js'
-import { addCard, changeCardInfo, getCard, getCardPromo, getCards, removeCard } from '../controllers/card.controller.js'
+import { addCard, addComment, addLesson, addLessonBlock, changeCardInfo, getCard, getCardPromo, getCards, getLessons, loadComments, removeCard } from '../controllers/card.controller.js'
 
 
 
@@ -17,12 +17,17 @@ const upload = multer({
         }
     })
 })
+router.post('/addLesson', rolesMiddleware(['ADMIN', 'TEACHER']), upload.single('video'), addLesson)
+router.post('/:id/addLessonBlock', rolesMiddleware(['ADMIN', 'TEACHER']), addLessonBlock)
+router.post('/getLessons', authMiddleware, getLessons)
+router.get('/loadComments', authMiddleware, loadComments)
+router.post('/:id/addComment', authMiddleware, addComment)
 
-router.post('/add', rolesMiddleware(['ADMIN']), upload.single('file'), addCard)
+router.post('/add', rolesMiddleware(['ADMIN', 'TEACHER']), upload.single('file'), addCard)
 router.get('/', getCards)
-router.post('/:id', rolesMiddleware(['ADMIN']), getCard)
-router.put('/:id', rolesMiddleware(['ADMIN']), upload.single('image'), changeCardInfo)
-router.delete('/:id', rolesMiddleware(['ADMIN']), removeCard)
+router.post('/:id', rolesMiddleware(['ADMIN', 'TEACHER']), getCard)
+router.put('/:id', rolesMiddleware(['ADMIN', 'TEACHER']), upload.single('image'), changeCardInfo)
+router.delete('/:id', rolesMiddleware(['ADMIN', 'TEACHER']), removeCard)
 router.post('/:id/promo', getCardPromo)
 
 
