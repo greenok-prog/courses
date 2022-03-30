@@ -14,6 +14,7 @@ function CardItem(props) {
 
   const { currentUser } = useSelector((state) => state.user);
   const isAdmin = currentUser?.user?.roles[0] === "ADMIN";
+  const hasRights = isAdmin || props.card?.author === currentUser?.user?._id;
 
   return (
     <div className="col-lg-4 col-sm-12 card mb-3">
@@ -34,7 +35,7 @@ function CardItem(props) {
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
           />
-          {isAdmin && (
+          {hasRights && (
             <>
               <button className="btn more-text">
                 <Link to={`/card/${props.card._id}/change`}>Изменить</Link>

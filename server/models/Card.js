@@ -6,6 +6,7 @@ const cardSchema = mongoose.Schema({
     image: { type: String, require: true },
     type: { type: String, default: 'design', require: true },
     popular: { type: Number, default: 0 },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     lessonBlocks: [{ type: mongoose.Schema.Types.ObjectId, ref: "LessonBlock" }]
 
 

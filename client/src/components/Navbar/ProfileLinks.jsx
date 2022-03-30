@@ -11,16 +11,17 @@ function ProfileLinks() {
   return (
     <div>
       <ul className="navbar-nav">
+        {isTeacher && (
+          <li className="nav-item">
+            <NavLink className="nav-link active" to="/teachersRoom">
+              Мои курсы
+            </NavLink>
+          </li>
+        )}
         {isAdmin ? (
           <li className="nav-item">
             <NavLink className="nav-link active" to="/admin">
               Админ панель
-            </NavLink>
-          </li>
-        ) : isTeacher ? (
-          <li className="nav-item">
-            <NavLink className="nav-link active" to="/education">
-              Мои курсы
             </NavLink>
           </li>
         ) : (

@@ -1,4 +1,4 @@
-import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PROFILE_INFO, GET_USER_DATA, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE } from "../actions"
+import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PROFILE_INFO, GET_USER_DATA, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE, ADD_TO_FAVORITE, REMOVE_FROM_FAVORITE } from "../actions"
 
 const initialState = {
     isAuth: false,
@@ -10,6 +10,7 @@ const initialState = {
     isMessage: false,
     errors: [],
     userData: {},
+
 
 }
 
@@ -23,6 +24,10 @@ export const userReducer = (state = initialState, action) => {
             return { ...state, currentUser: action.payload, isAuth: true, isLoading: false }
         case ADD_TO_PURCHASED:
             return { ...state, currentUser: { ...state.currentUser, user: action.payload } }
+        case ADD_TO_FAVORITE:
+            return { ...state, currentUser: { ...state.currentUser, user: { ...state.currentUser.user, favoriteCourses: [...state.currentUser.user.favoriteCourses, action.payload._id] } } }
+        case REMOVE_FROM_FAVORITE:
+            return { ...state, currentUser: { ...state.currentUser, user: { ...state.currentUser.user, favoriteCourses: state.currentUser.user.favoriteCourses.filter(el => el !== action.payload._id) } } }
         //errors    
         case SET_ERROR:
             return { ...state, error: action.payload, isError: true }

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 function CreateCard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isMessage, isError } = useSelector((state) => state.user);
+  const { currentUser, isError } = useSelector((state) => state.user);
 
   const [card, setCard] = useState({
     title: "",
@@ -45,7 +45,8 @@ function CreateCard() {
         cardPromo.promoSubtitle,
         cardPromo.price,
         will,
-        cardPromo.description
+        cardPromo.description,
+        currentUser.user._id
       )
     ).then(() => navigate("/admin"));
   };

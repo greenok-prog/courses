@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useParams } from "react-router-dom";
 import config from "../../config/default.json";
+import { addToFavorite, removeFromFavorite } from "../../store/actions/cards";
 import { addToPurchased } from "../../store/actions/user";
 function PromoCard({ promo, image }) {
   const serverApi = config.API_SERVER;
+  const params = useParams();
   const dispatch = useDispatch();
-  const { isAuth, currentUser } = useSelector((state) => state.user);
+  const { isAuth, isMessage, currentUser } = useSelector((state) => state.user);
+
+  const addToFav = () => {
+    dispatch(addToFavorite(params.id, currentUser.user._id));
+  };
+  const removeFromFav = () => {
+    dispatch(removeFromFavorite(params.id, currentUser.user._id));
+  };
 
   return (
     <div className="courseInfo_card col-3">
@@ -47,8 +56,8 @@ function PromoCard({ promo, image }) {
             </button>
           ))}
 
-        {/* {favorite && !favorite.includes(promo) ? (
-          <button className="courseInfo_card-like">
+        {isAuth && !currentUser.user.favoriteCourses.includes(params.id) ? (
+          <button className="courseInfo_card-like" onClick={addToFav}>
             <svg
               className={`favorite`}
               fill="white"
@@ -64,7 +73,7 @@ function PromoCard({ promo, image }) {
             </svg>
           </button>
         ) : (
-          <button className="courseInfo_card-like">
+          <button className="courseInfo_card-like" onClick={removeFromFav}>
             <svg
               className={`favorite favorite-active`}
               fill="white"
@@ -79,7 +88,7 @@ function PromoCard({ promo, image }) {
               />
             </svg>
           </button>
-        )} */}
+        )}
       </div>
     </div>
   );

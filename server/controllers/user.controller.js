@@ -164,4 +164,31 @@ export const buyCourse = async (req, res) => {
         return res.status(400).json({ message: "Произошла ошибка при покупке" })
     }
 }
+export const addToFavorite = async (req, res) => {
+    try {
+        const { userId, cardId } = req.body
 
+
+        const user = await User.findByIdAndUpdate(userId, { $push: { favoriteCourses: cardId } }, { new: true })
+        const card = await Card.findOne({ _id: cardId })
+        return res.status(200).json(card)
+    } catch (e) {
+
+        return res.status(401).json({ message: "Произошла ошибка при добавлении" })
+    }
+
+}
+export const removeFromFavorite = async (req, res) => {
+    try {
+        const { userId, cardId } = req.body
+
+
+        const user = await User.findByIdAndUpdate(userId, { $pull: { favoriteCourses: cardId } }, { new: true })
+        const card = await Card.findOne({ _id: cardId })
+        return res.status(200).json(card)
+    } catch (e) {
+
+        return res.status(401).json({ message: "Произошла ошибка при удалении" })
+    }
+
+}

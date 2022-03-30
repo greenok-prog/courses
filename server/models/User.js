@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     secondName: { type: String },
     userLink: { type: String },
     githubLink: { type: String },
-    favoriteCourses: [{ type: Object }],
+    favoriteCourses: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
     purchasedCourses: [{ type: Schema.Types.ObjectId, ref: 'Card' }]
 })
 const User = mongoose.model('User', userSchema)

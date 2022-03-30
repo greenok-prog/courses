@@ -14,6 +14,9 @@ export const GET_LESSONS = 'GET_LESSONS'
 export const GET_CARD = 'GET_CARD'
 
 export const ADD_LESSON = 'ADD_LESSON';
+export const ADD_LESSON_BLOCK = 'ADD_LESSON_BLOCK';
+export const DELETE_BLOCK = 'DELETE_BLOCK';
+export const DELETE_LESSON = 'DELETE_LESSON'
 //admin actions
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const GET_USERS = 'GET_USERS'

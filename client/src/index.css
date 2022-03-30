@@ -598,7 +598,15 @@ button a:hover {
 .courseTasks_comment {
   margin-top: 16px;
 }
+.courseTasks_comment__avatar {
+  border: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
 .courseTasks_comment__avatar img {
+  border: none;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -732,4 +740,17 @@ button a:hover {
 }
 .my_toast {
   z-index: 20;
+}
+.lessonBlock_btn {
+  background-color: #3a3a3a;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  opacity: 0.8;
+
+  margin-right: 15px;
+}
+.lessonBlock_btn:hover {
+  opacity: 1;
 }

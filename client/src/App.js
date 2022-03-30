@@ -9,6 +9,7 @@ import MyToast from './components/UI/MyToast';
 
 import AdminPanel from './pages/AdminPanel';
 import ChangeCardInfo from './pages/ChangeCardInfo';
+import ChangeLesson from './pages/ChangeLesson';
 import ChangeUser from './pages/ChangeUser';
 import CourseInfo from './pages/CourseInfo';
 import CreateCard from './pages/CreateCard';
@@ -21,6 +22,7 @@ import Lesson from './pages/Lesson';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';
+import TeachersRoom from './pages/TeachersRoom';
 import { getAllCards } from './store/actions/cards';
 import { auth } from './store/actions/user';
 
@@ -35,6 +37,7 @@ function App() {
 
   }, [dispatch])
   const isAdmin = currentUser?.user?.roles?.includes('ADMIN')
+  const isTeacher = currentUser?.user?.roles?.includes('TEACHER')
 
 
   return (
@@ -50,14 +53,19 @@ function App() {
         {/* Только для админа */}
 
         {isAdmin ? <><Route path='/admin' element={<AdminPanel />} exact={true} />
-          <Route path='/card/:card_id/:block_id/addLession' element={<CreateLesson />} exact={true} />
+
           <Route path='/createUser' element={<CreateUser />} exact={true} />
-          <Route path='/addCard' element={<CreateCard />} exact={true} />
           <Route path='/user/:id' element={<ChangeUser />} exact={true} />
-          <Route path='/card/:id/change' element={<ChangeCardInfo />} exact={true} />
+
 
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
-
+        {isTeacher || isAdmin ?
+          <>
+            <Route path='/addCard' element={<CreateCard />} exact={true} />
+            <Route path='/:cardId/:lessonId/changeLesson' element={<ChangeLesson />} exact={true} />
+            <Route path='/card/:id/change' element={<ChangeCardInfo />} exact={true} />
+            <Route path='/card/:card_id/:block_id/addLession' element={<CreateLesson />} exact={true} /></>
+          : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
 
         <Route path='/home' element={<Home />} exact={true} />
         <Route path='/card/:id' element={<CourseInfo />} exact={true} />
@@ -68,6 +76,7 @@ function App() {
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}
         {isAuth ? <>
           <Route path='/profile' element={<Profile />} exact={true} />
+          <Route path='/teachersRoom' element={<TeachersRoom />} exact={true} />
           <Route path='/education' element={<Education />} exact={true} />
           <Route path='/lesson/:id' element={<Lesson />} exact={true} />
         </> : <Route path='*' element={<Navigate to='/home' />} exact={true} />}

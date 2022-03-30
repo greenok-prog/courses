@@ -2,7 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import authMiddleware from '../middleware/auth.middleware.js'
 import rolesMiddleware from '../middleware/roles.middleware.js'
-import { addCard, addComment, addLesson, addLessonBlock, changeCardInfo, getCard, getCardPromo, getCards, getLessons, loadComments, removeCard } from '../controllers/card.controller.js'
+import { addCard, addComment, addLesson, addLessonBlock, changeCardInfo, changeLesson, changeLessonBlock, deleteLesson, deleteLessonBlock, getCard, getCardPromo, getCards, getLessons, loadComments, removeCard } from '../controllers/card.controller.js'
 
 
 
@@ -22,6 +22,10 @@ router.post('/:id/addLessonBlock', rolesMiddleware(['ADMIN', 'TEACHER']), addLes
 router.post('/getLessons', authMiddleware, getLessons)
 router.get('/loadComments', authMiddleware, loadComments)
 router.post('/:id/addComment', authMiddleware, addComment)
+router.delete('/:id/deleteLessonBlock', rolesMiddleware(['ADMIN', 'TEACHER']), deleteLessonBlock)
+router.put('/changeLessonBlock', rolesMiddleware(['ADMIN', 'TEACHER']), changeLessonBlock)
+router.put('/:id/changeLesson', rolesMiddleware(['ADMIN', 'TEACHER']), upload.single('video'), changeLesson)
+router.delete('/:id/deleteLesson', rolesMiddleware(['ADMIN', 'TEACHER']), deleteLesson)
 
 router.post('/add', rolesMiddleware(['ADMIN', 'TEACHER']), upload.single('file'), addCard)
 router.get('/', getCards)
