@@ -38,6 +38,7 @@ function App() {
   }, [dispatch])
   const isAdmin = currentUser?.user?.roles?.includes('ADMIN')
   const isTeacher = currentUser?.user?.roles?.includes('TEACHER')
+  const test = 'test'
 
 
   return (
