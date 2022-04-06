@@ -26,7 +26,6 @@ function CourseInfo() {
       dispatch(getCardPromoAction({}));
     };
   }, [cards, dispatch, params.id]);
-  console.log(currentPromo.willLearn);
   const [errorMessage, setErrorMessage] = useState(false);
   return (
     <div className="courseInfo__header">

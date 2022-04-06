@@ -28,7 +28,7 @@ function AddCard({ form, setCard }) {
         value={form.title}
         type="text"
         className="input"
-        placeholder="title"
+        placeholder="Название карточки"
       />
 
       <textarea
@@ -37,7 +37,7 @@ function AddCard({ form, setCard }) {
         value={form.text}
         className="input"
         type="text"
-        placeholder="text"
+        placeholder="Описание"
       />
       <DropdownButton title={selectedType.name}>
         {trends.map((el) => (
@@ -54,7 +54,7 @@ function AddCard({ form, setCard }) {
         id="card_file"
         name="file"
         type="file"
-        placeholder="file"
+        placeholder="Файл"
       />
     </>
   );

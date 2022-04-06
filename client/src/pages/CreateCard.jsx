@@ -50,7 +50,11 @@ function CreateCard() {
         cardPromo.description,
         currentUser.user._id
       )
-    ).then(() => navigate("/admin"));
+    ).then((err) => {
+      if (!err) {
+        navigate("/admin");
+      }
+    });
   };
   return (
     <div className="addCard_form d-flex flex-column justify-content-center col-md-8 ">

@@ -9,28 +9,28 @@ function AddCardPromo({ form, setForm, addToWillLearn, will, setWill }) {
         className="input"
         value={form.title}
         type="text"
-        placeholder="Title"
+        placeholder="Название"
       />
       <input
         onChange={(e) => setForm({ ...form, promoSubtitle: e.target.value })}
         value={form.subtitle}
         className="input"
         type="text"
-        placeholder="Subtitle"
+        placeholder="Подзаголовок"
       />
       <textarea
         onChange={(e) => setForm({ ...form, description: e.target.value })}
         value={form.description}
         className="input"
         type="text"
-        placeholder="Description"
+        placeholder="Описание"
       />
       <input
         onChange={(e) => setForm({ ...form, price: e.target.value })}
         value={form.price}
         className="input"
         type="number"
-        placeholder="Price"
+        placeholder="Цена"
       />
       <div>
         <ul className="mb-2">
@@ -50,7 +50,7 @@ function AddCardPromo({ form, setForm, addToWillLearn, will, setWill }) {
           value={form.willLearnStr}
           className="input form-control"
           type="text"
-          placeholder="WillLearn"
+          placeholder="Чему научит курс"
         />
         <button onClick={addToWillLearn} className="btn">
           Добавить

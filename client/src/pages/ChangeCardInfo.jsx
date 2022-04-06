@@ -84,7 +84,7 @@ function ChangeCardInfo() {
             value={card.title}
             type="text"
             className="input"
-            placeholder="title"
+            placeholder="Название"
           />
 
           <textarea
@@ -93,7 +93,7 @@ function ChangeCardInfo() {
             value={card.text}
             className="input"
             type="text"
-            placeholder="text"
+            placeholder="Описание"
           />
           <DropdownButton title={selectedType.name}>
             {trends.map((el) => (
@@ -110,7 +110,7 @@ function ChangeCardInfo() {
             id="card_file"
             name="file"
             type="file"
-            placeholder="file"
+            placeholder="Картинка карточки"
           />
           <h3 className="text-center">Промо карточки</h3>
           <input
@@ -120,7 +120,7 @@ function ChangeCardInfo() {
             className="input"
             value={cardPromo?.title}
             type="text"
-            placeholder="Title"
+            placeholder="Название"
           />
           <input
             onChange={(e) =>
@@ -129,7 +129,7 @@ function ChangeCardInfo() {
             value={cardPromo?.subtitle}
             className="input"
             type="text"
-            placeholder="Subtitle"
+            placeholder="Подзаголовок"
           />
           <textarea
             onChange={(e) =>
@@ -138,7 +138,7 @@ function ChangeCardInfo() {
             value={cardPromo?.description}
             className="input"
             type="text"
-            placeholder="Description"
+            placeholder="Описание"
           />
           <input
             onChange={(e) =>
@@ -147,7 +147,7 @@ function ChangeCardInfo() {
             value={cardPromo?.price}
             className="input"
             type="number"
-            placeholder="Price"
+            placeholder="Цена"
           />
           <div>
             <ul className="mb-2">
@@ -170,7 +170,7 @@ function ChangeCardInfo() {
               value={cardPromo.willLearnStr}
               className="input form-control"
               type="text"
-              placeholder="WillLearn"
+              placeholder="Чему научит курс"
             />
             <button onClick={addToWillLearn} className="btn">
               Добавить

@@ -4,11 +4,12 @@ import { useParams } from "react-router-dom";
 import config from "../../config/default.json";
 import { addToFavorite, removeFromFavorite } from "../../store/actions/cards";
 import { addToPurchased } from "../../store/actions/user";
+import PaypalCheckoutButton from "./PaypalCheckoutButton";
 function PromoCard({ promo, image }) {
   const serverApi = config.API_SERVER;
   const params = useParams();
   const dispatch = useDispatch();
-  const { isAuth, isMessage, currentUser } = useSelector((state) => state.user);
+  const { isAuth, currentUser } = useSelector((state) => state.user);
 
   const addToFav = () => {
     dispatch(addToFavorite(params.id, currentUser.user._id));
@@ -18,79 +19,73 @@ function PromoCard({ promo, image }) {
   };
 
   return (
-    <div className="courseInfo_card col-3">
-      <img className="courseInfo_card__image" src={serverApi + image} alt="" />
+    <>
+      {promo && (
+        <div className="courseInfo_card col-3 ">
+          <img
+            className="courseInfo_card__image"
+            src={serverApi + image}
+            alt=""
+          />
 
-      <div className="courseInfo_card__body">
-        <div className="courseInfo_card__price">{promo.price}$</div>
-        <p className="courseInfo_card__text">Этот курс включает:</p>
-        <ul className="courseInfo_card__list">
-          <li className="courseInfo_card__list-item">
-            <img src="/images/inf.png" alt="" />
-            Полный пожизненный доступ
-          </li>
-          <li className="courseInfo_card__list-item">
-            <img src="/images/video.png" alt="" />
-            Видеоматериалы
-          </li>
-          <li className="courseInfo_card__list-item">
-            <img src="/images/task.png" alt="" />
-            Задания
-          </li>
-        </ul>
-      </div>
-      <div className="courseInfo_card__footer d-flex justify-content-between">
-        {isAuth &&
-          (!currentUser.user.purchasedCourses.includes(promo.card) ? (
-            <button
-              onClick={() =>
-                dispatch(addToPurchased(currentUser.user._id, promo.card))
-              }
-              className="courseInfo_card-buy"
-            >
-              Купить сейчас
-            </button>
+          <div className="courseInfo_card__body">
+            <div className="courseInfo_card__price">{promo.price}$</div>
+            <p className="courseInfo_card__text">Этот курс включает:</p>
+            <ul className="courseInfo_card__list">
+              <li className="courseInfo_card__list-item">
+                <img src="/images/inf.png" alt="" />
+                Полный пожизненный доступ
+              </li>
+              <li className="courseInfo_card__list-item">
+                <img src="/images/video.png" alt="" />
+                Видеоматериалы
+              </li>
+            </ul>
+          </div>
+          {isAuth && !currentUser.user.favoriteCourses.includes(params.id) ? (
+            <div className="px-2 justify-content-center w-100 mt-5 d-flex align-items-center">
+              <button
+                className="courseInfo_card-like w-100 text-center justify-content-center  d-flex align-items-center"
+                onClick={addToFav}
+              >
+                Добавить в желаемое
+              </button>
+            </div>
           ) : (
-            <button disabled className="courseInfo_card-buy">
-              Уже куплено
-            </button>
-          ))}
-
-        {isAuth && !currentUser.user.favoriteCourses.includes(params.id) ? (
-          <button className="courseInfo_card-like" onClick={addToFav}>
-            <svg
-              className={`favorite`}
-              fill="white"
-              width="20"
-              height="19"
-              viewBox="0 0 20 19"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.88659 16.6603L8.88587 16.6596C6.30081 14.3155 4.19567 12.4057 2.73078 10.6147C1.27162 8.83074 0.5 7.22576 0.5 5.5C0.5 2.69614 2.69614 0.5 5.5 0.5C7.08861 0.5 8.62112 1.24197 9.61932 2.41417L10 2.8612L10.3807 2.41417C11.3789 1.24197 12.9114 0.5 14.5 0.5C17.3039 0.5 19.5 2.69614 19.5 5.5C19.5 7.22577 18.7284 8.83077 17.2691 10.6161C15.8065 12.4055 13.7058 14.3144 11.1265 16.6583L11.1148 16.669L11.1137 16.67L10.0013 17.675L8.88659 16.6603Z"
-                stroke="white"
-              />
-            </svg>
-          </button>
-        ) : (
-          <button className="courseInfo_card-like" onClick={removeFromFav}>
-            <svg
-              className={`favorite favorite-active`}
-              fill="white"
-              width="20"
-              height="19"
-              viewBox="0 0 20 19"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.88659 16.6603L8.88587 16.6596C6.30081 14.3155 4.19567 12.4057 2.73078 10.6147C1.27162 8.83074 0.5 7.22576 0.5 5.5C0.5 2.69614 2.69614 0.5 5.5 0.5C7.08861 0.5 8.62112 1.24197 9.61932 2.41417L10 2.8612L10.3807 2.41417C11.3789 1.24197 12.9114 0.5 14.5 0.5C17.3039 0.5 19.5 2.69614 19.5 5.5C19.5 7.22577 18.7284 8.83077 17.2691 10.6161C15.8065 12.4055 13.7058 14.3144 11.1265 16.6583L11.1148 16.669L11.1137 16.67L10.0013 17.675L8.88659 16.6603Z"
-                stroke="white"
-              />
-            </svg>
-          </button>
-        )}
-      </div>
-    </div>
+            <div className="px-2 mb-2 justify-content-center w-100 mt-5 d-flex align-items-center">
+              <button
+                className="courseInfo_card-like w-100 text-center justify-content-center  d-flex align-items-center"
+                onClick={removeFromFav}
+              >
+                Удалить из желаемого
+              </button>
+            </div>
+          )}
+          <div className="mt-2 d-flex justify-content-center align-items-center">
+            {isAuth &&
+              (!currentUser.user.purchasedCourses.includes(promo.card) ? (
+                <>
+                  <div className="d-flex align-items-center justify-content-center flex-row">
+                    <PaypalCheckoutButton
+                      cardId={params.id}
+                      product={{
+                        description: promo.description,
+                        price: promo.price,
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="px-2 justify-content-center w-100  d-flex align-items-center">
+                  <button className="courseInfo_card-like w-100 text-center justify-content-center  d-flex align-items-center">
+                    Уже куплено
+                  </button>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

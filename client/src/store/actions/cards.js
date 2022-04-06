@@ -231,6 +231,7 @@ export const addCard = (title, text, type, image, promoTitle, promoSubtitle, pri
             dispatch(setMessageAction(res.data.message))
         } catch (e) {
             dispatch(setErrorAction(e.response.data.message))
+            return e.response
         }
     }
 }

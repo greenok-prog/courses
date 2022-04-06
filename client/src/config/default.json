@@ -1,3 +1,4 @@
 {
-    "API_SERVER":"http://localhost:5000/"
+    "API_SERVER":"http://localhost:5000/",
+    "PAYPAL_CLIENT_ID": "Aael1VKiDeJEwxA34qurfvo9wXM_w6tHT0J00SA8G_SueYBktGBwZ6mbuEN8Z0H7TCqmN-wxibF_jyFx"
 }
