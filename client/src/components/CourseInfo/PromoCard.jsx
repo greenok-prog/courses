@@ -69,7 +69,7 @@ function PromoCard({ promo, image }) {
                     <PaypalCheckoutButton
                       cardId={params.id}
                       product={{
-                        description: promo.description,
+                        description: promo.title,
                         price: promo.price,
                       }}
                     />

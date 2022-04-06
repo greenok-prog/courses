@@ -90,14 +90,12 @@ function Lesson() {
                 )}
 
                 <div className="courseTasks_theory">
-                  <h3 className="courseTasks_theory__title">Теория:</h3>
                   <div>
                     <p className="courseTasks_theory__subtitle"></p>
                     <p className="courseTasks_theory__text">{lesson.text}</p>
                   </div>
                 </div>
                 <div className="courseTasks_links ">
-                  <h3 className="courseTasks_links__title">Полезные ссылки:</h3>
                   <ul className="d-flex justify-content-between">
                     {lesson.links &&
                       lesson.links.map((d) => (

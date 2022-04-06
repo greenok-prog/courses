@@ -45,7 +45,7 @@ function PaypalCheckoutButton({ product, cardId }) {
             return actions.order.create({
               purchase_units: [
                 {
-                  description: product.description,
+                  description: product.title,
                   amount: {
                     value: Number(product.price),
                     currency_code: "USD",
