@@ -1,5 +1,5 @@
 import express from 'express'
-import { addToFavorite, buyCourse, changeAvatar, changeEmail, changePassword, changeProfileInfo, changeUserData, createUser, deleteUser, getAllUsers, getUserData, removeFromFavorite } from '../controllers/user.controller.js'
+import { addToFavorite, buyCourse, changeAvatar, changeEmail, changePassword, changeProfileInfo, changeUserData, createUser, deleteUser, getAllUsers, getCurrentLesson, getUserData, removeFromFavorite, setCurrentLesson } from '../controllers/user.controller.js'
 import multer from 'multer'
 import authMiddleware from '../middleware/auth.middleware.js'
 
@@ -28,6 +28,8 @@ const router = express.Router()
 // rolesMiddleware(['ADMIN'])
 router.get('/', rolesMiddleware(['ADMIN']), getAllUsers)
 router.post('/', rolesMiddleware(['ADMIN']), authvalidator.createUserValidator, createUser)
+router.post('/:id/getCurrentLesson', authMiddleware, getCurrentLesson)
+router.put('/:id/setCurrentLesson', authMiddleware, setCurrentLesson)
 router.post('/:id', rolesMiddleware(['ADMIN']), getUserData)
 router.put('/:id/addToFav', authMiddleware, addToFavorite)
 router.put('/:id/removeFromFav', authMiddleware, removeFromFavorite)

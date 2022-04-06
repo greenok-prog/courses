@@ -1,4 +1,4 @@
-import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PROFILE_INFO, GET_USER_DATA, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE, ADD_TO_FAVORITE, REMOVE_FROM_FAVORITE } from "../actions"
+import { ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PROFILE_INFO, GET_USER_DATA, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE, ADD_TO_FAVORITE, REMOVE_FROM_FAVORITE, SET_CURRENT_LESSON } from "../actions"
 
 const initialState = {
     isAuth: false,
@@ -10,6 +10,7 @@ const initialState = {
     isMessage: false,
     errors: [],
     userData: {},
+    currentLesson: []
 
 
 }
@@ -20,6 +21,10 @@ export const userReducer = (state = initialState, action) => {
         case LOGOUT:
             localStorage.removeItem('token')
             return { ...state, currentUser: {}, isAuth: false }
+        case SET_CURRENT_LESSON:
+            return {
+                ...state, currentUser: { ...state.currentUser, user: { ...state.currentUser.user, currentLesson: action.payload } }
+            }
         case SET_CURRENT_USER:
             return { ...state, currentUser: action.payload, isAuth: true, isLoading: false }
         case ADD_TO_PURCHASED:

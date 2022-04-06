@@ -80,8 +80,10 @@ const CreateUser = () => {
 
         <p className="my-1 d-flex">
           {userForm.roles
-            ? userForm.roles.map((el) => (
-                <li className="d-inline mx-2">{el}</li>
+            ? userForm.roles.map((el, index) => (
+                <li key={index} className="d-inline mx-2">
+                  {el}
+                </li>
               ))
             : "Роли пользователя"}
         </p>

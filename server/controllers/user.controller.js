@@ -4,6 +4,9 @@ import fs from 'fs'
 import validator from 'express-validator'
 import config from 'config'
 import Card from "../models/Card.js";
+import Lesson from "../models/Lesson.js";
+import LessonBlock from "../models/LessonBlock.js";
+
 const { validationResult } = validator
 
 //admin panel
@@ -172,6 +175,58 @@ export const addToFavorite = async (req, res) => {
         const user = await User.findByIdAndUpdate(userId, { $push: { favoriteCourses: cardId } }, { new: true })
         const card = await Card.findOne({ _id: cardId })
         return res.status(200).json(card)
+    } catch (e) {
+
+        return res.status(401).json({ message: "Произошла ошибка при добавлении" })
+    }
+
+}
+export const setCurrentLesson = async (req, res) => {
+    try {
+        const { lessonId, userId, lesId } = req.body
+
+        const lesson = await Lesson.findById(lessonId)
+        const les = await Card.findById(lesId)
+
+
+
+
+        // console.log(block._id);
+        const user = await User.findById(userId)
+        const currentLessonBlock = await user.currentLesson.find(el => el.cardId === lesId)
+
+
+        if (currentLessonBlock) {
+            const user = await User.findById(userId)
+            user.currentLesson.find(el => el.cardId === lesId).lesson = lessonId
+            await user.save()
+
+
+
+        } else {
+            const user = await User.findByIdAndUpdate(userId, { $push: { currentLesson: { cardId: les._id, lesson: lesson._id } } })
+            const use = await User.findById(userId)
+
+
+        }
+        const currentUser = await User.findById(userId)
+        return res.status(200).json(currentUser.currentLesson)
+
+    } catch (e) {
+        console.log(e);
+        return res.status(401).json({ message: "Произошла ошибка при добавлении" })
+    }
+
+}
+export const getCurrentLesson = async (req, res) => {
+    try {
+        const { userId } = req.body
+
+
+        const user = await User.findById(userId)
+
+        return res.status(200).json(user.currentLesson)
+
     } catch (e) {
 
         return res.status(401).json({ message: "Произошла ошибка при добавлении" })

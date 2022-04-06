@@ -12,6 +12,12 @@ const userSchema = mongoose.Schema({
     secondName: { type: String },
     userLink: { type: String },
     githubLink: { type: String },
+    currentLesson: [{
+        cardId: { type: String },
+        lesson: { type: Schema.Types.ObjectId, ref: 'Lesson' }
+    }],
+
+
     favoriteCourses: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
     purchasedCourses: [{ type: Schema.Types.ObjectId, ref: 'Card' }]
 })

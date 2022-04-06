@@ -10,7 +10,7 @@ function ChangeCardInfo() {
   const params = useParams();
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState({});
-  const { currentCard, isFetching } = useSelector((state) => state.course);
+  const { currentCard } = useSelector((state) => state.course);
   const [card, setCard] = useState({
     title: "",
     text: "",
@@ -22,7 +22,7 @@ function ChangeCardInfo() {
     return () => {
       dispatch(getCardAction({}));
     };
-  }, []);
+  }, [params.id, dispatch]);
   const trends = [
     { type: "design", name: "Дизайн" },
     { type: "programming", name: "Программирование" },
@@ -44,28 +44,30 @@ function ChangeCardInfo() {
     title: "",
     subtitle: "",
     price: "",
-    willLearn: "",
+    willLearn: [],
     description: "",
     willLearnStr: "",
   });
   const addToWillLearn = () => {
-    setWill([...will, cardPromo.willLearnStr]);
-    setCardPromo({ ...cardPromo, willLearnStr: "" });
+    if (cardPromo.willLearnStr) {
+      setWill([...will, cardPromo.willLearnStr]);
+      setCardPromo({ ...cardPromo, willLearnStr: "" });
+    }
   };
   const upload = () => {
     dispatch(
       changeCardInfo(
         params.id,
-        { ...cardPromo, willLearn: will },
+        { ...cardPromo, willLearn: JSON.stringify(will) },
         card,
         selectedFile
       )
     ).then(() => navigate("/admin"));
   };
   const loadData = () => {
-    setCard(currentCard.card);
-    setCardPromo(currentCard.promo);
-    setWill(currentCard.promo.willLearn);
+    setCard(currentCard?.card);
+    setCardPromo(currentCard?.promo);
+    setWill(currentCard?.promo?.willLearn);
   };
 
   return (
@@ -116,7 +118,7 @@ function ChangeCardInfo() {
               setCardPromo({ ...cardPromo, title: e.target.value })
             }
             className="input"
-            value={cardPromo.title}
+            value={cardPromo?.title}
             type="text"
             placeholder="Title"
           />
@@ -124,7 +126,7 @@ function ChangeCardInfo() {
             onChange={(e) =>
               setCardPromo({ ...cardPromo, subtitle: e.target.value })
             }
-            value={cardPromo.subtitle}
+            value={cardPromo?.subtitle}
             className="input"
             type="text"
             placeholder="Subtitle"
@@ -133,7 +135,7 @@ function ChangeCardInfo() {
             onChange={(e) =>
               setCardPromo({ ...cardPromo, description: e.target.value })
             }
-            value={cardPromo.description}
+            value={cardPromo?.description}
             className="input"
             type="text"
             placeholder="Description"
@@ -142,23 +144,24 @@ function ChangeCardInfo() {
             onChange={(e) =>
               setCardPromo({ ...cardPromo, price: e.target.value })
             }
-            value={cardPromo.price}
+            value={cardPromo?.price}
             className="input"
             type="number"
             placeholder="Price"
           />
           <div>
             <ul className="mb-2">
-              {will.map((item, index) => (
-                <li
-                  className="mx-2"
-                  style={{ cursor: "pointer", display: "inline-block" }}
-                  onClick={() => setWill(will.filter((el) => el !== item))}
-                  key={index}
-                >
-                  {item}
-                </li>
-              ))}
+              {will &&
+                will.map((item, index) => (
+                  <li
+                    className="mx-2"
+                    style={{ cursor: "pointer", display: "inline-block" }}
+                    onClick={() => setWill(will.filter((el) => el !== item))}
+                    key={index}
+                  >
+                    {item}
+                  </li>
+                ))}
             </ul>
             <input
               onChange={(e) =>

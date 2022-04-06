@@ -8,7 +8,7 @@ import LessonBlock from "../models/LessonBlock.js"
 
 
 import CardPromo from "../models/CardPromo.js"
-import User from '../models/User.js'
+
 import Lesson from '../models/Lesson.js'
 import Comment from '../models/Comment.js'
 
@@ -29,11 +29,10 @@ export const addCard = async (req, res) => {
 
         const newPromo = await new CardPromo({
             title: data.promoTitle, subtitle: data.promoSubtitle, card: card._id, image: card.image, description: data.description,
-            willLearn: data.willLearn, price: data.price
+            willLearn: JSON.parse(data.willLearn), price: data.price
         })
         await card.save()
         await newPromo.save()
-
         return res.status(201).json({ card, message: 'Карточка успешно создана' })
     } catch (e) {
 
@@ -86,7 +85,7 @@ export const changeCardInfo = async (req, res) => {
     try {
         const data = req.body
         const path = config.get('staticPath') + '\\'
-        console.log(req.file);
+        console.log(data.willLearn);
 
         const currentCard = await Card.findByIdAndUpdate(data._id[1], {
             title: data.title[1],
@@ -101,7 +100,7 @@ export const changeCardInfo = async (req, res) => {
         // }
         await CardPromo.findOneAndUpdate({ card: data._id[1] }, {
             title: data.title[0], subtitle: data.subtitle, description: data.description,
-            willLearn: data.willLearn.split(','), price: data.price
+            willLearn: JSON.parse(data.willLearn), price: data.price
         })
         if (req.file) {
             if (fs.existsSync(path + currentCard.image)) {
@@ -165,7 +164,8 @@ export const changeLessonBlock = async (req, res) => {
 export const deleteLessonBlock = async (req, res) => {
     try {
         const { blockId } = req.body
-        await LessonBlock.findByIdAndRemove(blockId)
+        const block = await LessonBlock.findByIdAndRemove(blockId)
+        await Lesson.deleteMany({ lessonBlock: blockId })
         return res.status(200).json(blockId)
     } catch (e) {
 

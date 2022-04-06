@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_LESSON, ADD_LESSON_BLOCK, DELETE_BLOCK, DELETE_LESSON, GET_ALL_CARDS, GET_CARD, GET_CARD_PROMO, GET_LESSONS, REMOVE_CARD, } from "../actions"
+import { ADD_COMMENT, ADD_LESSON, ADD_LESSON_BLOCK, DELETE_BLOCK, GET_ALL_CARDS, GET_CARD, GET_CARD_PROMO, GET_LESSONS, REMOVE_CARD } from "../actions"
 
 const initialState = {
     cards: [],
@@ -38,6 +38,7 @@ export const courseReducer = (state = initialState, action) => {
             return {
                 ...state, currentLessons: [...state.currentLessons.filter(el => el._id !== action.payload)]
             }
+
 
         case REMOVE_CARD:
             return { ...state, cards: state.cards.filter(card => card._id !== action.payload) }

@@ -64,6 +64,7 @@ export const deleteLessonAction = (payload) => ({
 })
 
 
+
 export const getAllCards = () => {
     return async dispatch => {
         try {
@@ -71,8 +72,8 @@ export const getAllCards = () => {
             dispatch(getAllCardsAction(res.data))
 
         } catch (e) {
-            console.log();
-            // dispatch(setErrorAction(e.response.data.message))
+
+
         }
     }
 }
@@ -201,7 +202,6 @@ export const addCard = (title, text, type, image, promoTitle, promoSubtitle, pri
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
-            // const authHeader = { 'Authorization': `Bearer ${token}` }
             const formData = new FormData();
 
             formData.append("title", title);
@@ -211,7 +211,7 @@ export const addCard = (title, text, type, image, promoTitle, promoSubtitle, pri
             formData.append("promoTitle", promoTitle);
             formData.append("promoSubtitle", promoSubtitle);
             formData.append("price", price);
-            formData.append("willLearn", willLearn);
+            formData.append("willLearn", JSON.stringify(willLearn));
             formData.append("description", description);
             formData.append("userId", userId);
 
@@ -290,7 +290,7 @@ export const changeLessonBlock = (blockId, title) => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token')
-            const res = await axios.put(serverApi + "api/cards" + '/changeLessonBlock', { blockId, title }, { headers: { Authorization: `Bearer ${token}` } })
+            const res = await axios.put(serverApi + "api/cards/changeLessonBlock", { blockId, title }, { headers: { Authorization: `Bearer ${token}` } })
 
 
         } catch (e) {

@@ -1,4 +1,4 @@
-import { GET_USER_DATA, ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE } from ".";
+import { GET_USER_DATA, ADD_TO_PURCHASED, CHANGE_AVATAR, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PROFILE_INFO, CREATE_USER, DELETE_USER, GET_USERS, LOGOUT, RESET_ERROR, RESET_MESSAGE, SET_CURRENT_USER, SET_ERROR, SET_MESSAGE, SET_CURRENT_LESSON } from ".";
 import axios from 'axios'
 import config from '../../config/default.json'
 
@@ -77,10 +77,14 @@ export const resetErrorAction = (payload) => ({
     type: RESET_ERROR,
     payload
 })
+export const setCurrentLessonAction = (payload) => ({
+    type: SET_CURRENT_LESSON,
+    payload
+})
 //admin
 //getting all users to admin panel
 let token = localStorage.getItem('token')
-let authHeader = { Authorization: `Bearer ${token}` }
+
 
 export const getUsers = () => {
     return async dispatch => {
@@ -88,6 +92,29 @@ export const getUsers = () => {
             token = localStorage.getItem('token')
             const res = await axios.get(`${serverApi}api/user`, { headers: { 'Authorization': `Bearer ${token}` } })
             dispatch(getAllUsersAction(res.data.users))
+        } catch (e) {
+            console.log(e.response.data.message);
+        }
+    }
+}
+export const setCurrentLesson = (lessonId, userId, lesId) => {
+    return async dispatch => {
+        try {
+            token = localStorage.getItem('token')
+            const res = await axios.put(`${serverApi}api/user/` + lessonId + '/setCurrentLesson', { lessonId, userId, lesId }, { headers: { 'Authorization': `Bearer ${token}` } })
+            dispatch(setCurrentLessonAction(res.data))
+        } catch (e) {
+            console.log(e.response.data.message);
+        }
+    }
+}
+export const getCurrentLesson = (userId) => {
+    return async dispatch => {
+        try {
+            token = localStorage.getItem('token')
+            const res = await axios.post(`${serverApi}api/user/` + userId + '/getCurrentLesson', { userId }, { headers: { 'Authorization': `Bearer ${token}` } })
+
+            dispatch(setCurrentLessonAction(res.data))
         } catch (e) {
             console.log(e.response.data.message);
         }

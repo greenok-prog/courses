@@ -56,11 +56,12 @@ router.post('/registration',
                     roles: user.roles,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,
-                    purchasedCourses: user.purchasedCourses
+                    purchasedCourses: user.purchasedCourses,
+
                 }
             })
         } catch (error) {
-
+            console.log(error);
             res.send({ message: 'Server error' })
         }
     })
@@ -89,7 +90,9 @@ router.post('/login',
                     githubLink: user.githubLink,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,
-                    purchasedCourses: user.purchasedCourses
+                    purchasedCourses: user.purchasedCourses,
+                    currentLesson: user.currentLesson
+
                 }
             })
         } catch (error) {
@@ -116,7 +119,9 @@ router.get('/auth', authMiddleware,
                     githubLink: user.githubLink,
                     favoriteCourses: user.favoriteCourses,
                     avatar: user.avatar,
-                    purchasedCourses: user.purchasedCourses
+                    purchasedCourses: user.purchasedCourses,
+                    currentLesson: user.currentLesson
+
                 }
             })
 

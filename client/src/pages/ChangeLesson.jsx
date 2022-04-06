@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { addLesson, changeLesson } from "../store/actions/cards";
+import { changeLesson } from "../store/actions/cards";
 
 function ChangeLesson() {
   const dispatch = useDispatch();
   const params = useParams();
-  console.log(params);
+
   const navigate = useNavigate();
   const { currentLessons } = useSelector((state) => state.course);
   const [currentLesson, setCurrentLesson] = useState({});
@@ -24,7 +24,13 @@ function ChangeLesson() {
         .filter((el) => el !== undefined)[0]
     );
     setForm(currentLesson);
-  }, [params.id, currentLessons, currentLesson.text]);
+  }, [
+    params.id,
+    currentLessons,
+    currentLesson.text,
+    currentLesson,
+    params.lessonId,
+  ]);
   console.log(form);
 
   const [selectedVideo, setSelectedVideo] = useState({});

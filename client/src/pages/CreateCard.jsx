@@ -30,8 +30,10 @@ function CreateCard() {
     willLearnStr: "",
   });
   const addToWillLearn = () => {
-    setWill([...will, cardPromo.willLearnStr]);
-    setCardPromo({ ...cardPromo, willLearnStr: "" });
+    if (cardPromo.willLearnStr.length) {
+      setWill([...will, cardPromo.willLearnStr]);
+      setCardPromo({ ...cardPromo, willLearnStr: "" });
+    }
   };
 
   const createCard = () => {

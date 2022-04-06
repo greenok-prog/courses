@@ -3,9 +3,9 @@ import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { CardList } from "../components";
-import Users from "../components/AdminPanel/Users";
+
 import { SearchForm, TrendList } from "../components/Home";
-import Search from "../components/Home/Search";
+
 import CardPreloader from "../components/UI/CardPreloader";
 import MyToast from "../components/UI/MyToast";
 import { getAllCards } from "../store/actions/cards";

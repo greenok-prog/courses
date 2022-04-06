@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Loader from "../components/UI/Loader";
 
 import { Accordion } from "react-bootstrap";
@@ -15,6 +15,7 @@ import {
   getLessons,
   loadComments,
 } from "../store/actions/cards";
+import { setCurrentLesson } from "../store/actions/user";
 
 function Lesson() {
   const [isActiveInput, setIsActiveInput] = useState(false);
@@ -22,6 +23,7 @@ function Lesson() {
   const [lessonBlock, setLessonBlock] = useState("");
   const [currentLessonBlock, setCurrentLessonBlock] = useState("");
   const [changeBlockInput, setChangeBlockInput] = useState("");
+  const [changeBlockActive, setChangeBlockActive] = useState(false);
   const { currentLessons, comments, cards } = useSelector(
     (state) => state.course
   );
@@ -50,11 +52,22 @@ function Lesson() {
       () => dispatch(getLessons(id))
     );
     setCurrentLessonBlock("");
+    setChangeBlockActive(false);
   };
   useEffect(() => {
-    // console.log(currentLessons?.find((el) => el?.lessons.length));
-    setLesson(currentLessons?.find((el) => el?.lessons.length)?.lessons[0]);
-  }, [currentLessons]);
+    const findetCard = currentUser.user.currentLesson.filter(
+      (les) => les.cardId === id
+    )[0];
+
+    if (findetCard) {
+      const lessons = currentLessons.map((el) =>
+        el.lessons.find((les) => les._id === findetCard.lesson)
+      );
+      setLesson(lessons.find((el) => el !== undefined));
+    } else {
+      setLesson(currentLessons?.find((el) => el?.lessons.length)?.lessons[0]);
+    }
+  }, [currentLessons, currentUser.user.currentLesson, id]);
 
   return (
     <>
@@ -163,9 +176,12 @@ function Lesson() {
             )}
             <div className="col-sm-4 courseTasks_sidebar">
               {currentLessons.length > 0 ? (
-                <Accordion className="" defaultActiveKey="0">
+                <Accordion className="bg-primary" defaultActiveKey={["1"]}>
                   {currentLessons.map((el, index) => (
-                    <Accordion.Item eventKey={index}>
+                    <Accordion.Item
+                      onClick={() => setCurrentLessonBlock(el)}
+                      eventKey={index}
+                    >
                       <Accordion.Header>
                         <div className="w-100 text-dark d-flex justify-content-between">
                           {el.title}{" "}
@@ -173,6 +189,7 @@ function Lesson() {
                             <div className="d-flex justify-conten-start align-items-center">
                               <button
                                 onClick={() => {
+                                  setChangeBlockActive(true);
                                   setCurrentLessonBlock(el);
                                   setChangeBlockInput(el.title);
                                 }}
@@ -218,75 +235,89 @@ function Lesson() {
                           )}
                         </div>
                       </Accordion.Header>
-                      <Accordion.Body>
+                      <Accordion.Body className="p-0">
                         {el.lessons ? (
                           <ul>
                             {el.lessons.map((les) => (
-                              <li
-                                onClick={() => {
-                                  setLesson(les);
-                                }}
-                                className="text-dark"
-                              >
-                                <div className="w-100 text-dark d-flex justify-content-between align-items-center">
-                                  <p
-                                    role="button"
-                                    className="text-dark cursor-pointer"
-                                  >
-                                    {les.title}
-                                  </p>
+                              <>
+                                <li
+                                  onClick={() => {
+                                    setLesson(les);
+                                    dispatch(
+                                      setCurrentLesson(
+                                        les._id,
+                                        currentUser.user._id,
+                                        id
+                                      )
+                                    );
+                                  }}
+                                  role={"button"}
+                                  className={`text-dark d-flex py-2 justify-content-between align-items-center ${
+                                    les._id === lesson?._id
+                                      ? "lesson-active"
+                                      : ""
+                                  }`}
+                                >
+                                  <div className="w-100 text-dark d-flex justify-content-between align-items-center">
+                                    <p
+                                      role="button"
+                                      className="m-0 py-2 text-dark cursor-pointer px-3 d-flex justify-content-between align-items-center"
+                                    >
+                                      {les.title}
+                                    </p>
 
-                                  {hasRights && (
-                                    <div className="d-flex justify-conten-start align-items-center">
-                                      <Link
-                                        to={`/${id}/${les._id}/changeLesson`}
-                                        className="lessonBlock_btn d-flex align-items-center"
-                                      >
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="16"
-                                          height="16"
-                                          fill="currentColor"
-                                          class="bi bi-pencil-fill"
-                                          viewBox="0 0 16 16"
+                                    {hasRights && (
+                                      <div className="d-flex justify-conten-start align-items-center">
+                                        <Link
+                                          to={`/${id}/${les._id}/changeLesson`}
+                                          className="lessonBlock_btn d-flex align-items-center"
                                         >
-                                          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                                        </svg>
-                                      </Link>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-pencil-fill"
+                                            viewBox="0 0 16 16"
+                                          >
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                          </svg>
+                                        </Link>
 
-                                      <button
-                                        onClick={() => {
-                                          dispatch(deleteLesson(les._id));
-                                          dispatch(getLessons(id));
-                                        }}
-                                        className="lessonBlock_btn d-flex align-items-center"
-                                      >
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="16"
-                                          height="16"
-                                          fill="currentColor"
-                                          class="bi bi-x-lg"
-                                          viewBox="0 0 16 16"
+                                        <button
+                                          onClick={() => {
+                                            dispatch(deleteLesson(les._id));
+                                            dispatch(getLessons(id));
+                                          }}
+                                          className="lessonBlock_btn d-flex align-items-center"
                                         >
-                                          <path
-                                            fill-rule="evenodd"
-                                            d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
-                                          />
-                                          <path
-                                            fill-rule="evenodd"
-                                            d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
-                                          />
-                                        </svg>
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                                <hr className="p-0 mt-1 w-50" />
-                              </li>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-x-lg"
+                                            viewBox="0 0 16 16"
+                                          >
+                                            <path
+                                              fill-rule="evenodd"
+                                              d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
+                                            />
+                                            <path
+                                              fill-rule="evenodd"
+                                              d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                </li>
+                                <hr className="m-0 p-0 lesson-line w-50" />
+                              </>
                             ))}
                             {hasRights && (
-                              <li className="text-dark d-flex align-items-center justify-content-between">
+                              <li className="py-2 px-3 text-dark d-flex align-items-center justify-content-between">
                                 Добавить урок
                                 <Link
                                   style={{ padding: "0px" }}
@@ -294,6 +325,7 @@ function Lesson() {
                                   to={`/card/${id}/${el._id}/addLession`}
                                 >
                                   <img
+                                    alt="add_lesson"
                                     style={{ width: "30px", height: "30px" }}
                                     src="https://img.icons8.com/external-tanah-basah-detailed-outline-tanah-basah/96/000000/external-plus-user-interface-tanah-basah-detailed-outline-tanah-basah-2.png"
                                   ></img>
@@ -312,6 +344,7 @@ function Lesson() {
                               style={{ padding: "0px" }}
                             >
                               <img
+                                alt="addLesson"
                                 style={{ width: "30px", height: "30px" }}
                                 src="https://img.icons8.com/external-tanah-basah-detailed-outline-tanah-basah/96/000000/external-plus-user-interface-tanah-basah-detailed-outline-tanah-basah-2.png"
                               ></img>
@@ -331,7 +364,7 @@ function Lesson() {
               )}
 
               {hasRights &&
-                (currentLessonBlock ? (
+                (changeBlockActive ? (
                   <div>
                     <input
                       type="text"

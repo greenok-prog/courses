@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { changeUserData, createUser, getUserData } from "../store/actions/user";
+import { changeUserData, getUserData } from "../store/actions/user";
 
 const ChangeUser = () => {
   const roles = ["ADMIN", "USER", "TEACHER"];
@@ -13,7 +13,7 @@ const ChangeUser = () => {
   const [selectedRole, setSelectedRole] = useState(roles[0]);
   useEffect(() => {
     dispatch(getUserData(params.id));
-  }, []);
+  }, [dispatch, params]);
 
   const selectRole = (e) => {
     setSelectedRole(e);
