@@ -54,6 +54,7 @@ function Lesson() {
     setCurrentLessonBlock("");
     setChangeBlockActive(false);
   };
+
   useEffect(() => {
     const findetCard = currentUser.user.currentLesson.filter(
       (les) => les.cardId === id
@@ -92,7 +93,12 @@ function Lesson() {
                 <div className="courseTasks_theory">
                   <div>
                     <p className="courseTasks_theory__subtitle"></p>
-                    <p className="courseTasks_theory__text">{lesson.text}</p>
+                    <p
+                      style={{ whiteSpace: "pre-wrap" }}
+                      className="courseTasks_theory__text"
+                    >
+                      {lesson.text}
+                    </p>
                   </div>
                 </div>
                 <div className="courseTasks_links ">

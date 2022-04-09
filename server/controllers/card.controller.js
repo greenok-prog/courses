@@ -45,7 +45,7 @@ export const removeCard = async (req, res) => {
         await CardPromo.findOneAndDelete({ card: id })
         const card = await Card.findOneAndDelete({ _id: id })
 
-
+        console.log(path.resolve());
         if (card.image !== null) {
             try {
                 fs.unlinkSync(config.get('staticPath') + '\\' + card.image)

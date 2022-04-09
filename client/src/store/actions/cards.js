@@ -68,7 +68,7 @@ export const deleteLessonAction = (payload) => ({
 export const getAllCards = () => {
     return async dispatch => {
         try {
-            const res = await axios.get('http://localhost:5000/api/cards')
+            const res = await axios.get(serverApi + 'api/cards')
             dispatch(getAllCardsAction(res.data))
 
         } catch (e) {
